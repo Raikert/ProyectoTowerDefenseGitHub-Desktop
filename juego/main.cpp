@@ -84,7 +84,7 @@ int main()
     sprite.setTexture(textura);
     sprite1.setTexture(texturamenu);
     ///con esta variable se cambia la cantidad de mounstruos en el mundo
-    int cantidad_objetos=1;
+    int cantidad_objetos=10;
     CircleShape v[cantidad_objetos];
     float opacidad_objetos[cantidad_objetos]={0};
     int estados[cantidad_objetos]= {0};
