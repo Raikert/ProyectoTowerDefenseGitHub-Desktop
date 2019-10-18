@@ -46,6 +46,7 @@
 			<Add directory="SFML-2.5.1/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="prueba-github.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
