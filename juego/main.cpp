@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "windows.h"
 #include <iostream>
 #include <cstdlib>
@@ -83,6 +84,10 @@ int main()
     Sprite sprite,sprite1;
     sprite.setTexture(textura);
     sprite1.setTexture(texturamenu);
+    ///Si gente, le puse MUSICA WEEEEE
+    Music music;
+    if (!music.openFromFile("musica/halo musica.ogg")) return -1;
+    music.play();
     ///con esta variable se cambia la cantidad de mounstruos en el mundo
     int cantidad_objetos=10;
     CircleShape v[cantidad_objetos];
