@@ -84,10 +84,13 @@ int main()
     Sprite sprite,sprite1;
     sprite.setTexture(textura);
     sprite1.setTexture(texturamenu);
+    int mousexy[2];
     ///Si gente, le puse MUSICA WEEEEE
-    Music music;
-    if (!music.openFromFile("musica/halo musica.ogg")) return -1;
-    music.play();
+    Music musica_menu;
+    if (!musica_menu.openFromFile("musica/halo musica.ogg")) return -1;
+    ///volumen de la musica del menu
+    musica_menu.setVolume(5.f);
+    musica_menu.play();
     ///con esta variable se cambia la cantidad de mounstruos en el mundo
     int cantidad_objetos=10;
     CircleShape v[cantidad_objetos];
@@ -105,17 +108,20 @@ int main()
     int objetos=1;
     int tiempo=1;
     float x=0,y=0;
-    ///Setea el framerate a 60 fps, comentado para mas velocidad,se setea para q no haya lag
-    /*
+
+    ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
+
     window.setFramerateLimit(60);
-    */
+
     while (window.isOpen())
     {
         Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == Event::Closed)
+            if (event.type == Event::Closed) {
+                musica_menu.stop();
                 window.close();
+                }
         }
 
         window.clear();
@@ -142,10 +148,26 @@ int main()
                 }
                 else
                 {
+                    ///Configuracion de los botones en el menu principal
                     if (Mouse::isButtonPressed(Mouse::Left))
                     {
-                        if (Mouse::getPosition(window).x>=281&&Mouse::getPosition(window).x<=469&&Mouse::getPosition(window).y>=316&&Mouse::getPosition(window).y<=353)
+                        mousexy[0]=Mouse::getPosition(window).x;
+                        mousexy[1]=Mouse::getPosition(window).y;
+                        ///Nueva partida
+                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=316&&mousexy[1]<=353) {
+                            musica_menu.stop();
                             estados[0]=0;
+                            }
+                            ///Cargar Partida
+                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=377&&mousexy[1]<=414) {
+
+                        }
+                        ///Salir
+                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=437&&mousexy[1]<=474) {
+                         musica_menu.stop();
+                         window.close();
+                        }
+
                     }
                 }
                 break;
