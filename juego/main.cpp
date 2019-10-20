@@ -76,25 +76,30 @@ int main()
     RenderWindow window(VideoMode(800, 600), "TOWER DEFENSE");
     Texture textura,texturacirculo,texturamenu;
     if (!textura.loadFromFile("img/007.png"))
-        return EXIT_FAILURE;
+        return -1;
     if (!texturacirculo.loadFromFile("img/004.jpg"))
-        return EXIT_FAILURE;
+        return -1;
     if (!texturamenu.loadFromFile("img/006.jpg"))
-        return EXIT_FAILURE;
+        return -1;
     Sprite sprite,sprite1;
     sprite.setTexture(textura);
     sprite1.setTexture(texturamenu);
     int mousexy[2];
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu;
-    if (!musica_menu.openFromFile("musica/halo musica.ogg")) return -1;
+    if (!musica_menu.openFromFile("musica/halo musica.ogg"))
+        return -1;
     ///volumen de la musica del menu
-    musica_menu.setVolume(5.f);
+    float volumen_menu=5;
+    musica_menu.setVolume(volumen_menu);
     musica_menu.play();
+    /*
+    bool boolmusica1;
+    */
     ///con esta variable se cambia la cantidad de mounstruos en el mundo
     int cantidad_objetos=10;
     CircleShape v[cantidad_objetos];
-    float opacidad_objetos[cantidad_objetos]={0};
+    float opacidad_objetos[cantidad_objetos]= {0};
     int estados[cantidad_objetos]= {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
@@ -118,10 +123,11 @@ int main()
         Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == Event::Closed) {
+            if (event.type == Event::Closed)
+            {
                 musica_menu.stop();
                 window.close();
-                }
+            }
         }
 
         window.clear();
@@ -131,6 +137,12 @@ int main()
             if (estados[i-1]!=-1)
             {
                 window.draw(sprite);
+                /*
+                if (boolmusica1)
+                {
+
+                }
+                */
                 for (int d=1; d<=objetos; d++)
                 {
                     window.draw(v[d-1]);
@@ -154,18 +166,25 @@ int main()
                         mousexy[0]=Mouse::getPosition(window).x;
                         mousexy[1]=Mouse::getPosition(window).y;
                         ///Nueva partida
-                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=316&&mousexy[1]<=353) {
-                            musica_menu.stop();
-                            estados[0]=0;
-                            }
-                            ///Cargar Partida
-                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=377&&mousexy[1]<=414) {
+                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=316&&mousexy[1]<=353)
+                        {
+                            /*
+                            volumen_menu-=0.1;
+                            musica_menu.setVolume(volumen_menu);
+                                */
+                                musica_menu.stop();
+                                estados[0]=0;
+                        }
+                        ///Cargar Partida
+                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=377&&mousexy[1]<=414)
+                        {
 
                         }
                         ///Salir
-                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=437&&mousexy[1]<=474) {
-                         musica_menu.stop();
-                         window.close();
+                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=437&&mousexy[1]<=474)
+                        {
+                            musica_menu.stop();
+                            window.close();
                         }
 
                     }
@@ -335,7 +354,8 @@ int main()
         */
         window.display();
     }
-
+    x=10;
+    y=10;
     ///debug de variables en la terminal-no darle bola al warning
     cout<<x<<endl;
     cout<<y<<endl;
