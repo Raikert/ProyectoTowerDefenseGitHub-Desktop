@@ -8,6 +8,34 @@
 using namespace sf;
 using namespace std;
 
+class boton_rectangulo {
+private:
+    float esi[2],esd[2],eii[2],eid[2];
+    RectangleShape boton;
+    public:
+        boton_rectangulo(float x,float y,float posx,float posy) {
+        boton.setSize(Vector2f(x,y));
+        esi[0]=posx;
+        esi[1]=posy;
+        esd[0]=posx+(x-1);
+        esd[1]=posy;
+        eii[0]=posx;
+        eii[1]=posy+(y-1);
+        eid[0]=posx+(x-1);
+        eid[1]=posy+(y-1);
+        boton.setPosition(esi[0],esi[1]);
+        }
+        int getEsix(){return esi[0];}
+        int getEsdx(){return esd[0];}
+        int getEiix(){return eii[0];}
+        int getEidx(){return eid[0];}
+        int getEsiy(){return esi[1];}
+        int getEsdy(){return esd[1];}
+        int getEiiy(){return eii[1];}
+        int getEidy(){return eid[1];}
+        RectangleShape getBoton() {return boton;}
+};
+
 ///funciones hibridas con objetos
 
 void mov_obj_abajo(CircleShape v[],int objeto,float velocidad_y)
@@ -73,9 +101,9 @@ int main()
 {
     ///carga del mundo
 
-    RenderWindow window(VideoMode(800, 600), "Tower Defense - La defensa del fuerte nicomando");
+    RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
     Texture textura_mapa,textura_circulo,textura_menu;
-    if (!textura_mapa.loadFromFile("img/007.png"))
+    if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
     if (!textura_circulo.loadFromFile("img/004.jpg"))
         return -1;
@@ -112,9 +140,9 @@ int main()
     musica_juego.setVolume(5.f);
     bool boolmusica=false;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
-    const int cantidad_objetos=10;
+    const int cantidad_objetos=1000;
     CircleShape v[cantidad_objetos];
-
+    boton_rectangulo nueva_partida(237,38,351,316);
     ///vida de los monstruos-rango-daños
     int vidas[cantidad_objetos]={100};
     float opacidad_objetos[cantidad_objetos]= {0};
@@ -184,6 +212,7 @@ int main()
                 menu.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(menu);
                 window.draw(texto_prueba);
+                window.draw(nueva_partida.getBoton());
                 if (opacidad_menu<255)
                 {
                     opacidad_menu+=5;
@@ -196,7 +225,7 @@ int main()
                         mousexy[0]=Mouse::getPosition(window).x;
                         mousexy[1]=Mouse::getPosition(window).y;
                         ///Nueva partida
-                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=316&&mousexy[1]<=353)
+                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
                         {
                             /*
                             volumen_menu-=0.1;
