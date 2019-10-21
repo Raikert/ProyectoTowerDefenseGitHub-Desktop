@@ -97,6 +97,7 @@ void mov_obj_arriba(CircleShape *v,int objeto,float velocidad_y)
     v[objeto].setPosition(v[objeto].getPosition().x,y);
 }
 
+
 int main()
 {
     ///carga del mundo
@@ -118,7 +119,7 @@ int main()
         return -1;
     Text texto_prueba,texto_variable;
     texto_prueba.setFont(tipo_de_texto);
-    texto_prueba.setString("Imprimimos texto GENTEEE");
+    texto_prueba.setString("GENTESSS EDITION");
     texto_prueba.setCharacterSize(24);
     texto_variable.setFont(tipo_de_texto1);
     ///Zona de texto
@@ -129,15 +130,17 @@ int main()
     int mousexy[2];
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
-    if (!musica_menu.openFromFile("musica/halo musica.ogg"))
+    if (!musica_menu.openFromFile("musica/song_sneaky_driver.ogg"))
         return -1;
-    if (!musica_juego.openFromFile("musica/musica juego.ogg"))
+    if (!musica_juego.openFromFile("musica/glorious morning.ogg"))
         return -1;
     ///volumen de la musica del menu
-    musica_menu.setVolume(15.f);
-    musica_menu.setPlayingOffset(seconds(62.5f));
+    musica_menu.setVolume(50.f);
+   // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.play();
-    musica_juego.setVolume(5.f);
+    musica_menu.setLoop(true);
+    musica_juego.setVolume(50.f);
+    musica_juego.setLoop(true);
     bool boolmusica=false;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
     const int cantidad_objetos=1000;
@@ -172,7 +175,7 @@ int main()
     texto_variable.setFillColor(Color::Black);
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(90);
 
     while (window.isOpen())
     {
@@ -237,6 +240,8 @@ int main()
                         ///Cargar Partida
                         if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=377&&mousexy[1]<=414)
                         {
+                            musica_menu.stop();
+                            musica_juego.play();
 
                         }
                         ///Salir
@@ -324,11 +329,11 @@ int main()
                     }
                     else
                         estado=2;
-                    break;
+                    break;glorious morning
                 case 2:
                     if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
                     {
-                        mov_obj_abajo(v,objetos,0.1);
+             glorious morning           mov_obj_abajo(v,objetos,0.1);
 
                     }
                     else
