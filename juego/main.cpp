@@ -73,7 +73,7 @@ int main()
 {
     ///carga del mundo
 
-    RenderWindow window(VideoMode(800, 600), "TOWER DEFENSE");
+    RenderWindow window(VideoMode(800, 600), "Tower Defense - La defensa del fuerte nicomando");
     Texture textura,texturacirculo,texturamenu;
     if (!textura.loadFromFile("img/007.png"))
         return -1;
@@ -81,21 +81,36 @@ int main()
         return -1;
     if (!texturamenu.loadFromFile("img/006.jpg"))
         return -1;
+
+    ///Zona de texto
+    Font tipo_de_texto,tipo_de_texto1;
+    if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
+        return -1;
+    if (!tipo_de_texto1.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
+        return -1;
+    Text texto_prueba,texto_variable;
+    texto_prueba.setFont(tipo_de_texto);
+    texto_prueba.setString("Imprimimos texto GENTEEE");
+    texto_prueba.setCharacterSize(24);
+    texto_variable.setFont(tipo_de_texto1);
+    ///Zona de texto
+
     Sprite sprite,sprite1;
     sprite.setTexture(textura);
     sprite1.setTexture(texturamenu);
     int mousexy[2];
     ///Si gente, le puse MUSICA WEEEEE
-    Music musica_menu;
+    Music musica_menu,musica_juego;
     if (!musica_menu.openFromFile("musica/halo musica.ogg"))
         return -1;
+    if (!musica_juego.openFromFile("musica/musica juego.ogg"))
+        return -1;
     ///volumen de la musica del menu
-    float volumen_menu=50;
-    musica_menu.setVolume(volumen_menu);
+    musica_menu.setVolume(15.f);
+    musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.play();
-    /*
-    bool boolmusica1;
-    */
+    musica_juego.setVolume(5.f);
+    bool boolmusica=false;
     ///con esta variable se cambia la cantidad de mounstruos en el mundo
     int cantidad_objetos=10;
     CircleShape v[cantidad_objetos];
@@ -112,8 +127,15 @@ int main()
     }
     int objetos=1;
     int tiempo=1;
-    float x=0,y=0;
 
+    ///Convertir una variable en un string, variable tiempo
+    char tiempo_char[10];
+    itoa(tiempo,tiempo_char,10);
+    string tiempo_string = string(tiempo_char);
+    texto_variable.setString(tiempo_string);
+    texto_variable.setCharacterSize(25);
+    texto_variable.setPosition(600,300);
+    texto_variable.setFillColor(Color::Black);
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
 
     window.setFramerateLimit(60);
@@ -137,12 +159,12 @@ int main()
             if (estados[i-1]!=-1)
             {
                 window.draw(sprite);
-                /*
-                if (boolmusica1)
+                window.draw(texto_variable);
+                if (!boolmusica)
                 {
-
+                    musica_juego.play();
+                    boolmusica=true;
                 }
-                */
                 for (int d=1; d<=objetos; d++)
                 {
                     window.draw(v[d-1]);
@@ -154,6 +176,7 @@ int main()
             case -1:
                 sprite1.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(sprite1);
+                window.draw(texto_prueba);
                 if (opacidad_menu<255)
                 {
                     opacidad_menu+=5;
@@ -172,8 +195,8 @@ int main()
                             volumen_menu-=0.1;
                             musica_menu.setVolume(volumen_menu);
                                 */
-                                musica_menu.stop();
-                                estados[0]=0;
+                            musica_menu.stop();
+                            estados[0]=0;
                         }
                         ///Cargar Partida
                         if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=377&&mousexy[1]<=414)
@@ -331,6 +354,11 @@ int main()
         if (estados[0]!=-1)
         {
             tiempo++;
+
+            ///cada vez que se actualiza la variable se tiene que actualizar el string
+            itoa(tiempo,tiempo_char,10);
+            string tiempo_string = string(tiempo_char);
+            texto_variable.setString(tiempo_string);
         }
         ///Pruebas iniciales con circulos
         /*
@@ -354,11 +382,5 @@ int main()
         */
         window.display();
     }
-    x=10;
-    y=10;
-    ///debug de variables en la terminal-no darle bola al warning
-    cout<<x<<endl;
-    cout<<y<<endl;
-    system("pause");
     return 0;
 }
