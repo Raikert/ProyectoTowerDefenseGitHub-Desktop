@@ -90,7 +90,7 @@ int main()
     if (!musica_menu.openFromFile("musica/halo musica.ogg"))
         return -1;
     ///volumen de la musica del menu
-    float volumen_menu=5;
+    float volumen_menu=50;
     musica_menu.setVolume(volumen_menu);
     musica_menu.play();
     /*
