@@ -105,7 +105,7 @@ int main()
     Texture textura_mapa,textura_circulo,textura_menu;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
-    if (!textura_circulo.loadFromFile("img/004.jpg"))
+    if (!textura_circulo.loadFromFile("img/bl-1-Monster_No001-1-removebg-preview.png"))
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
