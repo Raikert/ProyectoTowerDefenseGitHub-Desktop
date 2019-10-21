@@ -74,12 +74,12 @@ int main()
     ///carga del mundo
 
     RenderWindow window(VideoMode(800, 600), "Tower Defense - La defensa del fuerte nicomando");
-    Texture textura,texturacirculo,texturamenu;
-    if (!textura.loadFromFile("img/007.png"))
+    Texture textura_mapa,textura_circulo,textura_menu;
+    if (!textura_mapa.loadFromFile("img/007.png"))
         return -1;
-    if (!texturacirculo.loadFromFile("img/004.jpg"))
+    if (!textura_circulo.loadFromFile("img/004.jpg"))
         return -1;
-    if (!texturamenu.loadFromFile("img/006.jpg"))
+    if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
 
     ///Zona de texto
@@ -95,9 +95,9 @@ int main()
     texto_variable.setFont(tipo_de_texto1);
     ///Zona de texto
 
-    Sprite sprite,sprite1;
-    sprite.setTexture(textura);
-    sprite1.setTexture(texturamenu);
+    Sprite mapa,menu;
+    mapa.setTexture(textura_mapa);
+    menu.setTexture(textura_menu);
     int mousexy[2];
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
@@ -111,17 +111,23 @@ int main()
     musica_menu.play();
     musica_juego.setVolume(5.f);
     bool boolmusica=false;
-    ///con esta variable se cambia la cantidad de mounstruos en el mundo
-    int cantidad_objetos=10;
+    ///con esta variable se cambia la cantidad de monstruos en el mundo
+    const int cantidad_objetos=10;
     CircleShape v[cantidad_objetos];
+
+    ///vida de los monstruos-rango-daños
+    int vidas[cantidad_objetos]={100};
     float opacidad_objetos[cantidad_objetos]= {0};
+    CircleShape rango_prueba(150.f);
+    rango_prueba.setFillColor(Color(24,81,213,100));
+    rango_prueba.setPosition(130,378);
     int estados[cantidad_objetos]= {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
     for (int i=0; i<=cantidad_objetos-1; i++)
     {
         v[i]=CircleShape(25.f);
-        v[i].setTexture(&texturacirculo);
+        v[i].setTexture(&textura_circulo);
         v[i].setFillColor(Color(255,255,255,opacidad_objetos[i]));
         v[i].setPosition(285,0);
     }
@@ -158,8 +164,9 @@ int main()
         {
             if (estados[i-1]!=-1)
             {
-                window.draw(sprite);
+                window.draw(mapa);
                 window.draw(texto_variable);
+                window.draw(rango_prueba);
                 if (!boolmusica)
                 {
                     musica_juego.play();
@@ -174,8 +181,8 @@ int main()
             switch (estados[i-1])
             {
             case -1:
-                sprite1.setColor(Color(255,255,255,opacidad_menu));
-                window.draw(sprite1);
+                menu.setColor(Color(255,255,255,opacidad_menu));
+                window.draw(menu);
                 window.draw(texto_prueba);
                 if (opacidad_menu<255)
                 {
