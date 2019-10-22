@@ -8,12 +8,13 @@
 using namespace sf;
 using namespace std;
 
+
 class boton_rectangulo {
 private:
     float esi[2],esd[2],eii[2],eid[2];
     RectangleShape boton;
     public:
-        boton_rectangulo(float x,float y,float posx,float posy) {
+        boton_rectangulo(float x,float y,float posx,float posy,int transparencia=0) {
         boton.setSize(Vector2f(x,y));
         esi[0]=posx;
         esi[1]=posy;
@@ -24,6 +25,7 @@ private:
         eid[0]=posx+(x-1);
         eid[1]=posy+(y-1);
         boton.setPosition(esi[0],esi[1]);
+        boton.setFillColor(Color(255,255,255,transparencia));
         }
         int getEsix(){return esi[0];}
         int getEsdx(){return esd[0];}
@@ -34,11 +36,14 @@ private:
         int getEiiy(){return eii[1];}
         int getEidy(){return eid[1];}
         RectangleShape getBoton() {return boton;}
+        void setTransparencia(int t) {
+        boton.setFillColor(Color(255,255,255,t));
+        }
 };
 
 ///funciones hibridas con objetos
 
-void mov_obj_abajo(CircleShape v[],int objeto,float velocidad_y)
+void mov_obj_abajo(Sprite v[],int objeto,float velocidad_y)
 {
     float y;
     y=v[objeto].getPosition().y+velocidad_y;
@@ -53,7 +58,7 @@ void mov_diagonal_izq_abajo(CircleShape *circulo,float velocidad_x, float veloci
     circulo->setPosition(x,y);
 }
 
-void mov_obj_derecha(CircleShape v[],int objeto,float velocidad_x)
+void mov_obj_derecha(Sprite v[],int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x+velocidad_x;
@@ -68,7 +73,7 @@ void mov_diagonal_der_arriba (CircleShape *circulo,float velocidad_x,float veloc
     circulo->setPosition(x,y);
 }
 
-void mov_derecha(CircleShape *v,int objeto,float velocidad_x)
+void mov_derecha(Sprite *v,int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x+velocidad_x;
@@ -83,14 +88,14 @@ void mov_diagonal_der_abajo(CircleShape *circulo,float velocidad_x,float velocid
     circulo->setPosition(x,y);
 }
 
-void mov_obj_izq(CircleShape v[],int objeto,float velocidad_x)
+void mov_obj_izq(Sprite v[],int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x-velocidad_x;
     v[objeto].setPosition(x,v[objeto].getPosition().y);
 }
 
-void mov_obj_arriba(CircleShape *v,int objeto,float velocidad_y)
+void mov_obj_arriba(Sprite *v,int objeto,float velocidad_y)
 {
     float y;
     y=v[objeto].getPosition().y-velocidad_y;
@@ -103,10 +108,10 @@ int main()
     ///carga del mundo
 
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
-    Texture textura_mapa,textura_circulo,textura_menu;
+    Texture textura_mapa,textura_bicho,textura_menu;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
-    if (!textura_circulo.loadFromFile("img/bl-1-Monster_No001-1-removebg-preview.png"))
+    if (!textura_bicho.loadFromFile("img/bicho_reside.png"))
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
@@ -144,23 +149,46 @@ int main()
     bool boolmusica=false;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
     const int cantidad_objetos=1000;
-    CircleShape v[cantidad_objetos];
-    boton_rectangulo nueva_partida(237,38,351,316);
+    Sprite v[cantidad_objetos];
+
+    ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
+    /*
+    Sprite v[cantidad_objetos][3];
+    */
+
+    ///objeto boton de la nueva clase de botones_rectangulo, Parametros:
+    ///Tamaño en Float X, Tamaño en Float Y, Posicion de la pantalla en Float X, Posicion de la pantalla en Float Y
+
+    boton_rectangulo nueva_partida(237,38,351,316,0);
+
     ///vida de los monstruos-rango-daños
     int vidas[cantidad_objetos]={100};
     float opacidad_objetos[cantidad_objetos]= {0};
+
+    ///Zona de declaracion de variables tipo rango-torres
     CircleShape rango_prueba(150.f);
     rango_prueba.setFillColor(Color(24,81,213,100));
     rango_prueba.setPosition(130,378);
+
     int estados[cantidad_objetos]= {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
     for (int i=0; i<=cantidad_objetos-1; i++)
     {
-        v[i]=CircleShape(25.f);
-        v[i].setTexture(&textura_circulo);
-        v[i].setFillColor(Color(255,255,255,opacidad_objetos[i]));
+        ///Seria un corte de control donde por cada vuelta de J se cargara un frame de un tipo de bicho, faltaria la forma
+        ///dinamica de indicar a cual tipo de monstruo cargar en cada fila de la matriz
+        /*
+        for (int j=0;j++<=2;j++) {*/
+        /*
+        v[i][j]...
+        v[i][j]...
+        v[i][j]...
+        */
+        v[i].setTexture(textura_bicho);
+        v[i].setColor(Color(255,255,255,opacidad_objetos[i]));
         v[i].setPosition(285,0);
+        /*
+        }*/
     }
     int objetos=1;
     int tiempo=1;
@@ -174,8 +202,8 @@ int main()
     texto_variable.setPosition(600,300);
     texto_variable.setFillColor(Color::Black);
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
-
-    window.setFramerateLimit(90);
+    ///A 90 frames los sprites se bugean, por eso lo cambio a 60.
+    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -205,6 +233,17 @@ int main()
                 }
                 for (int d=1; d<=objetos; d++)
                 {
+                    ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
+                    /*
+                    switch(mini_estados) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                    }
+                    */
                     window.draw(v[d-1]);
                 }
             }
@@ -260,7 +299,7 @@ int main()
                     if(opacidad_objetos[i-1]<255)
                     {
                         opacidad_objetos[i-1]+=5;
-                        v[i-1].setFillColor(Color(255,255,255,opacidad_objetos[i-1]));
+                        v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
                     }
                     mov_obj_abajo(v,i-1,0.5);
                 }
@@ -312,7 +351,7 @@ int main()
                 if (opacidad_objetos[i-1]!=0)
                 {
                     opacidad_objetos[i-1]-=5;
-                    v[i-1].setFillColor(Color(255,255,255,opacidad_objetos[i-1]));
+                    v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
                     mov_derecha(v,i-1,0.5);
                 }
                 else
