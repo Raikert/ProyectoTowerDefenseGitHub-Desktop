@@ -159,7 +159,7 @@ int main()
     ///objeto boton de la nueva clase de botones_rectangulo, Parametros:
     ///Tamaño en Float X, Tamaño en Float Y, Posicion de la pantalla en Float X, Posicion de la pantalla en Float Y
 
-    boton_rectangulo nueva_partida(237,38,351,316,0);
+    boton_rectangulo nueva_partida(237,38,351,316,0),cargar_partida(237,38,351,377,0),salir(237,38,351,437,0);
 
     ///vida de los monstruos-rango-daños
     int vidas[cantidad_objetos]={100};
@@ -203,7 +203,8 @@ int main()
     texto_variable.setFillColor(Color::Black);
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     ///A 90 frames los sprites se bugean, por eso lo cambio a 60.
-    window.setFramerateLimit(60);
+
+ window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -216,7 +217,6 @@ int main()
                 window.close();
             }
         }
-
         window.clear();
 
         for (int i=1; i<=objetos; i++)
@@ -255,6 +255,8 @@ int main()
                 window.draw(menu);
                 window.draw(texto_prueba);
                 window.draw(nueva_partida.getBoton());
+                window.draw(cargar_partida.getBoton());
+                window.draw(salir.getBoton());
                 if (opacidad_menu<255)
                 {
                     opacidad_menu+=5;
@@ -277,14 +279,14 @@ int main()
                             estados[0]=0;
                         }
                         ///Cargar Partida
-                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=377&&mousexy[1]<=414)
+                        if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
                         {
                             musica_menu.stop();
                             musica_juego.play();
 
                         }
                         ///Salir
-                        if (mousexy[0]>=281&&mousexy[0]<=469&&mousexy[1]>=437&&mousexy[1]<=474)
+                        if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
                         {
                             musica_menu.stop();
                             window.close();
