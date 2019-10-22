@@ -140,7 +140,7 @@ int main()
     if (!musica_juego.openFromFile("musica/glorious morning.ogg"))
         return -1;
     ///volumen de la musica del menu
-    musica_menu.setVolume(50.f);
+    musica_menu.setVolume(80.f);
    // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.play();
     musica_menu.setLoop(true);
