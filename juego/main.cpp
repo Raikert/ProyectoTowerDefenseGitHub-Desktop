@@ -72,7 +72,7 @@ public:
 
 ///funciones hibridas con objetos
 
-void mov_obj_abajo(Sprite v[],int objeto,float velocidad_y)
+void mov_obj_abajo(CircleShape v[],int objeto,float velocidad_y)
 {
     float y;
     y=v[objeto].getPosition().y+velocidad_y;
@@ -87,7 +87,7 @@ void mov_diagonal_izq_abajo(CircleShape *circulo,float velocidad_x, float veloci
     circulo->setPosition(x,y);
 }
 
-void mov_obj_derecha(Sprite v[],int objeto,float velocidad_x)
+void mov_obj_derecha(CircleShape v[],int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x+velocidad_x;
@@ -102,7 +102,7 @@ void mov_diagonal_der_arriba (CircleShape *circulo,float velocidad_x,float veloc
     circulo->setPosition(x,y);
 }
 
-void mov_derecha(Sprite *v,int objeto,float velocidad_x)
+void mov_derecha(CircleShape *v,int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x+velocidad_x;
@@ -117,14 +117,14 @@ void mov_diagonal_der_abajo(CircleShape *circulo,float velocidad_x,float velocid
     circulo->setPosition(x,y);
 }
 
-void mov_obj_izq(Sprite v[],int objeto,float velocidad_x)
+void mov_obj_izq(CircleShape v[],int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x-velocidad_x;
     v[objeto].setPosition(x,v[objeto].getPosition().y);
 }
 
-void mov_obj_arriba(Sprite *v,int objeto,float velocidad_y)
+void mov_obj_arriba(CircleShape *v,int objeto,float velocidad_y)
 {
     float y;
     y=v[objeto].getPosition().y-velocidad_y;
@@ -138,7 +138,7 @@ int main()
 
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
      ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
-    ///A 90 frames los sprites se bugean, por eso lo cambio a 60.
+    ///bugeo de los sprites solucionado: ver linea 152;
 
     window.setFramerateLimit(60);
 
@@ -149,7 +149,7 @@ int main()
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
-
+    textura_bicho.setSmooth(true);
     ///Zona de texto
     Font tipo_de_texto,tipo_de_texto1;
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
@@ -183,7 +183,7 @@ int main()
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
     const int cantidad_objetos=10;
-    Sprite v[cantidad_objetos];
+    CircleShape v[cantidad_objetos];
 
     ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
     /*
@@ -205,7 +205,9 @@ int main()
     CircleShape rango_prueba(150.f);
     rango_prueba.setFillColor(Color(24,81,213,100));
     rango_prueba.setPosition(130,378);
-
+    /*
+    Rect<jojo>::Rect(200,200,50,50);
+    */
     int estados[cantidad_objetos]= {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
@@ -220,8 +222,9 @@ int main()
         v[i][j]...
         v[i][j]...
         */
-        v[i].setTexture(textura_bicho);
-        v[i].setColor(Color(255,255,255,opacidad_objetos[i]));
+        v[i]=CircleShape(25.f);
+        v[i].setTexture(&textura_bicho);
+        v[i].setFillColor(Color(255,255,255,opacidad_objetos[i]));
         v[i].setPosition(285,0);
         /*
         }*/
@@ -359,7 +362,7 @@ int main()
                         if(opacidad_objetos[i-1]<255)
                         {
                             opacidad_objetos[i-1]+=5;
-                            v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
+                            v[i-1].setFillColor(Color(255,255,255,opacidad_objetos[i-1]));
                         }
                         mov_obj_abajo(v,i-1,0.5);
                     }
@@ -411,7 +414,7 @@ int main()
                     if (opacidad_objetos[i-1]!=0)
                     {
                         opacidad_objetos[i-1]-=5;
-                        v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
+                        v[i-1].setFillColor(Color(255,255,255,opacidad_objetos[i-1]));
                         mov_derecha(v,i-1,0.5);
                     }
                     else
