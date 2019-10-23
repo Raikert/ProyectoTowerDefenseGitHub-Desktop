@@ -3,11 +3,10 @@
 #include "windows.h"
 #include <iostream>
 #include <cstdlib>
-///para no poner sf::
 
+///para no poner sf::
 using namespace sf;
 using namespace std;
-
 
 class boton_rectangulo
 {
@@ -138,6 +137,11 @@ int main()
     ///carga del mundo
 
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
+     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
+    ///A 90 frames los sprites se bugean, por eso lo cambio a 60.
+
+    window.setFramerateLimit(60);
+
     Texture textura_mapa,textura_bicho,textura_menu;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
@@ -178,7 +182,7 @@ int main()
     musica_juego.setLoop(true);
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
-    const int cantidad_objetos=1000;
+    const int cantidad_objetos=10;
     Sprite v[cantidad_objetos];
 
     ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
@@ -233,10 +237,6 @@ int main()
     texto_variable.setCharacterSize(25);
     texto_variable.setPosition(600,300);
     texto_variable.setFillColor(Color::Black);
-    ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
-    ///A 90 frames los sprites se bugean, por eso lo cambio a 60.
-
-    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
