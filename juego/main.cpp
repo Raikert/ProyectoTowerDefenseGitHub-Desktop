@@ -145,11 +145,13 @@ int main()
     Texture textura_mapa,textura_bicho,textura_menu;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
-    if (!textura_bicho.loadFromFile("img/bicho_reside.png"))
+    if (!textura_bicho.loadFromFile("img/bicho_reside_circulo.png"))
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
+
     textura_bicho.setSmooth(true);
+
     ///Zona de texto
     Font tipo_de_texto,tipo_de_texto1;
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
