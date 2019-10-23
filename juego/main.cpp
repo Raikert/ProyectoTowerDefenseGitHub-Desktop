@@ -9,12 +9,14 @@ using namespace sf;
 using namespace std;
 
 
-class boton_rectangulo {
+class boton_rectangulo
+{
 private:
     float esi[2],esd[2],eii[2],eid[2];
     RectangleShape boton;
-    public:
-        boton_rectangulo(float x,float y,float posx,float posy,int transparencia=0) {
+public:
+    boton_rectangulo(float x,float y,float posx,float posy,int transparencia=0)
+    {
         boton.setSize(Vector2f(x,y));
         esi[0]=posx;
         esi[1]=posy;
@@ -26,19 +28,47 @@ private:
         eid[1]=posy+(y-1);
         boton.setPosition(esi[0],esi[1]);
         boton.setFillColor(Color(255,255,255,transparencia));
-        }
-        int getEsix(){return esi[0];}
-        int getEsdx(){return esd[0];}
-        int getEiix(){return eii[0];}
-        int getEidx(){return eid[0];}
-        int getEsiy(){return esi[1];}
-        int getEsdy(){return esd[1];}
-        int getEiiy(){return eii[1];}
-        int getEidy(){return eid[1];}
-        RectangleShape getBoton() {return boton;}
-        void setTransparencia(int t) {
+    }
+    int getEsix()
+    {
+        return esi[0];
+    }
+    int getEsdx()
+    {
+        return esd[0];
+    }
+    int getEiix()
+    {
+        return eii[0];
+    }
+    int getEidx()
+    {
+        return eid[0];
+    }
+    int getEsiy()
+    {
+        return esi[1];
+    }
+    int getEsdy()
+    {
+        return esd[1];
+    }
+    int getEiiy()
+    {
+        return eii[1];
+    }
+    int getEidy()
+    {
+        return eid[1];
+    }
+    RectangleShape getBoton()
+    {
+        return boton;
+    }
+    void setTransparencia(int t)
+    {
         boton.setFillColor(Color(255,255,255,t));
-        }
+    }
 };
 
 ///funciones hibridas con objetos
@@ -141,12 +171,12 @@ int main()
         return -1;
     ///volumen de la musica del menu
     musica_menu.setVolume(50.f);
-   // musica_menu.setPlayingOffset(seconds(62.5f));
+    // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.play();
     musica_menu.setLoop(true);
     musica_juego.setVolume(50.f);
     musica_juego.setLoop(true);
-    bool boolmusica=false;
+    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
     const int cantidad_objetos=1000;
     Sprite v[cantidad_objetos];
@@ -156,13 +186,15 @@ int main()
     Sprite v[cantidad_objetos][3];
     */
 
-    ///objeto boton de la nueva clase de botones_rectangulo, Parametros:
+    ///objeto boton de la nueva clase de botones_rectangulo, 5 Parametros:
     ///Tamaño en Float X, Tamaño en Float Y, Posicion de la pantalla en Float X, Posicion de la pantalla en Float Y
+    ///el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
+    ///Util para ver en q posicion de la pantalla se ubica el boton.
 
-    boton_rectangulo nueva_partida(237,38,351,316,0),cargar_partida(237,38,351,377,0),salir(237,38,351,437,0);
+    boton_rectangulo nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///vida de los monstruos-rango-daños
-    int vidas[cantidad_objetos]={100};
+    int vidas[cantidad_objetos]= {100};
     float opacidad_objetos[cantidad_objetos]= {0};
 
     ///Zona de declaracion de variables tipo rango-torres
@@ -204,7 +236,7 @@ int main()
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     ///A 90 frames los sprites se bugean, por eso lo cambio a 60.
 
- window.setFramerateLimit(60);
+    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -213,232 +245,258 @@ int main()
         {
             if (event.type == Event::Closed)
             {
-                musica_menu.stop();
                 window.close();
             }
         }
-        window.clear();
 
-        for (int i=1; i<=objetos; i++)
-        {
-            if (estados[i-1]!=-1)
+        ///Configuracion de los botones dentro del juego
+        if (Mouse::isButtonPressed(Mouse::Left))
+    {
+        if (habilitacionmouse)
             {
-                window.draw(mapa);
-                window.draw(texto_variable);
-                window.draw(rango_prueba);
-                if (!boolmusica)
+                mousexy[0]=Mouse::getPosition(window).x;
+                mousexy[1]=Mouse::getPosition(window).y;
+                ///sonido
+                if (mousexy[0]>=sonido.getEsix()&&mousexy[0]<=sonido.getEsdx()&&mousexy[1]>=sonido.getEsdy()&&mousexy[1]<=sonido.getEidy())
                 {
-                    musica_juego.play();
-                    boolmusica=true;
-                }
-                for (int d=1; d<=objetos; d++)
-                {
-                    ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
-                    /*
-                    switch(mini_estados) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                    }
-                    */
-                    window.draw(v[d-1]);
-                }
-            }
-            ///Pequeña maquina de estados
-            switch (estados[i-1])
-            {
-            case -1:
-                menu.setColor(Color(255,255,255,opacidad_menu));
-                window.draw(menu);
-                window.draw(texto_prueba);
-                window.draw(nueva_partida.getBoton());
-                window.draw(cargar_partida.getBoton());
-                window.draw(salir.getBoton());
-                if (opacidad_menu<255)
-                {
-                    opacidad_menu+=5;
-                }
-                else
-                {
-                    ///Configuracion de los botones en el menu principal
-                    if (Mouse::isButtonPressed(Mouse::Left))
+                    if (boolmusicajuego)
                     {
-                        mousexy[0]=Mouse::getPosition(window).x;
-                        mousexy[1]=Mouse::getPosition(window).y;
-                        ///Nueva partida
-                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
-                        {
-                            /*
-                            volumen_menu-=0.1;
-                            musica_menu.setVolume(volumen_menu);
-                                */
-                            musica_menu.stop();
-                            estados[0]=0;
-                        }
-                        ///Cargar Partida
-                        if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
-                        {
-                            musica_menu.stop();
-                            musica_juego.play();
-
-                        }
-                        ///Salir
-                        if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
-                        {
-                            musica_menu.stop();
-                            window.close();
-                        }
-
-                    }
-                }
-                break;
-            case 0:
-                if (v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
-                {
-                    if(opacidad_objetos[i-1]<255)
-                    {
-                        opacidad_objetos[i-1]+=5;
-                        v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
-                    }
-                    mov_obj_abajo(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=1;
-                break;
-
-            case 1:
-                if (v[i-1].getPosition().x>47)
-                {
-                    mov_obj_izq(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=2;
-                break;
-            case 2:
-                if (v[i-1].getPosition().y<500)
-                {
-                    mov_obj_abajo(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=3;
-                break;
-            case 3:
-                if (v[i-1].getPosition().x<485)
-                {
-                    mov_derecha(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=4;
-                break;
-            case 4:
-                if (v[i-1].getPosition().y>177)
-                {
-                    mov_obj_arriba(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=5;
-                break;
-            case 5:
-                if (v[i-1].getPosition().x<700)
-                {
-                    mov_derecha(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=6;
-                break;
-            case 6:
-                if (opacidad_objetos[i-1]!=0)
-                {
-                    opacidad_objetos[i-1]-=5;
-                    v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
-                    mov_derecha(v,i-1,0.5);
-                }
-                else
-                    estados[i-1]=0;
-                break;
-
-                ///movimientos en diagonal
-                /*
-                case 1:
-                    if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
-                    {
-                        mov_diagonal_izq_abajo(&circulo1,0.1,0.038);
-
-                    }
-                    else
-                        estado=2;
-                    break;glorious morning
-                case 2:
-                    if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
-                    {
-             glorious morning           mov_obj_abajo(v,objetos,0.1);
-
-                    }
-                    else
-                        estado=10;
-                    break;
-                case 10:
-                    if (circulo1.getPosition().y>429&&circulo1.getPosition().y<500)
-                    {
-                        mov_diagonal_der_abajo(&circulo1,0.1,0.1);
-                    }
-                    else
-                        estado=3;
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    if (circulo1.getPosition().x>292&&circulo1.getPosition().x<570)
-                    {
-                        mov_diagonal_der_arriba(&circulo1,0.1,0.1);
-                    }
-                    else
-                        estado=5;
-                    break;
-                case 5:
-                    if(circulo1.getPosition().x<637)
-                    {
-                        mov_derecha(&circulo1,0.1);
-                    }
-                    else
-                        estado=6;
-                    break;
-                case 6:
-                    if (circulo1.getPosition().x>637&&circulo1.getPosition().x<700)
-                    {
-                        mov_derecha(&circulo1,0.1);
-                        if(opacidad>0)
-                        {
-                            opacidad-=0.4;
-                            circulo1.setFillColor(Color(255,255,255,opacidad));
-                        }
+                        musica_juego.setVolume(0.f);
+                        boolmusicajuego=false;
                     }
                     else
                     {
-                        circulo1.setPosition(290,0);
-                        estado=0;
+                        musica_juego.setVolume(50.f);
+                        boolmusicajuego=true;
                     }
-                    break;
-                */
+                }
+                ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
+                habilitacionmouse=false;
             }
         }
-        if (tiempo%500==0)
+        else
+            ///una vez que se solto el mouse, recien se habilita para una nueva accion
+            habilitacionmouse=true;
+                         window.clear();
+
+                         for (int i=1; i<=objetos; i++)
         {
-            if (objetos<cantidad_objetos)
+            if (estados[i-1]!=-1)
+                {
+                    window.draw(mapa);
+                    window.draw(texto_variable);
+                    window.draw(rango_prueba);
+                    if (!boolmusica)
+                    {
+                        musica_juego.play();
+                        boolmusica=true;
+                    }
+
+                    for (int d=1; d<=objetos; d++)
+                    {
+                        ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
+                        /*
+                        switch(mini_estados) {
+                        case 1:
+                        break;
+                        case 2:
+                        break;
+                        case 3:
+                        break;
+                        }
+                        */
+                        window.draw(v[d-1]);
+                    }
+                }
+                ///Pequeña maquina de estados
+                switch (estados[i-1])
+                {
+                case -1:
+                    menu.setColor(Color(255,255,255,opacidad_menu));
+                    window.draw(menu);
+                    window.draw(texto_prueba);
+                    if (opacidad_menu<255)
+                    {
+                        opacidad_menu+=5;
+                    }
+                    else
+                    {
+                        ///Configuracion de los botones en el menu principal
+                        if (Mouse::isButtonPressed(Mouse::Left))
+                        {
+                            mousexy[0]=Mouse::getPosition(window).x;
+                            mousexy[1]=Mouse::getPosition(window).y;
+                            ///Nueva partida
+                            if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
+                            {
+                                /*
+                                volumen_menu-=0.1;
+                                musica_menu.setVolume(volumen_menu);
+                                    */
+                                musica_menu.stop();
+                                estados[0]=0;
+                            }
+                            ///Cargar Partida
+                            if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
+                            {
+                                musica_menu.stop();
+                                musica_juego.play();
+
+                            }
+                            ///Salir
+                            if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
+                            {
+                                musica_menu.stop();
+                                window.close();
+                            }
+
+                        }
+                    }
+                    break;
+                case 0:
+                    if (v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
+                    {
+                        if(opacidad_objetos[i-1]<255)
+                        {
+                            opacidad_objetos[i-1]+=5;
+                            v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
+                        }
+                        mov_obj_abajo(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=1;
+                    break;
+
+                case 1:
+                    if (v[i-1].getPosition().x>47)
+                    {
+                        mov_obj_izq(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=2;
+                    break;
+                case 2:
+                    if (v[i-1].getPosition().y<500)
+                    {
+                        mov_obj_abajo(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=3;
+                    break;
+                case 3:
+                    if (v[i-1].getPosition().x<485)
+                    {
+                        mov_derecha(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=4;
+                    break;
+                case 4:
+                    if (v[i-1].getPosition().y>177)
+                    {
+                        mov_obj_arriba(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=5;
+                    break;
+                case 5:
+                    if (v[i-1].getPosition().x<700)
+                    {
+                        mov_derecha(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=6;
+                    break;
+                case 6:
+                    if (opacidad_objetos[i-1]!=0)
+                    {
+                        opacidad_objetos[i-1]-=5;
+                        v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
+                        mov_derecha(v,i-1,0.5);
+                    }
+                    else
+                        estados[i-1]=0;
+                    break;
+
+                    ///movimientos en diagonal
+                    /*
+                    case 1:
+                        if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
+                        {
+                            mov_diagonal_izq_abajo(&circulo1,0.1,0.038);
+
+                        }
+                        else
+                            estado=2;
+                        break;glorious morning
+                    case 2:
+                        if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
+                        {
+                    glorious morning           mov_obj_abajo(v,objetos,0.1);
+
+                        }
+                        else
+                            estado=10;
+                        break;
+                    case 10:
+                        if (circulo1.getPosition().y>429&&circulo1.getPosition().y<500)
+                        {
+                            mov_diagonal_der_abajo(&circulo1,0.1,0.1);
+                        }
+                        else
+                            estado=3;
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        if (circulo1.getPosition().x>292&&circulo1.getPosition().x<570)
+                        {
+                            mov_diagonal_der_arriba(&circulo1,0.1,0.1);
+                        }
+                        else
+                            estado=5;
+                        break;
+                    case 5:
+                        if(circulo1.getPosition().x<637)
+                        {
+                            mov_derecha(&circulo1,0.1);
+                        }
+                        else
+                            estado=6;
+                        break;
+                    case 6:
+                        if (circulo1.getPosition().x>637&&circulo1.getPosition().x<700)
+                        {
+                            mov_derecha(&circulo1,0.1);
+                            if(opacidad>0)
+                            {
+                                opacidad-=0.4;
+                                circulo1.setFillColor(Color(255,255,255,opacidad));
+                            }
+                        }
+                        else
+                        {
+                            circulo1.setPosition(290,0);
+                            estado=0;
+                        }
+                        break;
+                    */
+                }
+            }
+        if (tiempo%500==0)
+    {
+        if (objetos<cantidad_objetos)
             {
                 objetos++;
                 tiempo=1;
             }
         }
         if (estados[0]!=-1)
-        {
-            tiempo++;
+    {
+        tiempo++;
 
-            ///cada vez que se actualiza la variable se tiene que actualizar el string
-            itoa(tiempo,tiempo_char,10);
+        ///cada vez que se actualiza la variable se tiene que actualizar el string
+        itoa(tiempo,tiempo_char,10);
             string tiempo_string = string(tiempo_char);
             texto_variable.setString(tiempo_string);
         }
