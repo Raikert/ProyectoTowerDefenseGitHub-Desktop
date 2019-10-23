@@ -8,13 +8,13 @@
 using namespace sf;
 using namespace std;
 
-class boton_rectangulo
+class Boton
 {
 private:
     float esi[2],esd[2],eii[2],eid[2];
     RectangleShape boton;
 public:
-    boton_rectangulo(float x,float y,float posx,float posy,int transparencia=0)
+    Boton(float x,float y,float posx,float posy,int transparencia=0)
     {
         boton.setSize(Vector2f(x,y));
         esi[0]=posx;
@@ -195,7 +195,7 @@ int main()
     ///el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
     ///Util para ver en q posicion de la pantalla se ubica el boton.
 
-    boton_rectangulo nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
+    Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///vida de los monstruos-rango-daños
     int vidas[cantidad_objetos]= {100};
