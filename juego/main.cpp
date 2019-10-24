@@ -317,7 +317,7 @@ int main()
                         }
                         */
                         if (v[d-1].getGlobalBounds().intersects(rango_prueba.getGlobalBounds())) {
-                            estados[d-1]=0;
+                            ///quitar vida a v[d-1];
                             }
                         window.draw(v[d-1]);
                     }
