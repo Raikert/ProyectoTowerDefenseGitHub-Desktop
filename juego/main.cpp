@@ -488,7 +488,7 @@ int main()
                     */
                 }
             }
-        if (tiempo%500==0)
+        if (tiempo%1000==0)
     {
         if (objetos<cantidad_objetos)
             {
