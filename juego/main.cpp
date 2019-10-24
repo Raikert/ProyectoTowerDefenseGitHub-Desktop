@@ -8,6 +8,22 @@
 using namespace sf;
 using namespace std;
 
+class monstruo {
+private:
+    Sprite bicho;
+    int vida,danio;
+    float velocidad;
+public:
+    Sprite getBicho() {return bicho;}
+    int getVida() {return vida;}
+    int getDanio() {return danio;}
+    float getVelocidad() {return velocidad;}
+    void setVida (int v) {vida=v;}
+    void setDanio (int d) {danio=d;}
+    void setVelocidad (float ve) {velocidad=ve;}
+    void setSprite (Sprite b) {bicho=b;}
+};
+
 class Boton
 {
 private:
