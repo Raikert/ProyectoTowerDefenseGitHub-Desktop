@@ -72,7 +72,7 @@ public:
 
 ///funciones hibridas con objetos
 
-void mov_obj_abajo(CircleShape v[],int objeto,float velocidad_y)
+void mov_obj_abajo(Sprite v[],int objeto,float velocidad_y)
 {
     float y;
     y=v[objeto].getPosition().y+velocidad_y;
@@ -102,7 +102,7 @@ void mov_diagonal_der_arriba (CircleShape *circulo,float velocidad_x,float veloc
     circulo->setPosition(x,y);
 }
 
-void mov_derecha(CircleShape *v,int objeto,float velocidad_x)
+void mov_derecha(Sprite *v,int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x+velocidad_x;
@@ -117,14 +117,14 @@ void mov_diagonal_der_abajo(CircleShape *circulo,float velocidad_x,float velocid
     circulo->setPosition(x,y);
 }
 
-void mov_obj_izq(CircleShape v[],int objeto,float velocidad_x)
+void mov_obj_izq(Sprite v[],int objeto,float velocidad_x)
 {
     float x;
     x=v[objeto].getPosition().x-velocidad_x;
     v[objeto].setPosition(x,v[objeto].getPosition().y);
 }
 
-void mov_obj_arriba(CircleShape *v,int objeto,float velocidad_y)
+void mov_obj_arriba(Sprite *v,int objeto,float velocidad_y)
 {
     float y;
     y=v[objeto].getPosition().y-velocidad_y;
@@ -142,16 +142,18 @@ int main()
 
     window.setFramerateLimit(60);
 
-    Texture textura_mapa,textura_bicho,textura_menu;
+    Texture textura_mapa,textura_bicho,textura_menu,textura_rango;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
     if (!textura_bicho.loadFromFile("img/bicho_reside_circulo.png"))
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
+    if (!textura_rango.loadFromFile("img/rango_torres.png"))
+        return -1;
 
     textura_bicho.setSmooth(true);
-
+    textura_rango.setSmooth(true);
     ///Zona de texto
     Font tipo_de_texto,tipo_de_texto1;
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
@@ -185,7 +187,7 @@ int main()
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
     const int cantidad_objetos=10;
-    CircleShape v[cantidad_objetos];
+    Sprite v[cantidad_objetos];
 
     ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
     /*
@@ -204,9 +206,11 @@ int main()
     float opacidad_objetos[cantidad_objetos]= {0};
 
     ///Zona de declaracion de variables tipo rango-torres
-    CircleShape rango_prueba(150.f);
-    rango_prueba.setFillColor(Color(24,81,213,100));
+    Sprite rango_prueba;
+    rango_prueba.setTexture(textura_rango);
+    rango_prueba.setColor(Color(24,81,213,100));
     rango_prueba.setPosition(130,378);
+
     /*
     Rect<jojo>::Rect(200,200,50,50);
     */
@@ -224,9 +228,11 @@ int main()
         v[i][j]...
         v[i][j]...
         */
+        /*
         v[i]=CircleShape(25.f);
-        v[i].setTexture(&textura_bicho);
-        v[i].setFillColor(Color(255,255,255,opacidad_objetos[i]));
+        */
+        v[i].setTexture(textura_bicho);
+        v[i].setColor(Color(255,255,255,opacidad_objetos[i]));
         v[i].setPosition(285,0);
         /*
         }*/
@@ -310,6 +316,9 @@ int main()
                         break;
                         }
                         */
+                        if (v[d-1].getGlobalBounds().intersects(rango_prueba.getGlobalBounds())) {
+                            estados[d-1]=0;
+                            }
                         window.draw(v[d-1]);
                     }
                 }
@@ -364,7 +373,7 @@ int main()
                         if(opacidad_objetos[i-1]<255)
                         {
                             opacidad_objetos[i-1]+=5;
-                            v[i-1].setFillColor(Color(255,255,255,opacidad_objetos[i-1]));
+                            v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
                         }
                         mov_obj_abajo(v,i-1,0.5);
                     }
@@ -416,7 +425,7 @@ int main()
                     if (opacidad_objetos[i-1]!=0)
                     {
                         opacidad_objetos[i-1]-=5;
-                        v[i-1].setFillColor(Color(255,255,255,opacidad_objetos[i-1]));
+                        v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
                         mov_derecha(v,i-1,0.5);
                     }
                     else
