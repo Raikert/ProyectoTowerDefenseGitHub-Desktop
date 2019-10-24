@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1571920531 source:c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
+1571934005 source:c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	"windows.h"
 	<iostream>
 	<cstdlib>
+	"Collision.hpp"
 
 1525812018 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -1558,4 +1559,11 @@
 1571674933 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\audio\soundfilewriter.hpp
 	<SFML/Audio/Export.hpp>
 	<string>
+
+1511216292 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\collision.hpp
+
+1511216292 source:c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\collision.cpp
+	<SFML/Graphics.hpp>
+	<map>
+	"Collision.hpp"
 

@@ -3,10 +3,13 @@
 #include "windows.h"
 #include <iostream>
 #include <cstdlib>
+#include "Collision.hpp"
 
 ///para no poner sf::
+///para no poner Collision::
 using namespace sf;
 using namespace std;
+using namespace Collision;
 
 class monstruo {
 private:
@@ -161,8 +164,11 @@ int main()
     Texture textura_mapa,textura_bicho,textura_menu,textura_rango;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
+    if (!CreateTextureAndBitmask(textura_bicho,"img/bicho_reside_circulo.png")) return -1;
+    /*
     if (!textura_bicho.loadFromFile("img/bicho_reside_circulo.png"))
-        return -1;
+    return -1;
+    */
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
     if (!textura_rango.loadFromFile("img/rango_torres.png"))
@@ -332,9 +338,13 @@ int main()
                         break;
                         }
                         */
-                        if (v[d-1].getGlobalBounds().intersects(rango_prueba.getGlobalBounds())) {
-                            ///quitar vida a v[d-1];
+                        if (PixelPerfectTest(v[d-1],rango_prueba)) {
+                            v[d-1].setColor(Color(145,50,77,opacidad_objetos[d-1]));
                             }
+                            else {
+                            v[d-1].setColor(Color(255,255,255,opacidad_objetos[d-1]));
+                            }
+
                         window.draw(v[d-1]);
                     }
                 }
