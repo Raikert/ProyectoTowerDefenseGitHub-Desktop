@@ -15,19 +15,33 @@ class Camino
 {
 private:
     Texture camino_textura_propiedad;
+    bool textura_cargada;
     Sprite  camino_sprite_propiedad;
 public:
-    int error_textura() {return -10;}
-    Camino (const string& nombre_imagen,float x,float y)
+    Camino (const string& nombre_imagen)
     {
-        if (!CreateTextureAndBitmask(camino_textura_propiedad,nombre_imagen))
-            error_textura();
+        if(!CreateTextureAndBitmask(camino_textura_propiedad,nombre_imagen))
+            textura_cargada=false;
+        else
+            textura_cargada=true;
+        if (textura_cargada)
+        {
             camino_sprite_propiedad.setTexture(camino_textura_propiedad);
-            camino_sprite_propiedad.setPosition(x,y);
+            camino_sprite_propiedad.setColor(Color(255,255,255,0));
+        }
     }
-    Sprite getSprite() {return camino_sprite_propiedad;}
-    void setSprite(Sprite s) {camino_sprite_propiedad=s;}
-
+    Sprite getSprite()
+    {
+        return camino_sprite_propiedad;
+    }
+    void setSprite(Sprite s)
+    {
+        camino_sprite_propiedad=s;
+    }
+    bool getConfirmacion()
+    {
+        return textura_cargada;
+    }
 };
 
 class Monstruo
@@ -205,21 +219,27 @@ int main()
 
     window.setFramerateLimit(60);
 
-    Camino camino1("img/camino_transparente.jpeg",285,0);
-    Texture textura_mapa,textura_bicho,textura_menu,textura_rango,textura_camino;
+    Camino camino1("img/caminolvl1.png");
+    if (!camino1.getConfirmacion())
+        return -10;
+
+    Texture textura_mapa,textura_bicho,textura_menu,textura_rango;
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
+
     if (!CreateTextureAndBitmask(textura_bicho,"img/bicho_reside_circulo.png"))
         return -1;
-    if (!CreateTextureAndBitmask(textura_camino,"img/camino_transparente.jpeg"))
-        return -1;
+
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
+
     if (!textura_rango.loadFromFile("img/rango_torres.png"))
         return -1;
 
     textura_bicho.setSmooth(true);
     textura_rango.setSmooth(true);
+    textura_menu.setSmooth(true);
+    textura_mapa.setSmooth(true);
     ///Zona de texto
     Font tipo_de_texto,tipo_de_texto1;
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
@@ -252,8 +272,8 @@ int main()
     musica_juego.setLoop(true);
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
-    const int cantidad_objetos=10;
-    Sprite v[cantidad_objetos];
+    const int cantidad_bichos=10;
+    Sprite v[cantidad_bichos];
 
     ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
     /*
@@ -268,8 +288,8 @@ int main()
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///vida de los monstruos-rango-daños
-    int vidas[cantidad_objetos]= {100};
-    float opacidad_objetos[cantidad_objetos]= {0};
+    int vidas[cantidad_bichos]= {100};
+    float opacidad_objetos[cantidad_bichos]= {0};
 
     ///Zona de declaracion de variables tipo rango-torres
     Sprite rango_prueba;
@@ -280,10 +300,10 @@ int main()
     /*
     Rect<jojo>::Rect(200,200,50,50);
     */
-    int estados[cantidad_objetos]= {0};
+    int estados[cantidad_bichos]= {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
-    for (int i=0; i<=cantidad_objetos-1; i++)
+    for (int i=0; i<=cantidad_bichos-1; i++)
     {
         ///Seria un corte de control donde por cada vuelta de J se cargara un frame de un tipo de bicho, faltaria la forma
         ///dinamica de indicar a cual tipo de monstruo cargar en cada fila de la matriz
@@ -440,7 +460,7 @@ int main()
                 }
                 break;
             case 0:
-                if (v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
+                if (/*PixelPerfectTest(v[i-1],camino1)*/v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
                 {
                     if(opacidad_objetos[i-1]<255)
                     {
@@ -571,7 +591,7 @@ int main()
         }
         if (tiempo%1000==0)
         {
-            if (objetos<cantidad_objetos)
+            if (objetos<cantidad_bichos)
             {
                 objetos++;
                 tiempo=1;
