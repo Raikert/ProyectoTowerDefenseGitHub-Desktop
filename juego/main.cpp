@@ -4,7 +4,11 @@
 #include <iostream>
 #include <cstdlib>
 #include "Collision.hpp"
+<<<<<<< HEAD
 #include "headers/Colision_Daño.h"
+=======
+#include "Clases.h"
+>>>>>>> 00eeadb5f0530985181cbb4a537e41248dbc7bbe
 
 ///para no poner sf::
 ///para no poner Collision::
@@ -12,141 +16,13 @@ using namespace sf;
 using namespace std;
 using namespace Collision;
 
-class Camino
+void cargar_vector_sprites (Sprite *v,Sprite sprite,int cantidad_bichos)
 {
-private:
-    Texture camino_textura_propiedad;
-    bool textura_cargada;
-    Sprite  camino_sprite_propiedad;
-public:
-    Camino (const string& nombre_imagen)
+    for (int i=0; i<=cantidad_bichos-1; i++)
     {
-        if(!CreateTextureAndBitmask(camino_textura_propiedad,nombre_imagen))
-            textura_cargada=false;
-        else
-            textura_cargada=true;
-        if (textura_cargada)
-        {
-            camino_sprite_propiedad.setTexture(camino_textura_propiedad);
-            camino_sprite_propiedad.setColor(Color(255,255,255,0));
-        }
+        v[i]=sprite;
     }
-    Sprite getSprite()
-    {
-        return camino_sprite_propiedad;
-    }
-    void setSprite(Sprite s)
-    {
-        camino_sprite_propiedad=s;
-    }
-    bool getConfirmacion()
-    {
-        return textura_cargada;
-    }
-};
-
-class Monstruo
-{
-private:
-    Sprite bicho;
-    int vida,danio;
-    float velocidad;
-public:
-    Sprite getBicho()
-    {
-        return bicho;
-    }
-    int getVida()
-    {
-        return vida;
-    }
-    int getDanio()
-    {
-        return danio;
-    }
-    float getVelocidad()
-    {
-        return velocidad;
-    }
-    void setVida (int v)
-    {
-        vida=v;
-    }
-    void setDanio (int d)
-    {
-        danio=d;
-    }
-    void setVelocidad (float ve)
-    {
-        velocidad=ve;
-    }
-    void setSprite (Sprite b)
-    {
-        bicho=b;
-    }
-};
-
-class Boton
-{
-private:
-    float esi[2],esd[2],eii[2],eid[2];
-    RectangleShape boton;
-public:
-    Boton(float x,float y,float posx,float posy,int transparencia=0)
-    {
-        boton.setSize(Vector2f(x,y));
-        esi[0]=posx;
-        esi[1]=posy;
-        esd[0]=posx+(x-1);
-        esd[1]=posy;
-        eii[0]=posx;
-        eii[1]=posy+(y-1);
-        eid[0]=posx+(x-1);
-        eid[1]=posy+(y-1);
-        boton.setPosition(esi[0],esi[1]);
-        boton.setFillColor(Color(255,255,255,transparencia));
-    }
-    int getEsix()
-    {
-        return esi[0];
-    }
-    int getEsdx()
-    {
-        return esd[0];
-    }
-    int getEiix()
-    {
-        return eii[0];
-    }
-    int getEidx()
-    {
-        return eid[0];
-    }
-    int getEsiy()
-    {
-        return esi[1];
-    }
-    int getEsdy()
-    {
-        return esd[1];
-    }
-    int getEiiy()
-    {
-        return eii[1];
-    }
-    int getEidy()
-    {
-        return eid[1];
-    }
-    RectangleShape getBoton()
-    {
-        return boton;
-    }
-    void setTransparencia(int t)
-    {
-        boton.setFillColor(Color(255,255,255,t));
-    }
-};
+}
 
 ///funciones hibridas con objetos
 
@@ -220,17 +96,28 @@ int main()
 
     window.setFramerateLimit(60);
 
-    Camino camino1("img/caminolvl1.png");
-    if (!camino1.getConfirmacion())
+    ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
+    const int cantidad_bichos=10;
+    float opacidad_bichos[cantidad_bichos]= {0};
+    Sprites bicho("img/bicho_reside_circulo.png",opacidad_bichos,285,0);
+
+        if (!bicho.getConfirmacion())
         return -10;
 
+    Sprite v[cantidad_bichos];
+    cargar_vector_sprites(v,bicho.getSprite(),cantidad_bichos);
+
+    ///Camino lvl1 para modificaciones de colision por error de colisiones con los bichos - comentado
+    /*
+    Sprites camino1("img/caminolvl1.png")
+    if (!camino1.getConfirmacion())
+        return -10;
+    */
+
     Texture textura_mapa,textura_bicho,textura_menu,textura_rango;
+
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
-
-    if (!CreateTextureAndBitmask(textura_bicho,"img/bicho_reside_circulo.png"))
-        return -1;
-
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
 
@@ -273,8 +160,6 @@ int main()
     musica_juego.setLoop(true);
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
     ///con esta variable se cambia la cantidad de monstruos en el mundo
-    const int cantidad_bichos=10;
-    Sprite v[cantidad_bichos];
 
     ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
     /*
@@ -289,6 +174,7 @@ int main()
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///vida de los monstruos-rango-daños
+<<<<<<< HEAD
     int vidas[cantidad_bichos];
     float opacidad_objetos[cantidad_bichos]= {0};
     bool danio[cantidad_bichos];
@@ -296,6 +182,9 @@ int main()
     ponerEnCienVidas(vidas, cantidad_bichos, 1000);
 
     ponerEnFalsoDanio(danio, cantidad_bichos);
+=======
+    int vidas[cantidad_bichos]= {100};
+>>>>>>> 00eeadb5f0530985181cbb4a537e41248dbc7bbe
 
     ///Zona de declaracion de variables tipo rango-torres
     Sprite rango_prueba;
@@ -323,9 +212,12 @@ int main()
         /*
         v[i]=CircleShape(25.f);
         */
+
+        /*
         v[i].setTexture(textura_bicho);
         v[i].setColor(Color(255,255,255,opacidad_objetos[i]));
         v[i].setPosition(285,0);
+        */
         /*
         }*/
     }
@@ -411,6 +303,7 @@ int main()
                     /// Si el bicho esta vivo:
                     if (vidas[d-1]>=0)
                     {
+<<<<<<< HEAD
                         /// SI COLISIONA VE SI HAY ALGUIEN RECIBIENDO DAÑO, SINO, RECIBE DAÑO
                         if (PixelPerfectTest(v[d-1],rango_prueba))
                         {
@@ -435,6 +328,13 @@ int main()
                     else
                     {
                         danio[d-1]=false;
+=======
+                        v[d-1].setColor(Color(145,50,77,opacidad_bichos[d-1]));
+                    }
+                    else
+                    {
+                        v[d-1].setColor(Color(255,255,255,opacidad_bichos[d-1]));
+>>>>>>> 00eeadb5f0530985181cbb4a537e41248dbc7bbe
                     }
                 }
             }
@@ -484,12 +384,15 @@ int main()
                 }
                 break;
             case 0:
-                if (/*PixelPerfectTest(v[i-1],camino1)*/v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
+
+                ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
+                ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
+                if (/*PixelPerfectTest(v[i-1],camino1.getSprite())*/v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
                 {
-                    if(opacidad_objetos[i-1]<255)
+                    if(opacidad_bichos[i-1]<255)
                     {
-                        opacidad_objetos[i-1]+=5;
-                        v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
+                        opacidad_bichos[i-1]+=5;
+                        v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
                     }
                     mov_obj_abajo(v,i-1,0.5);
                 }
@@ -538,10 +441,10 @@ int main()
                     estados[i-1]=6;
                 break;
             case 6:
-                if (opacidad_objetos[i-1]!=0)
+                if (opacidad_bichos[i-1]!=0)
                 {
-                    opacidad_objetos[i-1]-=5;
-                    v[i-1].setColor(Color(255,255,255,opacidad_objetos[i-1]));
+                    opacidad_bichos[i-1]-=5;
+                    v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
                     mov_derecha(v,i-1,0.5);
                 }
                 else
