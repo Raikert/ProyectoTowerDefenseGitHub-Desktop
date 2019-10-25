@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "Collision.hpp"
 #include "Clases.h"
+#include "Colision_Daño.h"
 
 ///para no poner sf::
 ///para no poner Collision::
