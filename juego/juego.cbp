@@ -48,7 +48,7 @@
 			<Add directory="SFML-2.5.1/lib" />
 		</Linker>
 		<Unit filename="Clases.h" />
-		<Unit filename="Colision_Daño.h" />
+		<Unit filename="Colision_Danio.h" />
 		<Unit filename="Collision.cpp" />
 		<Unit filename="Collision.hpp" />
 		<Unit filename="main.cpp" />

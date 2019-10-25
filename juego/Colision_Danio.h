@@ -1,5 +1,5 @@
-#ifndef COLISION_DAÒO_H_INCLUDED
-#define COLISION_DAÒO_H_INCLUDED
+#ifndef COLISION_DANIO_H_INCLUDED
+#define COLISION_DANIO_H_INCLUDED
 
 void ponerEnCienVidas(int *vidas, int cantidad_bichos, int tamanio)
 {
@@ -29,7 +29,4 @@ bool verificarDanio(bool *danio, int cantidad_bichos)
     return true;
 }
 
-
-
-
-#endif // COLISION_DAÒO_H_INCLUDED
+#endif // COLISION_DANIO_H_INCLUDED
