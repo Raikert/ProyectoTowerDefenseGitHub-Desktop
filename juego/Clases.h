@@ -34,7 +34,8 @@ public:
             camino_sprite_propiedad.setColor(Color(255,255,255,0));
         }
     }
-        Sprites (const string& nombre_imagen,float *opacidad_bicho,float x,float y) {
+    Sprites (const string& nombre_imagen,float *opacidad_bicho,float x,float y)
+    {
 
         if(!CreateTextureAndBitmask(camino_textura_propiedad,nombre_imagen))
             textura_cargada=false;

@@ -1,6 +1,11 @@
 #ifndef COLISION_DANIO_H_INCLUDED
 #define COLISION_DANIO_H_INCLUDED
 
+int restarVida(int *num)
+{
+    num--;
+}
+
 void ponerEnCienVidas(float *vidas, int cantidad_bichos, int tamanio)
 {
     for (int x=0; x<cantidad_bichos; x++)
