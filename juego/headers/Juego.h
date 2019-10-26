@@ -50,8 +50,10 @@ int juego()
     Font tipo_texto_vida;
     if (!tipo_texto_vida.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
         return -1;
-    Text texto_vida;
-    texto_vida.setFont(tipo_texto_vida);
+    Text texto_vida[cantidad_bichos];
+    for (int i=0;i<cantidad_bichos;i++) {
+    texto_vida[i].setFont(tipo_texto_vida);
+    }
     /// ------------------------------------------------------------------
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
         return -1;
@@ -145,17 +147,19 @@ int juego()
 
     ///vida de los monstruos-rango-daños
     float vida[cantidad_bichos];
-    int vida_m=1000;
+    int vida_m[cantidad_bichos]={1000};
     bool danio[cantidad_bichos];
     ponerEnCienVidas(vida, cantidad_bichos, 100);
     ponerEnFalsoDanio(danio, cantidad_bichos);
     ///vida flotante
     char vida_char[10];
-    itoa(vida_m, vida_char, 10);
-    string vida_string = string(vida_char);
-    texto_vida.setString(vida_string);
-    texto_vida.setCharacterSize(13);
-    texto_vida.setFillColor(Color::Black);
+    itoa(vida_m[0], vida_char, 10);
+    string vida_string=string(vida_char);
+    for (int i=0;i<cantidad_bichos;i++) {
+    texto_vida[i].setString(vida_string);
+    texto_vida[i].setCharacterSize(13);
+    texto_vida[i].setFillColor(Color::Black);
+    }
 
     while (window.isOpen())
     {
@@ -235,13 +239,13 @@ int juego()
                             /// Si el monstruo esta recibiendo daño le saca vida
                             if (danio[d-1]==true)
                             {
-                                vida[d-1]=vida[d-1]-0.1;
+                                vida[d-1]-=0.1;
                                 if (tiempo%50==0)
                                 {
-                                    vida_m = vida_m - 2;
-                                    itoa(vida_m,vida_char,10);
-                                    string vida_string = string(vida_char);
-                                    texto_vida.setString(vida_string);
+                                    vida_m[d-1]-=2;
+                                    itoa(vida_m[d-1],vida_char,10);
+                                    vida_string = string(vida_char);
+                                    texto_vida[d-1].setString(vida_string);
                                 }
                             }
                         }
@@ -252,9 +256,9 @@ int juego()
                             danio[d-1]=false;
                         }
 
-                        texto_vida.setPosition(v[d-1].getPosition().x+10, v[d-1].getPosition().y+25);
+                        texto_vida[d-1].setPosition(v[d-1].getPosition().x+10, v[d-1].getPosition().y+25);
                         window.draw(v[d-1]);
-                        window.draw(texto_vida);
+                        window.draw(texto_vida[d-1]);
                     }
                     else
                     {
@@ -454,7 +458,7 @@ int juego()
 
             ///cada vez que se actualiza la variable se tiene que actualizar el string
             itoa(tiempo,tiempo_char,10);
-            string tiempo_string = string(tiempo_char);
+            tiempo_string = string(tiempo_char);
             texto_variable.setString(tiempo_string);
         }
         ///Pruebas iniciales con circulos
