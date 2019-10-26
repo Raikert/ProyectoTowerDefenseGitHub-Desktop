@@ -4,11 +4,8 @@
 #include <iostream>
 #include <cstdlib>
 #include "Collision.hpp"
-<<<<<<< HEAD
-#include "headers/Colision_Daño.h"
-=======
 #include "Clases.h"
->>>>>>> 00eeadb5f0530985181cbb4a537e41248dbc7bbe
+#include "Colision_Danio.h"
 
 ///para no poner sf::
 ///para no poner Collision::
@@ -174,17 +171,12 @@ int main()
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///vida de los monstruos-rango-daños
-<<<<<<< HEAD
     int vidas[cantidad_bichos];
-    float opacidad_objetos[cantidad_bichos]= {0};
     bool danio[cantidad_bichos];
 
     ponerEnCienVidas(vidas, cantidad_bichos, 1000);
 
     ponerEnFalsoDanio(danio, cantidad_bichos);
-=======
-    int vidas[cantidad_bichos]= {100};
->>>>>>> 00eeadb5f0530985181cbb4a537e41248dbc7bbe
 
     ///Zona de declaracion de variables tipo rango-torres
     Sprite rango_prueba;
@@ -290,24 +282,22 @@ int main()
                 for (int d=1; d<=objetos; d++)
                 {
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
-                    /*  switch(mini_estados)
-                        {
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        } */
-
-                    /// Si el bicho esta vivo:
-                    if (vidas[d-1]>=0)
+                    /*
+                    switch(mini_estados) {
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    }
+                    */
+                     if (vidas[d-1]>=0)
                     {
-<<<<<<< HEAD
                         /// SI COLISIONA VE SI HAY ALGUIEN RECIBIENDO DAÑO, SINO, RECIBE DAÑO
                         if (PixelPerfectTest(v[d-1],rango_prueba))
                         {
-                            v[d-1].setColor(Color(145,50,77,opacidad_objetos[d-1]));
+                            v[d-1].setColor(Color(145,50,77,opacidad_bichos[d-1]));
                             /// Se encarga de verificar si hay alguien recibiendo daño
                             danio[d-1] = verificarDanio(danio, cantidad_bichos);
                             /// Si el monstruo esta recibiendo daño le saca vida
@@ -319,7 +309,7 @@ int main()
                         /// SI YA NO COLISIONA PONE EN FALSO EL RECIBIR DAÑO
                         else
                         {
-                            v[d-1].setColor(Color(255,255,255,opacidad_objetos[d-1]));
+                            v[d-1].setColor(Color(255,255,255,opacidad_bichos[d-1]));
                             danio[d-1]=false;
                         }
 
@@ -328,13 +318,6 @@ int main()
                     else
                     {
                         danio[d-1]=false;
-=======
-                        v[d-1].setColor(Color(145,50,77,opacidad_bichos[d-1]));
-                    }
-                    else
-                    {
-                        v[d-1].setColor(Color(255,255,255,opacidad_bichos[d-1]));
->>>>>>> 00eeadb5f0530985181cbb4a537e41248dbc7bbe
                     }
                 }
             }
