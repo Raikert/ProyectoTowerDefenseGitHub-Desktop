@@ -46,6 +46,18 @@ int juego()
 
     ///Zona de texto
     Font tipo_de_texto,tipo_de_texto1;
+    /// Variables en texto de las posiciones del mouse -------------------
+    Font tipo_texto_mouse;
+    if (!tipo_texto_mouse.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
+        return -1;
+    Text texto_mousex,texto_mousey;
+    texto_mousex.setFont(tipo_texto_mouse);
+    texto_mousey.setFont(tipo_texto_mouse);
+    texto_mousex.setCharacterSize(18);
+    texto_mousey.setCharacterSize(18);
+    texto_mousex.setPosition(627,545);
+    texto_mousey.setPosition(693,549);
+    ///-------------------------------------------------------------------
     /// Creacion de el texto vida ----------------------------------------
     Font tipo_texto_vida;
     if (!tipo_texto_vida.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
@@ -145,6 +157,10 @@ int juego()
     texto_variable.setPosition(600,300);
     texto_variable.setFillColor(Color::Black);
 
+    ///variables de char y string para las axis del mouse
+    char mousex_char[10],mousey_char[10];
+    string mousex_string,mousey_string;
+    ///--------------------------------------------------
     ///vida de los monstruos-rango-daños
     float vida[cantidad_bichos];
     int vida_m[cantidad_bichos]={1000};
@@ -172,13 +188,14 @@ int juego()
             }
         }
 
+        mousexy[0]=Mouse::getPosition(window).x;
+        mousexy[1]=Mouse::getPosition(window).y;
+
         ///Configuracion de los botones dentro del juego
         if (Mouse::isButtonPressed(Mouse::Left))
         {
             if (habilitacionmouse)
             {
-                mousexy[0]=Mouse::getPosition(window).x;
-                mousexy[1]=Mouse::getPosition(window).y;
                 ///sonido
                 if (mousexy[0]>=sonido.getEsix()&&mousexy[0]<=sonido.getEsdx()&&mousexy[1]>=sonido.getEsdy()&&mousexy[1]<=sonido.getEidy())
                 {
@@ -200,6 +217,7 @@ int juego()
         else
             ///una vez que se solto el mouse, recien se habilita para una nueva accion
             habilitacionmouse=true;
+
         window.clear();
 
         for (int i=1; i<=objetos; i++)
@@ -207,6 +225,16 @@ int juego()
             if (estados[i-1]!=-1)
             {
                 window.draw(mapa);
+                ///zona de variables mouse ------
+                itoa(mousexy[0], mousex_char, 10);
+                mousex_string=string(mousex_char);
+                texto_mousex.setString(mousex_string);
+                itoa(mousexy[1], mousey_char, 10);
+                mousey_string=string(mousey_char);
+                texto_mousey.setString(mousey_string);
+                window.draw(texto_mousex);
+                window.draw(texto_mousey);
+                ///-------------------------------
                 window.draw(texto_variable);
                 window.draw(rango_prueba);
                 if (!boolmusica)
@@ -273,6 +301,17 @@ int juego()
                 menu.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(menu);
                 window.draw(texto_prueba);
+                ///zona de variables mouse ------
+                itoa(mousexy[0], mousex_char, 10);
+                mousex_string=string(mousex_char);
+                texto_mousex.setString(mousex_string);
+                itoa(mousexy[1], mousey_char, 10);
+                mousey_string=string(mousey_char);
+                texto_mousey.setString(mousey_string);
+                window.draw(texto_mousex);
+                window.draw(texto_mousey);
+                ///-------------------------------
+
                 if (opacidad_menu<255)
                 {
                     opacidad_menu+=5;
@@ -292,6 +331,8 @@ int juego()
                             musica_menu.setVolume(volumen_menu);
                                 */
                             musica_menu.stop();
+                            texto_mousex.setFillColor(Color(Color::Black));
+                            texto_mousey.setFillColor(Color(Color::Black));
                             estados[0]=0;
                         }
                         ///Cargar Partida
