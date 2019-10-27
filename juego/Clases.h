@@ -109,20 +109,23 @@ class Boton
 private:
     float esi[2],esd[2],eii[2],eid[2];
     RectangleShape boton;
+    int tamaniox,tamanioy;
 public:
     Boton(float x,float y,float posx,float posy,int transparencia=0)
     {
         boton.setSize(Vector2f(x,y));
+        esi[0]=posx;
+        esi[1]=posy;
+        esd[0]=posx+(x-1);
+        esd[1]=posy;
+        eii[0]=posx;
+        eii[1]=posy+(y-1);
+        eid[0]=posx+(x-1);
+        eid[1]=posy+(y-1);
         boton.setPosition(posx,posy);
-        esi[0]=boton.getPosition().x;
-        esi[1]=boton.getPosition().y;
-        esd[0]=boton.getPosition().x+(x-1);
-        esd[1]=boton.getPosition().y;
-        eii[0]=boton.getPosition().x;
-        eii[1]=boton.getPosition().y+(y-1);
-        eid[0]=boton.getPosition().x+(x-1);
-        eid[1]=boton.getPosition().y+(y-1);
         boton.setFillColor(Color(255,255,255,transparencia));
+        tamaniox=x;
+        tamanioy=y;
     }
     int getEsix()
     {
@@ -163,6 +166,20 @@ public:
     void setTransparencia(int t)
     {
         boton.setFillColor(Color(255,255,255,t));
+    }
+    int getMousex(int *mouse) {
+    int mx=mouse[0];
+    if (mouse[2]!=1000||mouse[3]!=600) {
+    mx=mouse[0]-(tamaniox-1);
+    }
+    return mx;
+    }
+    int getMousey(int *mouse) {
+    int my=mouse[1];
+    if (mouse[2]!=1000||mouse[3]!=600) {
+    my=mouse[1]-(tamanioy-1);
+    }
+    return my;
     }
 };
 

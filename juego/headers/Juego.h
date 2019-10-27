@@ -82,6 +82,7 @@ int juego()
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
     int mousexy[2];
+    int mouse[4];
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
     if (!musica_menu.openFromFile("musica/song_sneaky_driver.ogg"))
@@ -190,7 +191,10 @@ int juego()
 
         mousexy[0]=Mouse::getPosition(window).x;
         mousexy[1]=Mouse::getPosition(window).y;
-
+        mouse[0]=Mouse::getPosition(window).x;
+        mouse[1]=Mouse::getPosition(window).y;
+        mouse[2]=window.getSize().x;
+        mouse[3]=window.getSize().y;
         ///Configuracion de los botones dentro del juego
         if (Mouse::isButtonPressed(Mouse::Left))
         {
@@ -300,6 +304,7 @@ int juego()
             case -1:
                 menu.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(menu);
+                window.draw(nueva_partida.getBoton());
                 window.draw(texto_prueba);
                 ///zona de variables mouse ------
                 itoa(mousexy[0], mousex_char, 10);
@@ -321,10 +326,9 @@ int juego()
                     ///Configuracion de los botones en el menu principal
                     if (Mouse::isButtonPressed(Mouse::Left))
                     {
-                        mousexy[0]=Mouse::getPosition(window).x;
-                        mousexy[1]=Mouse::getPosition(window).y;
+
                         ///Nueva partida
-                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
+                        if (nueva_partida.getMousex(mouse)>=nueva_partida.getEsix()&&nueva_partida.getMousex(mouse)<=nueva_partida.getEsdx()&&nueva_partida.getMousey(mouse)>=nueva_partida.getEsdy()&&nueva_partida.getMousey(mouse)<=nueva_partida.getEidy())
                         {
                             /*
                             volumen_menu-=0.1;
