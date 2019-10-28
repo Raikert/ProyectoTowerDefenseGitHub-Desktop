@@ -133,9 +133,8 @@ int juego()
     /// Declaracion del vector de menues de torres
     bool menu_torre[tam_torres];
     ponerEnFalso(menu_torre, tam_torres);
-    /// Declaracion de las torres del menu de torres
-    bool menu_torre_elegir[tam_torres];
-    ponerEnFalso(menu_torre_elegir, tam_torres);
+    /// Declaracion de la matriz de las torres del menu de torres
+    bool menu_torre_elegir[tam_torres][3]={false};
     /// Textura del menu de torres
     Texture textura_menu_torre;
     if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
