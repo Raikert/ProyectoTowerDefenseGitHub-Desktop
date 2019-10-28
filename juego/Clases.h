@@ -111,7 +111,7 @@ private:
     RectangleShape boton;
     int tamaniox,tamanioy;
 public:
-    Boton(float x,float y,float posx,float posy,int transparencia=0)
+    Boton(float x=0,float y=0,float posx=0,float posy=0,int transparencia=0)
     {
         boton.setSize(Vector2f(x,y));
         esi[0]=posx;

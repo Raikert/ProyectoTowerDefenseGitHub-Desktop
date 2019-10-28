@@ -6,6 +6,7 @@ int juego()
     ///carga del mundo
 
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
+
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     ///bugeo de los sprites solucionado: ver linea 152;
 
@@ -23,6 +24,7 @@ int juego()
     cargar_vector_sprites(v,bicho.getSprite(),cantidad_bichos);
 
     ///Camino lvl1 para modificaciones de colision por error de colisiones con los bichos - comentado
+
     /*
     Sprites camino1("img/caminolvl1.png")
     if (!camino1.getConfirmacion())
@@ -35,7 +37,6 @@ int juego()
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
-
     if (!textura_rango.loadFromFile("img/rango_torres.png"))
         return -1;
 
@@ -46,6 +47,7 @@ int juego()
 
     ///Zona de texto
     Font tipo_de_texto,tipo_de_texto1;
+
     /// Variables en texto de las posiciones del mouse -------------------
     Font tipo_texto_mouse;
     if (!tipo_texto_mouse.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
@@ -58,13 +60,15 @@ int juego()
     texto_mousex.setPosition(627,545);
     texto_mousey.setPosition(693,549);
     ///-------------------------------------------------------------------
+
     /// Creacion de el texto vida ----------------------------------------
     Font tipo_texto_vida;
     if (!tipo_texto_vida.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
         return -1;
     Text texto_vida[cantidad_bichos];
-    for (int i=0;i<cantidad_bichos;i++) {
-    texto_vida[i].setFont(tipo_texto_vida);
+    for (int i=0; i<cantidad_bichos; i++)
+    {
+        texto_vida[i].setFont(tipo_texto_vida);
     }
     /// ------------------------------------------------------------------
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
@@ -76,18 +80,21 @@ int juego()
     texto_prueba.setString("GENTESSS EDITION");
     texto_prueba.setCharacterSize(24);
     texto_variable.setFont(tipo_de_texto1);
+
     ///Zona de texto
 
     Sprite mapa,menu;
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
     int mousexy[2];
+
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
     if (!musica_menu.openFromFile("musica/song_sneaky_driver.ogg"))
         return -1;
     if (!musica_juego.openFromFile("musica/glorious morning.ogg"))
         return -1;
+
     ///volumen de la musica del menu
     musica_menu.setVolume(50.f);
     // musica_menu.setPlayingOffset(seconds(62.5f));
@@ -96,9 +103,11 @@ int juego()
     musica_juego.setVolume(50.f);
     musica_juego.setLoop(true);
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true;
+
     ///con esta variable se cambia la cantidad de monstruos en el mundo
 
     ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
+
     /*
     Sprite v[cantidad_objetos][3];
     */
@@ -110,6 +119,45 @@ int juego()
 
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
+    /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
+    const int tam_torres = 9;
+    /// Posiciones de cada torre
+    Boton torre1(49,77,236,114),torre2(49,77,98,245),torre3(49,77,98,420),torre4(49,77,194,331),torre5(49,77,242,419);
+    Boton torre6(49,77,339,419),torre7(49,77,434,419),torre8(49,77,482,90),torre9(49,77,535,224);
+    /// Poiciones de la X para cerrar el menu de torre
+    Boton cerrarTorre1(49,77,236,114),cerrarTorre2(49,77,98,245),cerrarTorre3(49,77,98,420),cerrarTorre4(49,77,194,331);
+    Boton cerrarTorre5(49,77,242,419),cerrarTorre6(49,77,339,419),cerrarTorre7(49,77,434,419);
+    Boton cerrarTorre8(49,77,482,90),cerrarTorre9(49,77,535,224);
+    /// Submenu torre 1
+    Boton torre1_t1(59,72,161,74),torre1_t2(59,72,220,74),torre1_t3(59,72,279,74);
+    /// Declaracion del vector de menues de torres
+    bool menu_torre[tam_torres];
+    ponerEnFalso(menu_torre, tam_torres);
+    /// Declaracion de las torres del menu de torres
+    bool menu_torre_elegir[tam_torres];
+    ponerEnFalso(menu_torre_elegir, tam_torres);
+    /// Textura del menu de torres
+    Texture textura_menu_torre;
+    if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
+        return -1;
+    textura_menu_torre.setSmooth(true);
+    /// Hacerlo un sprite
+    Sprite Sprite_menu_torre[tam_torres];
+    for (int x=0; x<tam_torres; x++)
+    {
+        Sprite_menu_torre[x].setTexture(textura_menu_torre);
+    }
+    Sprite_menu_torre[0].setPosition(torre1.getEsix()-75,torre1.getEsiy()-40);
+    Sprite_menu_torre[1].setPosition(torre2.getEsix()-75,torre2.getEsiy()-40);
+    Sprite_menu_torre[2].setPosition(torre3.getEsix()-75,torre3.getEsiy()-40);
+    Sprite_menu_torre[3].setPosition(torre4.getEsix()-75,torre4.getEsiy()-40);
+    Sprite_menu_torre[4].setPosition(torre5.getEsix()-75,torre5.getEsiy()-40);
+    Sprite_menu_torre[5].setPosition(torre6.getEsix()-75,torre6.getEsiy()-40);
+    Sprite_menu_torre[6].setPosition(torre7.getEsix()-75,torre7.getEsiy()-40);
+    Sprite_menu_torre[7].setPosition(torre8.getEsix()-75,torre8.getEsiy()-40);
+    Sprite_menu_torre[8].setPosition(torre9.getEsix()-75,torre9.getEsiy()-40);
+    /// ----------------------------------------------------------------------------------------------------------------------
+
     ///Zona de declaracion de variables tipo rango-torres
     Sprite rango_prueba;
     rango_prueba.setTexture(textura_rango);
@@ -119,7 +167,8 @@ int juego()
     /*
     Rect<jojo>::Rect(200,200,50,50);
     */
-    int estados[cantidad_bichos]= {0};
+
+    int estados[cantidad_bichos] = {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
     for (int i=0; i<=cantidad_bichos-1; i++)
@@ -145,6 +194,7 @@ int juego()
         /*
         }*/
     }
+
     int objetos=1;
     int tiempo=1;
 
@@ -161,20 +211,23 @@ int juego()
     char mousex_char[10],mousey_char[10];
     string mousex_string,mousey_string;
     ///--------------------------------------------------
+
     ///vida de los monstruos-rango-daños
     float vida[cantidad_bichos];
-    int vida_m[cantidad_bichos]={1000};
+    int vida_m[cantidad_bichos]= {1000};
     bool danio[cantidad_bichos];
     ponerEnCienVidas(vida, cantidad_bichos, 100);
-    ponerEnFalsoDanio(danio, cantidad_bichos);
+    ponerEnFalso(danio, cantidad_bichos);
+
     ///vida flotante
     char vida_char[10];
     itoa(vida_m[0], vida_char, 10);
     string vida_string=string(vida_char);
-    for (int i=0;i<cantidad_bichos;i++) {
-    texto_vida[i].setString(vida_string);
-    texto_vida[i].setCharacterSize(13);
-    texto_vida[i].setFillColor(Color::Black);
+    for (int i=0; i<cantidad_bichos; i++)
+    {
+        texto_vida[i].setString(vida_string);
+        texto_vida[i].setCharacterSize(13);
+        texto_vida[i].setFillColor(Color::Black);
     }
 
     while (window.isOpen())
@@ -210,10 +263,104 @@ int juego()
                         boolmusicajuego=true;
                     }
                 }
+
+                ///Torre-1 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre1.getEsix()&&mousexy[0]<=torre1.getEsdx()&&mousexy[1]>=torre1.getEsiy()&&mousexy[1]<=torre1.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[0]=true;
+                }
+                else
+                {
+                    menu_torre[0]=false;
+                }
+                ///Torre-2 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre2.getEsix()&&mousexy[0]<=torre2.getEsdx()&&mousexy[1]>=torre2.getEsiy()&&mousexy[1]<=torre2.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[1]=true;
+                }
+                else
+                {
+                    menu_torre[1]=false;
+                }
+                ///Torre-3 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre3.getEsix()&&mousexy[0]<=torre3.getEsdx()&&mousexy[1]>=torre3.getEsiy()&&mousexy[1]<=torre3.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[2]=true;
+                }
+                else
+                {
+                    menu_torre[2]=false;
+                }
+                ///Torre-4 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre4.getEsix()&&mousexy[0]<=torre4.getEsdx()&&mousexy[1]>=torre4.getEsiy()&&mousexy[1]<=torre4.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[3]=true;
+                }
+                else
+                {
+                    menu_torre[3]=false;
+                }
+                ///Torre-5 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre5.getEsix()&&mousexy[0]<=torre5.getEsdx()&&mousexy[1]>=torre5.getEsiy()&&mousexy[1]<=torre5.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[4]=true;
+                }
+                else
+                {
+                    menu_torre[4]=false;
+                }
+                ///Torre-6 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre6.getEsix()&&mousexy[0]<=torre6.getEsdx()&&mousexy[1]>=torre6.getEsiy()&&mousexy[1]<=torre6.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[5]=true;
+                }
+                else
+                {
+                    menu_torre[5]=false;
+                }
+                ///Torre-7 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre7.getEsix()&&mousexy[0]<=torre7.getEsdx()&&mousexy[1]>=torre7.getEsiy()&&mousexy[1]<=torre7.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[6]=true;
+                }
+                else
+                {
+                    menu_torre[6]=false;
+                }
+                ///Torre-8 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre8.getEsix()&&mousexy[0]<=torre8.getEsdx()&&mousexy[1]>=torre8.getEsiy()&&mousexy[1]<=torre8.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[7]=true;
+                }
+                else
+                {
+                    menu_torre[7]=false;
+                }
+                ///Torre-9 --------------------------------------------------------------------------------------------------------------
+                if (mousexy[0]>=torre9.getEsix()&&mousexy[0]<=torre9.getEsdx()&&mousexy[1]>=torre9.getEsiy()&&mousexy[1]<=torre9.getEidy())
+                {
+                    /// SE ABRE EL MENU DE TORRES
+                    menu_torre[8]=true;
+                }
+                else
+                {
+                    menu_torre[8]=false;
+                }
+
                 ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
                 habilitacionmouse=false;
             }
         }
+
+
         else
             ///una vez que se solto el mouse, recien se habilita para una nueva accion
             habilitacionmouse=true;
@@ -237,6 +384,16 @@ int juego()
                 ///-------------------------------
                 window.draw(texto_variable);
                 window.draw(rango_prueba);
+
+                for (int x=0; x<tam_torres; x++)
+                {
+                    if (menu_torre[x]==true)
+                    {
+                        window.draw(Sprite_menu_torre[x]);
+
+                    }
+                }
+
                 if (!boolmusica)
                 {
                     musica_juego.play();
@@ -250,7 +407,7 @@ int juego()
                     switch(mini_estados) {
                     case 1:
                     break;
-                    case 2:
+                    case 2:---------
                     break;
                     case 3:
                     break;
