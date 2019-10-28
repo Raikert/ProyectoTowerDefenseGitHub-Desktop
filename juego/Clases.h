@@ -167,20 +167,7 @@ public:
     {
         boton.setFillColor(Color(255,255,255,t));
     }
-    int getMousex(int *mouse) {
-    int mx=mouse[0];
-    if (mouse[2]!=1000||mouse[3]!=600) {
-    mx=mouse[0]-(tamaniox-1);
-    }
-    return mx;
-    }
-    int getMousey(int *mouse) {
-    int my=mouse[1];
-    if (mouse[2]!=1000||mouse[3]!=600) {
-    my=mouse[1]-(tamanioy-1);
-    }
-    return my;
-    }
+
 };
 
 #endif // CLASES_H_INCLUDED
