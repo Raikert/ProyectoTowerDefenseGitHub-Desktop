@@ -121,20 +121,61 @@ int juego()
 
     /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
     const int tam_torres = 9;
+    int vp[2];
+    Boton t[tam_torres];
+    Boton tc[tam_torres];
     /// Posiciones de cada torre
-    Boton torre1(49,77,236,114),torre2(49,77,98,245),torre3(49,77,98,420),torre4(49,77,194,331),torre5(49,77,242,419);
-    Boton torre6(49,77,339,419),torre7(49,77,434,419),torre8(49,77,482,90),torre9(49,77,535,224);
-    /// Poiciones de la X para cerrar el menu de torre
-    Boton cerrarTorre1(49,77,236,114),cerrarTorre2(49,77,98,245),cerrarTorre3(49,77,98,420),cerrarTorre4(49,77,194,331);
-    Boton cerrarTorre5(49,77,242,419),cerrarTorre6(49,77,339,419),cerrarTorre7(49,77,434,419);
-    Boton cerrarTorre8(49,77,482,90),cerrarTorre9(49,77,535,224);
+    for (int i=0; i<tam_torres; i++)
+    {
+        switch (i)
+        {
+        case 0:
+            vp[0]=236;
+            vp[1]=114;
+            break;
+        case 1:
+            vp[0]=98;
+            vp[1]=245;
+            break;
+        case 2:
+            vp[0]=98;
+            vp[1]=420;
+            break;
+        case 3:
+            vp[0]=194;
+            vp[1]=331;
+            break;
+        case 4:
+            vp[0]=242;
+            vp[1]=419;
+            break;
+        case 5:
+            vp[0]=339;
+            vp[1]=419;
+            break;
+        case 6:
+            vp[0]=434;
+            vp[1]=419;
+            break;
+        case 7:
+            vp[0]=482;
+            vp[1]=90;
+            break;
+        case 8:
+            vp[0]=535;
+            vp[1]=224;
+            break;
+        }
+        t[i]=Boton(49,77,vp[0],vp[1]);
+        tc[i]=Boton(49,77,vp[0],vp[1]);
+    }
     /// Submenu torre 1
     Boton torre1_t1(59,72,161,74),torre1_t2(59,72,220,74),torre1_t3(59,72,279,74);
     /// Declaracion del vector de menues de torres
     bool menu_torre[tam_torres];
     ponerEnFalso(menu_torre, tam_torres);
     /// Declaracion de la matriz de las torres del menu de torres
-    bool menu_torre_elegir[tam_torres][3]={false};
+    bool menu_torre_elegir[tam_torres][3]= {false};
     /// Textura del menu de torres
     Texture textura_menu_torre;
     if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
@@ -145,16 +186,8 @@ int juego()
     for (int x=0; x<tam_torres; x++)
     {
         Sprite_menu_torre[x].setTexture(textura_menu_torre);
+        Sprite_menu_torre[x].setPosition(t[x].getEsix()-75,t[x].getEsiy()-40);
     }
-    Sprite_menu_torre[0].setPosition(torre1.getEsix()-75,torre1.getEsiy()-40);
-    Sprite_menu_torre[1].setPosition(torre2.getEsix()-75,torre2.getEsiy()-40);
-    Sprite_menu_torre[2].setPosition(torre3.getEsix()-75,torre3.getEsiy()-40);
-    Sprite_menu_torre[3].setPosition(torre4.getEsix()-75,torre4.getEsiy()-40);
-    Sprite_menu_torre[4].setPosition(torre5.getEsix()-75,torre5.getEsiy()-40);
-    Sprite_menu_torre[5].setPosition(torre6.getEsix()-75,torre6.getEsiy()-40);
-    Sprite_menu_torre[6].setPosition(torre7.getEsix()-75,torre7.getEsiy()-40);
-    Sprite_menu_torre[7].setPosition(torre8.getEsix()-75,torre8.getEsiy()-40);
-    Sprite_menu_torre[8].setPosition(torre9.getEsix()-75,torre9.getEsiy()-40);
     /// ----------------------------------------------------------------------------------------------------------------------
 
     ///Zona de declaracion de variables tipo rango-torres
@@ -263,95 +296,14 @@ int juego()
                     }
                 }
 
-                ///Torre-1 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre1.getEsix()&&mousexy[0]<=torre1.getEsdx()&&mousexy[1]>=torre1.getEsiy()&&mousexy[1]<=torre1.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[0]=true;
+                for (int i=0;i<tam_torres;i++) {
+                if (mousexy[0]>=t[i].getEsix()&&mousexy[0]<=t[i].getEsdx()&&mousexy[1]>=t[i].getEsiy()&&mousexy[1]<=t[i].getEidy()) {
+                ///SE ABRE EL MENU DE TORRES
+                menu_torre[i]=true;
                 }
-                else
-                {
-                    menu_torre[0]=false;
+                else {
+                    menu_torre[i]=false;
                 }
-                ///Torre-2 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre2.getEsix()&&mousexy[0]<=torre2.getEsdx()&&mousexy[1]>=torre2.getEsiy()&&mousexy[1]<=torre2.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[1]=true;
-                }
-                else
-                {
-                    menu_torre[1]=false;
-                }
-                ///Torre-3 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre3.getEsix()&&mousexy[0]<=torre3.getEsdx()&&mousexy[1]>=torre3.getEsiy()&&mousexy[1]<=torre3.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[2]=true;
-                }
-                else
-                {
-                    menu_torre[2]=false;
-                }
-                ///Torre-4 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre4.getEsix()&&mousexy[0]<=torre4.getEsdx()&&mousexy[1]>=torre4.getEsiy()&&mousexy[1]<=torre4.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[3]=true;
-                }
-                else
-                {
-                    menu_torre[3]=false;
-                }
-                ///Torre-5 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre5.getEsix()&&mousexy[0]<=torre5.getEsdx()&&mousexy[1]>=torre5.getEsiy()&&mousexy[1]<=torre5.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[4]=true;
-                }
-                else
-                {
-                    menu_torre[4]=false;
-                }
-                ///Torre-6 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre6.getEsix()&&mousexy[0]<=torre6.getEsdx()&&mousexy[1]>=torre6.getEsiy()&&mousexy[1]<=torre6.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[5]=true;
-                }
-                else
-                {
-                    menu_torre[5]=false;
-                }
-                ///Torre-7 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre7.getEsix()&&mousexy[0]<=torre7.getEsdx()&&mousexy[1]>=torre7.getEsiy()&&mousexy[1]<=torre7.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[6]=true;
-                }
-                else
-                {
-                    menu_torre[6]=false;
-                }
-                ///Torre-8 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre8.getEsix()&&mousexy[0]<=torre8.getEsdx()&&mousexy[1]>=torre8.getEsiy()&&mousexy[1]<=torre8.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[7]=true;
-                }
-                else
-                {
-                    menu_torre[7]=false;
-                }
-                ///Torre-9 --------------------------------------------------------------------------------------------------------------
-                if (mousexy[0]>=torre9.getEsix()&&mousexy[0]<=torre9.getEsdx()&&mousexy[1]>=torre9.getEsiy()&&mousexy[1]<=torre9.getEidy())
-                {
-                    /// SE ABRE EL MENU DE TORRES
-                    menu_torre[8]=true;
-                }
-                else
-                {
-                    menu_torre[8]=false;
                 }
 
                 ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo

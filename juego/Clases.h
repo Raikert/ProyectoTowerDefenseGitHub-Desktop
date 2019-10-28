@@ -167,7 +167,6 @@ public:
     {
         boton.setFillColor(Color(255,255,255,t));
     }
-
 };
 
 #endif // CLASES_H_INCLUDED
