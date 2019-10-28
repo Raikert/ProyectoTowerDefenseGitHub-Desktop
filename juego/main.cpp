@@ -15,12 +15,8 @@ using namespace Collision; ///para no poner Collision::
 
 int main()
 {
-    while (true)
-    {
-        if (juego()==0)
-        {
-            break;
-        }
-    }
-    return 0;
+    ///puede devolver tanto un 0 si el programa termino bien, como otro valor
+    ///xq sino nunca sabriamos si un archivo se cargo correctamente, que main mas chiquito ajajaj
+    int variable_programa=juego();
+    return variable_programa;
 }
