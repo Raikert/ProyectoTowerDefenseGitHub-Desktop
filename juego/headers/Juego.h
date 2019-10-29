@@ -114,8 +114,8 @@ int juego()
     /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
     const int tam_torres = 9;
     int vp[2];
-    Boton t[tam_torres];
-    Boton tc[tam_torres];
+    Boton torres[tam_torres];
+    Boton cerrartorres[tam_torres];
     /// Posiciones de cada torre
     for (i=0; i<tam_torres; i++)
     {
@@ -158,8 +158,8 @@ int juego()
             vp[1]=224;
             break;
         }
-        t[i]=Boton(49,77,vp[0],vp[1]);
-        tc[i]=Boton(49,77,vp[0],vp[1]);
+        torres[i]=Boton(49,77,vp[0],vp[1]);
+        cerrartorres[i]=Boton(49,77,vp[0],vp[1]);
     }
     /// Submenu torre 1
     Boton torre1_t1(59,72,161,74),torre1_t2(59,72,220,74),torre1_t3(59,72,279,74);
@@ -178,7 +178,7 @@ int juego()
     for (x=0; x<tam_torres; x++)
     {
         Sprite_menu_torre[x].setTexture(textura_menu_torre);
-        Sprite_menu_torre[x].setPosition(t[x].getEsix()-75,t[x].getEsiy()-40);
+        Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-40);
     }
     /// ----------------------------------------------------------------------------------------------------------------------
 
@@ -302,7 +302,7 @@ int juego()
 
                 for (i=0; i<tam_torres; i++)
                 {
-                    if (mousexy[0]>=t[i].getEsix()&&mousexy[0]<=t[i].getEsdx()&&mousexy[1]>=t[i].getEsiy()&&mousexy[1]<=t[i].getEidy())
+                    if (mousexy[0]>=torres[i].getEsix()&&mousexy[0]<=torres[i].getEsdx()&&mousexy[1]>=torres[i].getEsiy()&&mousexy[1]<=torres[i].getEidy())
                     {
                         ///SE ABRE EL MENU DE TORRES
                         menu_torre[i]=true;
