@@ -3,6 +3,9 @@
 
 int juego()
 {
+    ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
+    int i,x,te,d;
+
     ///definicion de la ventana del juego
 
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
@@ -48,25 +51,12 @@ int juego()
     ///Zona de texto
     Font tipo_de_texto;
 
-    /// Variables en texto de las posiciones del mouse -------------------
-    Font tipo_texto_mouse;
-    if (!tipo_texto_mouse.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
-        return -1;
-    Text texto_mousex,texto_mousey;
-    texto_mousex.setFont(tipo_texto_mouse);
-    texto_mousey.setFont(tipo_texto_mouse);
-    texto_mousex.setCharacterSize(18);
-    texto_mousey.setCharacterSize(18);
-    texto_mousex.setPosition(627,545);
-    texto_mousey.setPosition(693,549);
-    ///-------------------------------------------------------------------
-
     /// Creacion de el texto vida ----------------------------------------
     Font tipo_texto_vida;
     if (!tipo_texto_vida.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
         return -1;
     Text texto_vida[cantidad_bichos];
-    for (int i=0; i<cantidad_bichos; i++)
+    for (i=0; i<cantidad_bichos; i++)
     {
         texto_vida[i].setFont(tipo_texto_vida);
     }
@@ -81,7 +71,14 @@ int juego()
     Sprite mapa,menu;
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
-    int mousexy[2];
+
+    int mousexy[2]= {0};
+    Texto mousex("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[0],18,627,545,Color::White);
+    if (!mousex.getConfirmacion())
+                return -1;
+    Texto mousey("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[1],18,693,549,Color::White);
+    if (!mousey.getConfirmacion())
+                return -1;
 
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
@@ -120,7 +117,7 @@ int juego()
     Boton t[tam_torres];
     Boton tc[tam_torres];
     /// Posiciones de cada torre
-    for (int i=0; i<tam_torres; i++)
+    for (i=0; i<tam_torres; i++)
     {
         switch (i)
         {
@@ -178,7 +175,7 @@ int juego()
     textura_menu_torre.setSmooth(true);
     /// Hacerlo un sprite
     Sprite Sprite_menu_torre[tam_torres];
-    for (int x=0; x<tam_torres; x++)
+    for (x=0; x<tam_torres; x++)
     {
         Sprite_menu_torre[x].setTexture(textura_menu_torre);
         Sprite_menu_torre[x].setPosition(t[x].getEsix()-75,t[x].getEsiy()-40);
@@ -198,7 +195,7 @@ int juego()
     int estados[cantidad_bichos] = {0};
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
-    for (int i=0; i<=cantidad_bichos-1; i++)
+    for (i=0; i<=cantidad_bichos-1; i++)
     {
         ///Seria un corte de control donde por cada vuelta de J se cargara un frame de un tipo de bicho, faltaria la forma
         ///dinamica de indicar a cual tipo de monstruo cargar en cada fila de la matriz
@@ -246,13 +243,9 @@ int juego()
 
     ///-------------------------
     Texto tiempo_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",tiempo,25,600,300,Color::Black);
-    if (!tiempo_texto.getConfirmacion()) return -1;
+    if (!tiempo_texto.getConfirmacion())
+        return -1;
     ///-------------------------
-
-    ///variables de char y string para las axis del mouse
-    char mousex_char[10],mousey_char[10];
-    string mousex_string,mousey_string;
-    ///--------------------------------------------------
 
     ///vida de los monstruos-rango-daños
     float vida[cantidad_bichos];
@@ -265,7 +258,7 @@ int juego()
     char vida_char[10];
     itoa(vida_m[0], vida_char, 10);
     string vida_string=string(vida_char);
-    for (int i=0; i<cantidad_bichos; i++)
+    for (i=0; i<cantidad_bichos; i++)
     {
         texto_vida[i].setString(vida_string);
         texto_vida[i].setCharacterSize(13);
@@ -285,7 +278,8 @@ int juego()
 
         mousexy[0]=Mouse::getPosition(window).x;
         mousexy[1]=Mouse::getPosition(window).y;
-
+        mousex.setVariable(mousexy[0]);
+        mousey.setVariable(mousexy[1]);
         ///Configuracion de los botones dentro del juego
         if (Mouse::isButtonPressed(Mouse::Left))
         {
@@ -306,14 +300,17 @@ int juego()
                     }
                 }
 
-                for (int i=0;i<tam_torres;i++) {
-                if (mousexy[0]>=t[i].getEsix()&&mousexy[0]<=t[i].getEsdx()&&mousexy[1]>=t[i].getEsiy()&&mousexy[1]<=t[i].getEidy()) {
-                ///SE ABRE EL MENU DE TORRES
-                menu_torre[i]=true;
-                }
-                else {
-                    menu_torre[i]=false;
-                }
+                for (i=0; i<tam_torres; i++)
+                {
+                    if (mousexy[0]>=t[i].getEsix()&&mousexy[0]<=t[i].getEsdx()&&mousexy[1]>=t[i].getEsiy()&&mousexy[1]<=t[i].getEidy())
+                    {
+                        ///SE ABRE EL MENU DE TORRES
+                        menu_torre[i]=true;
+                    }
+                    else
+                    {
+                        menu_torre[i]=false;
+                    }
                 }
 
                 ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
@@ -328,25 +325,19 @@ int juego()
 
         window.clear();
 
-        for (int i=1; i<=objetos; i++)
+        for (i=1; i<=objetos; i++)
         {
             if (estados[i-1]!=-1)
             {
                 window.draw(mapa);
-                ///zona de variables mouse ------
-                itoa(mousexy[0], mousex_char, 10);
-                mousex_string=string(mousex_char);
-                texto_mousex.setString(mousex_string);
-                itoa(mousexy[1], mousey_char, 10);
-                mousey_string=string(mousey_char);
-                texto_mousey.setString(mousey_string);
-                window.draw(texto_mousex);
-                window.draw(texto_mousey);
-                ///-------------------------------
+
+                window.draw(mousex.getTexto());
+                window.draw(mousey.getTexto());
+
                 window.draw(tiempo_texto.getTexto());
                 window.draw(rango_prueba);
 
-                for (int x=0; x<tam_torres; x++)
+                for (x=0; x<tam_torres; x++)
                 {
                     if (menu_torre[x]==true)
                     {
@@ -361,7 +352,7 @@ int juego()
                     boolmusica=true;
                 }
 
-                for (int d=1; d<=objetos; d++)
+                for (d=1; d<=objetos; d++)
                 {
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
@@ -420,16 +411,9 @@ int juego()
                 window.draw(menu);
                 window.draw(nueva_partida.getBoton());
                 window.draw(texto_prueba);
-                ///zona de variables mouse ------
-                itoa(mousexy[0], mousex_char, 10);
-                mousex_string=string(mousex_char);
-                texto_mousex.setString(mousex_string);
-                itoa(mousexy[1], mousey_char, 10);
-                mousey_string=string(mousey_char);
-                texto_mousey.setString(mousey_string);
-                window.draw(texto_mousex);
-                window.draw(texto_mousey);
-                ///-------------------------------
+
+                window.draw(mousex.getTexto());
+                window.draw(mousey.getTexto());
 
                 if (opacidad_menu<255)
                 {
@@ -449,8 +433,10 @@ int juego()
                             musica_menu.setVolume(volumen_menu);
                                 */
                             musica_menu.stop();
-                            texto_mousex.setFillColor(Color(Color::Black));
-                            texto_mousey.setFillColor(Color(Color::Black));
+
+                            mousex.setColor(Color::Black);
+                            mousey.setColor(Color::Black);
+
                             estados[0]=0;
                         }
                         ///Cargar Partida

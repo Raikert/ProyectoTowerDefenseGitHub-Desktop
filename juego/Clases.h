@@ -22,7 +22,7 @@ private:
     Text texto;
     bool formato_cargado;
 public:
-    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color)
+    Texto (const string& letra="tipos_de_texto/OpenSans-BoldItalic.ttf",int variable=0,int tamanio=0,float x=0,float y=0,const Color& color=Color::Black)
     {
         if (!formato_de_letra.loadFromFile(letra))
             formato_cargado=false;
@@ -63,6 +63,10 @@ public:
         itoa(variable, variable_char, 10);
         string variable_string = string(variable_char);
         texto.setString(variable_string);
+    }
+    void setColor(const Color& color)
+    {
+        texto.setFillColor(color);
     }
 };
 
