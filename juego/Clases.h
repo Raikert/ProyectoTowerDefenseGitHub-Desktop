@@ -15,6 +15,57 @@ using namespace Collision;
 setlocale(LC_ALL,"spanish");
 */
 
+class Texto
+{
+private:
+    Font formato_de_letra;
+    Text texto;
+    bool formato_cargado;
+public:
+    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color)
+    {
+        if (!formato_de_letra.loadFromFile(letra))
+            formato_cargado=false;
+        else
+            formato_cargado=true;
+
+        if (formato_cargado)
+        {
+            texto.setFont(formato_de_letra);
+            texto.setCharacterSize(tamanio);
+            texto.setPosition(x,y);
+            char variable_char[10];
+            itoa(variable, variable_char, 10);
+            string variable_string = string(variable_char);
+            texto.setString(variable_string);
+            texto.setFillColor(color);
+        }
+    }
+    void setFormato_texto (const string& letra)
+    {
+        if (!formato_de_letra.loadFromFile(letra))
+            formato_cargado=false;
+        else
+            formato_cargado=true;
+    }
+    bool getConfirmacion()
+    {
+        return formato_cargado;
+    }
+    Text getTexto()
+    {
+        return texto;
+    }
+
+    void setVariable (int variable)
+    {
+        char variable_char[10];
+        itoa(variable, variable_char, 10);
+        string variable_string = string(variable_char);
+        texto.setString(variable_string);
+    }
+};
+
 class Sprites
 {
 private:

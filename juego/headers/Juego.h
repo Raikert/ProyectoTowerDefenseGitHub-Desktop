@@ -3,12 +3,12 @@
 
 int juego()
 {
-    ///carga del mundo
+    ///definicion de la ventana del juego
 
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
 
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
-    ///bugeo de los sprites solucionado: ver linea 152;
+    ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
 
     window.setFramerateLimit(60);
 
@@ -46,7 +46,7 @@ int juego()
     textura_mapa.setSmooth(true);
 
     ///Zona de texto
-    Font tipo_de_texto,tipo_de_texto1;
+    Font tipo_de_texto;
 
     /// Variables en texto de las posiciones del mouse -------------------
     Font tipo_texto_mouse;
@@ -73,16 +73,11 @@ int juego()
     /// ------------------------------------------------------------------
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
         return -1;
-    if (!tipo_de_texto1.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
-        return -1;
-    Text texto_prueba,texto_variable;
+    Text texto_prueba;
     texto_prueba.setFont(tipo_de_texto);
     texto_prueba.setString("GENTESSS EDITION");
     texto_prueba.setCharacterSize(24);
-    texto_variable.setFont(tipo_de_texto1);
-
-    ///Zona de texto
-
+    ///-------------------------------------------------------------------
     Sprite mapa,menu;
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
@@ -230,14 +225,29 @@ int juego()
     int objetos=1;
     int tiempo=1;
 
-    ///Convertir una variable en un string, variable tiempo
-    char tiempo_char[10];
-    itoa(tiempo, tiempo_char, 10);
-    string tiempo_string = string(tiempo_char);
-    texto_variable.setString(tiempo_string);
-    texto_variable.setCharacterSize(25);
-    texto_variable.setPosition(600,300);
-    texto_variable.setFillColor(Color::Black);
+    ///Todo lo que se necesita para crear un texto son 2 lineas de codigo, Nueva Clase Texto, Parametros:
+
+    ///1)Formato de texto: ruta donde esta alojado el tipo de texto.
+    ///2)variable a convertir, debe ser int, proximamente constructor para texto plano.
+    ///3)Tamaño del texto, similar al word cuando pones el tamaño de la letra.
+    ///4)Posicion de la pantalla en coordenadas de pixeles en X.
+    ///5)Posicion de la pantalla en coordenadas de pixeles en Y.
+    ///6)Color: Se debe anteponer Color:: y despues el color dentro de los contenidos por Sfml,
+
+    ///Podriamos agregar using namespace Color, pero seria demasiado exagerado, posiblemente agrege
+    ///un constructor para colores en RGB y transparencia, pero mas adelante.
+
+    ///El objeto texto junto con el pasaje de variable a string se hacen simultaneamente.
+    ///para cambiar el string, se usa el metodo setVariable(variable), que explico mas abajo con la variable tiempo.
+
+    ///Para todo tipo de carga de archivos se debe verificar la carga con un metodo de confirmacion, que devuelve un verdadero
+    ///o falso, en caso de una carga incorrecta el programa se detendra para la visibilidad del error, el constructor no puede
+    ///hacerlo por si mismo, dado que no puede devolver ningun valor, es cosa nuestra asegurarlo.
+
+    ///-------------------------
+    Texto tiempo_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",tiempo,25,600,300,Color::Black);
+    if (!tiempo_texto.getConfirmacion()) return -1;
+    ///-------------------------
 
     ///variables de char y string para las axis del mouse
     char mousex_char[10],mousey_char[10];
@@ -333,7 +343,7 @@ int juego()
                 window.draw(texto_mousex);
                 window.draw(texto_mousey);
                 ///-------------------------------
-                window.draw(texto_variable);
+                window.draw(tiempo_texto.getTexto());
                 window.draw(rango_prueba);
 
                 for (int x=0; x<tam_torres; x++)
@@ -605,10 +615,11 @@ int juego()
         {
             tiempo++;
 
-            ///cada vez que se actualiza la variable se tiene que actualizar el string
-            itoa(tiempo,tiempo_char,10);
-            tiempo_string = string(tiempo_char);
-            texto_variable.setString(tiempo_string);
+            ///Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
+
+            ///--------
+            tiempo_texto.setVariable(tiempo);
+            ///--------
         }
         ///Pruebas iniciales con circulos
         /*
