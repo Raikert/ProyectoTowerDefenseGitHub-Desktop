@@ -540,21 +540,21 @@ int juego()
                     {
                         if (spawnear[i]==true)
                         {
-                            if (mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                            if (Ocupado[i]==false&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
                             {
                                 /// Se spawnea la torre 1
                                 spawn_torre[i][0]=true;
                                 /// El espacio de la torre 1 esta siendo ocupado por la torre 1
                                 Ocupado[i]=true;
                             }
-                            if (mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                            if (Ocupado[i]==false&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
                             {
                                 /// Se spawnea la torre 2
                                 spawn_torre[i][1]=true;
                                 /// El espacio de la torre 1 esta siendo ocupado por la torre 2
                                 Ocupado[i]=true;
                             }
-                            if (mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                            if (Ocupado[i]==false&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
                             {
                                 /// Se spawnea la torre 3
                                 spawn_torre[i][2]=true;
