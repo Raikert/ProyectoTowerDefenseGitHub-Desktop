@@ -17,7 +17,11 @@ int juego()
 
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
     const int cantidad_bichos=10;
-    float opacidad_bichos[cantidad_bichos]= {0};
+    float opacidad_bichos[cantidad_bichos];
+    for (i=0; i<cantidad_bichos; i++)
+    {
+        opacidad_bichos[i]=0;
+    }
     Sprites bicho("img/bicho_reside_circulo.png",opacidad_bichos,285,0);
 
     if (!bicho.getConfirmacion())
@@ -63,7 +67,11 @@ int juego()
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
 
-    int mousexy[2]= {0};
+    int mousexy[2];
+    for (i=0; i<2; i++)
+    {
+        mousexy[i]=0;
+    }
     Texto mousex("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[0],18,627,545,Color::White);
     if (!mousex.getConfirmacion())
         return -1;
@@ -359,7 +367,14 @@ int juego()
         torres_equis[i]=Boton(19,18,coordenadas_X_Y_equis[0],coordenadas_X_Y_equis[1]);
     }
     /// Declaracion del vector de menues de torres
-    bool menu_torre[tam_torres], spawn_torre[tam_torres][3]= {false}, spawnear[tam_torres], Ocupado[tam_torres];
+    bool menu_torre[tam_torres], spawn_torre[tam_torres][3], spawnear[tam_torres], Ocupado[tam_torres];
+    for (i=0; i<tam_torres; i++)
+    {
+        for (te=0; te<3; te++)
+        {
+            spawn_torre[i][te]=false;
+        }
+    }
     ponerEnFalso(menu_torre, tam_torres);
     ponerEnFalso(spawnear, tam_torres);
     ponerEnFalso(Ocupado, tam_torres);
@@ -407,7 +422,11 @@ int juego()
     Rect<jojo>::Rect(200,200,50,50);
     */
 
-    int estados[cantidad_bichos] = {0};
+    int estados[cantidad_bichos];
+    for (i=0; i<cantidad_bichos; i++)
+    {
+        estados[i]=0;
+    }
     estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
     for (i=0; i<=cantidad_bichos-1; i++)
