@@ -56,7 +56,6 @@
 		<Unit filename="headers/Movimientos.h" />
 		<Unit filename="headers/Sprites.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="prueba-github.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
