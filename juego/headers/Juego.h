@@ -75,10 +75,10 @@ int juego()
     int mousexy[2]= {0};
     Texto mousex("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[0],18,627,545,Color::White);
     if (!mousex.getConfirmacion())
-                return -1;
+        return -1;
     Texto mousey("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[1],18,693,549,Color::White);
     if (!mousey.getConfirmacion())
-                return -1;
+        return -1;
 
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
@@ -111,76 +111,300 @@ int juego()
 
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
+    ///*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
     const int tam_torres = 9;
-    int vp[2];
+    int coordenadas_X_Y_torres[2]; /// X=0 Y=1
+    int coordenadas_X_Y_torres_t1[2]; /// X=0 Y=1
+    int coordenadas_X_Y_torres_t2[2]; /// X=0 Y=1
+    int coordenadas_X_Y_torres_t3[2]; /// X=0 Y=1
+    int coordenadas_X_Y_equis[2]; /// X=0 Y=1
+    int coordenadas_X_Y_vender[2]; /// X=0 Y=1
+    int coordenadas_X_Y_subirlvl[2]; /// X=0 Y=1
+    int coordenadas_X_Y_mejorar[2]; /// X=0 Y=1
     Boton torres[tam_torres];
-    Boton cerrartorres[tam_torres];
-    /// Posiciones de cada torre
+    Boton torres_t1[tam_torres];
+    Boton torres_t2[tam_torres];
+    Boton torres_t3[tam_torres];
+    Boton torres_equis[tam_torres];
+    Boton torres_vender[tam_torres];
+    Boton torres_subirlvl[tam_torres];
+    Boton torres_mejorar[tam_torres];
+    /// Posiciones de cada boton
     for (i=0; i<tam_torres; i++)
     {
         switch (i)
         {
         case 0:
-            vp[0]=236;
-            vp[1]=114;
+            coordenadas_X_Y_torres[0]=236;
+            coordenadas_X_Y_torres[1]=114;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 1:
-            vp[0]=98;
-            vp[1]=245;
+            coordenadas_X_Y_torres[0]=98;
+            coordenadas_X_Y_torres[1]=245;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 2:
-            vp[0]=98;
-            vp[1]=420;
+            coordenadas_X_Y_torres[0]=98;
+            coordenadas_X_Y_torres[1]=420;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 3:
-            vp[0]=194;
-            vp[1]=331;
+            coordenadas_X_Y_torres[0]=194;
+            coordenadas_X_Y_torres[1]=331;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 4:
-            vp[0]=242;
-            vp[1]=419;
+            coordenadas_X_Y_torres[0]=242;
+            coordenadas_X_Y_torres[1]=419;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 5:
-            vp[0]=339;
-            vp[1]=419;
+            coordenadas_X_Y_torres[0]=339;
+            coordenadas_X_Y_torres[1]=419;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 6:
-            vp[0]=434;
-            vp[1]=419;
+            coordenadas_X_Y_torres[0]=434;
+            coordenadas_X_Y_torres[1]=419;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 7:
-            vp[0]=482;
-            vp[1]=90;
+            coordenadas_X_Y_torres[0]=482;
+            coordenadas_X_Y_torres[1]=90;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         case 8:
-            vp[0]=535;
-            vp[1]=224;
+            coordenadas_X_Y_torres[0]=535;
+            coordenadas_X_Y_torres[1]=224;
+
+            coordenadas_X_Y_torres_t1[0]=161;
+            coordenadas_X_Y_torres_t1[1]=74;
+
+            coordenadas_X_Y_torres_t2[0]=221;
+            coordenadas_X_Y_torres_t2[1]=74;
+
+            coordenadas_X_Y_torres_t3[0]=279;
+            coordenadas_X_Y_torres_t3[1]=74;
+
+            coordenadas_X_Y_equis[0]=339;
+            coordenadas_X_Y_equis[1]=74;
+
+            coordenadas_X_Y_vender[0]=339;
+            coordenadas_X_Y_vender[1]=92;
+
+            coordenadas_X_Y_subirlvl[0]=339;
+            coordenadas_X_Y_subirlvl[1]=110;
+
+            coordenadas_X_Y_mejorar[0]=339;
+            coordenadas_X_Y_mejorar[1]=129;
             break;
         }
-        torres[i]=Boton(49,77,vp[0],vp[1]);
-        cerrartorres[i]=Boton(49,77,vp[0],vp[1]);
+        torres[i]=Boton(49,90,coordenadas_X_Y_torres[0],coordenadas_X_Y_torres[1]);
+        torres_t1[i]=Boton(59,71,coordenadas_X_Y_torres_t1[0],coordenadas_X_Y_torres_t1[1]);
+        torres_t2[i]=Boton(57,71,coordenadas_X_Y_torres_t2[0],coordenadas_X_Y_torres_t2[1]);
+        torres_t3[i]=Boton(59,71,coordenadas_X_Y_torres_t3[0],coordenadas_X_Y_torres_t3[1]);
+        torres_equis[i]=Boton(19,18,coordenadas_X_Y_equis[0],coordenadas_X_Y_equis[1]);
     }
-    /// Submenu torre 1
-    Boton torre1_t1(59,72,161,74),torre1_t2(59,72,220,74),torre1_t3(59,72,279,74);
     /// Declaracion del vector de menues de torres
-    bool menu_torre[tam_torres];
+    bool menu_torre[tam_torres], spawn_torre[tam_torres][3]={false}, spawnear[tam_torres], Ocupado[tam_torres];
     ponerEnFalso(menu_torre, tam_torres);
-    /// Declaracion de la matriz de las torres del menu de torres
-    bool menu_torre_elegir[tam_torres][3]= {false};
-    /// Textura del menu de torres
-    Texture textura_menu_torre;
+    ponerEnFalso(spawnear, tam_torres);
+    ponerEnFalso(Ocupado, tam_torres);
+    /// Texturas
+    Texture textura_menu_torre, textura_torre_1, textura_torre_2, textura_torre_3;
     if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
         return -1;
     textura_menu_torre.setSmooth(true);
-    /// Hacerlo un sprite
-    Sprite Sprite_menu_torre[tam_torres];
+    if (!textura_torre_1.loadFromFile("img/T1-1.png"))
+        return -1;
+    textura_torre_1.setSmooth(true);
+    if (!textura_torre_2.loadFromFile("img/T2-1.png"))
+        return -1;
+    textura_torre_2.setSmooth(true);
+    if (!textura_torre_3.loadFromFile("img/T3-1.png"))
+        return -1;
+    textura_torre_3.setSmooth(true);
+    /// Sprites
+    Sprite Sprite_menu_torre[tam_torres], Sprite_torre_1[tam_torres], Sprite_torre_2[tam_torres], Sprite_torre_3[tam_torres];
     for (x=0; x<tam_torres; x++)
     {
+        ///menu
         Sprite_menu_torre[x].setTexture(textura_menu_torre);
         Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-40);
+        ///torre 1
+        Sprite_torre_1[x].setTexture(textura_torre_1);
+        Sprite_torre_1[x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
+
+        Sprite_torre_2[x].setTexture(textura_torre_2);
+        Sprite_torre_2[x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
+
+        Sprite_torre_3[x].setTexture(textura_torre_3);
+        Sprite_torre_3[x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
     }
     /// ----------------------------------------------------------------------------------------------------------------------
+    ///*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///Zona de declaracion de variables tipo rango-torres
     Sprite rango_prueba;
@@ -306,19 +530,44 @@ int juego()
                     {
                         ///SE ABRE EL MENU DE TORRES
                         menu_torre[i]=true;
+                        spawnear[i]=true;
                     }
                     else
                     {
                         menu_torre[i]=false;
                     }
+                    for(int x=0; x<tam_torres; x++)
+                    {
+                        if (spawnear[i]==true)
+                        {
+                            if (mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                            {
+                                /// Se spawnea la torre 1
+                                spawn_torre[i][0]=true;
+                                /// El espacio de la torre 1 esta siendo ocupado por la torre 1
+                                Ocupado[i]=true;
+                            }
+                            if (mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                            {
+                                /// Se spawnea la torre 2
+                                spawn_torre[i][1]=true;
+                                /// El espacio de la torre 1 esta siendo ocupado por la torre 2
+                                Ocupado[i]=true;
+                            }
+                            if (mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                            {
+                                /// Se spawnea la torre 3
+                                spawn_torre[i][2]=true;
+                                /// El espacio de la torre 1 esta siendo ocupado por la torre 3
+                                Ocupado[i]=true;
+                            }
+                        }
+                    }
                 }
-
                 ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
                 habilitacionmouse=false;
             }
         }
-
-
         else
             ///una vez que se solto el mouse, recien se habilita para una nueva accion
             habilitacionmouse=true;
@@ -342,8 +591,26 @@ int juego()
                     if (menu_torre[x]==true)
                     {
                         window.draw(Sprite_menu_torre[x]);
-
                     }
+                    for(int y=0; y<3; y++)
+                    {
+                        if (spawn_torre[x][y]==true)
+                        {
+                            switch (y)
+                            {
+                            case 0:
+                                window.draw(Sprite_torre_1[x]);
+                                break;
+                            case 1:
+                                window.draw(Sprite_torre_2[x]);
+                                break;
+                            case 2:
+                                window.draw(Sprite_torre_3[x]);
+                                break;
+                            }
+                        }
+                    }
+
                 }
 
                 if (!boolmusica)
