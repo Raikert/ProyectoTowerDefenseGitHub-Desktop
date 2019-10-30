@@ -41,7 +41,7 @@ public:
             texto.setFillColor(color);
         }
     }
-    void setFormato_de_letra (const string& letra)
+    void setFormato_texto (const string& letra)
     {
         if (!formato_de_letra.loadFromFile(letra))
             formato_cargado=false;
@@ -67,10 +67,6 @@ public:
     void setColor(const Color& color)
     {
         texto.setFillColor(color);
-    }
-    void setPosicion (float x,float y)
-    {
-        texto.setPosition(x,y);
     }
 };
 
