@@ -51,15 +51,6 @@ int juego()
     ///Zona de texto
     Font tipo_de_texto;
 
-    /// Creacion de el texto vida ----------------------------------------
-    Font tipo_texto_vida;
-    if (!tipo_texto_vida.loadFromFile("tipos_de_texto/OpenSans-BoldItalic.ttf"))
-        return -1;
-    Text texto_vida[cantidad_bichos];
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        texto_vida[i].setFont(tipo_texto_vida);
-    }
     /// ------------------------------------------------------------------
     if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
         return -1;
@@ -368,7 +359,7 @@ int juego()
         torres_equis[i]=Boton(19,18,coordenadas_X_Y_equis[0],coordenadas_X_Y_equis[1]);
     }
     /// Declaracion del vector de menues de torres
-    bool menu_torre[tam_torres], spawn_torre[tam_torres][3]={false}, spawnear[tam_torres], Ocupado[tam_torres];
+    bool menu_torre[tam_torres], spawn_torre[tam_torres][3]= {false}, spawnear[tam_torres], Ocupado[tam_torres];
     ponerEnFalso(menu_torre, tam_torres);
     ponerEnFalso(spawnear, tam_torres);
     ponerEnFalso(Ocupado, tam_torres);
@@ -471,23 +462,20 @@ int juego()
         return -1;
     ///-------------------------
 
-    ///vida de los monstruos-rango-daños
-    float vida[cantidad_bichos];
-    int vida_m[cantidad_bichos]= {1000};
-    bool danio[cantidad_bichos];
-    ponerEnCienVidas(vida, cantidad_bichos, 100);
-    ponerEnFalso(danio, cantidad_bichos);
-
-    ///vida flotante
-    char vida_char[10];
-    itoa(vida_m[0], vida_char, 10);
-    string vida_string=string(vida_char);
+    ///-----Vida de los monstruos-----
+    int vidas[cantidad_bichos];
     for (i=0; i<cantidad_bichos; i++)
     {
-        texto_vida[i].setString(vida_string);
-        texto_vida[i].setCharacterSize(13);
-        texto_vida[i].setFillColor(Color::Black);
+        vidas[i]=100;
     }
+    Texto vidas_texto[cantidad_bichos],vida_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vidas[0],18,v[0].getPosition().x+10, v[0].getPosition().y+25,Color::Black);
+    if (!vida_texto.getConfirmacion())
+        return -1;
+    for (i=0; i<cantidad_bichos; i++)
+    {
+        vidas_texto[i]=vida_texto;
+    }
+    ///-------------------------------
 
     while (window.isOpen())
     {
@@ -621,6 +609,8 @@ int juego()
 
                 for (d=1; d<=objetos; d++)
                 {
+                    window.draw(v[d-1]);
+                    window.draw(vidas_texto[d-1].getTexto());
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
                     switch(mini_estados) {
@@ -632,43 +622,21 @@ int juego()
                     break;
                     }
                     */
-                    if (vida[d-1]>=0)
+                }
+                if (PixelPerfectTest(v[i-1],rango_prueba))
+                {
+                    v[i-1].setColor(Color(145,50,77,opacidad_bichos[i-1]));
+                    if (tiempo%50==0)
                     {
-                        /// SI COLISIONA VE SI HAY ALGUIEN RECIBIENDO DAÑO, SINO, RECIBE DAÑO
-                        if (PixelPerfectTest(v[d-1],rango_prueba))
-                        {
-                            v[d-1].setColor(Color(145,50,77,opacidad_bichos[d-1]));
-                            /// Se encarga de verificar si hay alguien recibiendo daño
-                            danio[d-1] = verificarDanio(danio, cantidad_bichos);
-                            /// Si el monstruo esta recibiendo daño le saca vida
-                            if (danio[d-1]==true)
-                            {
-                                vida[d-1]-=0.1;
-                                if (tiempo%50==0)
-                                {
-                                    vida_m[d-1]-=2;
-                                    itoa(vida_m[d-1],vida_char,10);
-                                    vida_string = string(vida_char);
-                                    texto_vida[d-1].setString(vida_string);
-                                }
-                            }
-                        }
-                        /// SI YA NO COLISIONA PONE EN FALSO EL RECIBIR DAÑO
-                        else
-                        {
-                            v[d-1].setColor(Color(255,255,255,opacidad_bichos[d-1]));
-                            danio[d-1]=false;
-                        }
-
-                        texto_vida[d-1].setPosition(v[d-1].getPosition().x+10, v[d-1].getPosition().y+25);
-                        window.draw(v[d-1]);
-                        window.draw(texto_vida[d-1]);
-                    }
-                    else
-                    {
-                        danio[d-1]=false;
+                        vidas[i-1]--;
+                        vidas_texto[i-1].setVariable(vidas[i-1]);
                     }
                 }
+                else
+                {
+                    v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                }
+                vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+10,v[i-1].getPosition().y+25);
             }
             ///Pequeña maquina de estados
             switch (estados[i-1])
