@@ -17,6 +17,7 @@ int juego()
 
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
     const int cantidad_bichos=10;
+    const float velocidad=0.8;
     float opacidad_bichos[cantidad_bichos];
     for (i=0; i<cantidad_bichos; i++)
     {
@@ -487,7 +488,7 @@ int juego()
     {
         vidas[i]=100;
     }
-    Texto vidas_texto[cantidad_bichos],vida_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vidas[0],18,v[0].getPosition().x+10, v[0].getPosition().y+25,Color::Black);
+    Texto vidas_texto[cantidad_bichos],vida_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vidas[0],15,v[0].getPosition().x+10, v[0].getPosition().y+25);
     if (!vida_texto.getConfirmacion())
         return -1;
     for (i=0; i<cantidad_bichos; i++)
@@ -628,8 +629,10 @@ int juego()
 
                 for (d=1; d<=objetos; d++)
                 {
+                    if (vidas[d-1]>0) {
                     window.draw(v[d-1]);
                     window.draw(vidas_texto[d-1].getTexto());
+                    }
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
                     switch(mini_estados) {
@@ -720,8 +723,9 @@ int juego()
                     {
                         opacidad_bichos[i-1]+=5;
                         v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                        vidas_texto[i-1].setTransparencia(opacidad_bichos[i-1]);
                     }
-                    mov_obj_abajo(v,i-1,0.5);
+                    mov_obj_abajo(v,i-1,velocidad);
                 }
                 else
                     estados[i-1]=1;
@@ -730,7 +734,7 @@ int juego()
             case 1:
                 if (v[i-1].getPosition().x>47)
                 {
-                    mov_obj_izq(v,i-1,0.5);
+                    mov_obj_izq(v,i-1,velocidad);
                 }
                 else
                     estados[i-1]=2;
@@ -738,7 +742,7 @@ int juego()
             case 2:
                 if (v[i-1].getPosition().y<500)
                 {
-                    mov_obj_abajo(v,i-1,0.5);
+                    mov_obj_abajo(v,i-1,velocidad);
                 }
                 else
                     estados[i-1]=3;
@@ -746,7 +750,7 @@ int juego()
             case 3:
                 if (v[i-1].getPosition().x<485)
                 {
-                    mov_derecha(v,i-1,0.5);
+                    mov_derecha(v,i-1,velocidad);
                 }
                 else
                     estados[i-1]=4;
@@ -754,7 +758,7 @@ int juego()
             case 4:
                 if (v[i-1].getPosition().y>177)
                 {
-                    mov_obj_arriba(v,i-1,0.5);
+                    mov_obj_arriba(v,i-1,velocidad);
                 }
                 else
                     estados[i-1]=5;
@@ -762,7 +766,7 @@ int juego()
             case 5:
                 if (v[i-1].getPosition().x<700)
                 {
-                    mov_derecha(v,i-1,0.5);
+                    mov_derecha(v,i-1,velocidad);
                 }
                 else
                     estados[i-1]=6;
@@ -772,10 +776,14 @@ int juego()
                 {
                     opacidad_bichos[i-1]-=5;
                     v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
-                    mov_derecha(v,i-1,0.5);
+                    vidas_texto[i-1].setTransparencia(opacidad_bichos[i-1]);
+                    mov_derecha(v,i-1,velocidad);
                 }
-                else
-                    estados[i-1]=0;
+                else {
+                    estados[i-1]=7;
+                    vidas[i-1]=0;}
+                break;
+            case 7:
                 break;
 
                 ///movimientos en diagonal

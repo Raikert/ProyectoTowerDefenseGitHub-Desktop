@@ -22,7 +22,7 @@ private:
     Text texto;
     bool formato_cargado;
 public:
-    Texto (const string& letra="tipos_de_texto/OpenSans-BoldItalic.ttf",int variable=0,int tamanio=0,float x=0,float y=0,const Color& color=Color::Black)
+    Texto (const string& letra="tipos_de_texto/OpenSans-BoldItalic.ttf",int variable=0,int tamanio=0,float x=0,float y=0,const Color& color=Color(0,0,0,0))
     {
         if (!formato_de_letra.loadFromFile(letra))
             formato_cargado=false;
@@ -70,6 +70,9 @@ public:
     }
     void setPosicion (float x,float y) {
     texto.setPosition(x,y);
+    }
+    void setTransparencia(float t) {
+    texto.setFillColor(Color(0,0,0,t));
     }
 };
 
