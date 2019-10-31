@@ -5,15 +5,12 @@ int juego()
 {
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
     int i,x,te,d;
-    int posicion_clickeada;
 
     ///definicion de la ventana del juego
-
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
 
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
-
     window.setFramerateLimit(60);
 
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
@@ -112,7 +109,11 @@ int juego()
 
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
-    ///*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Variables para la verificacion de clicks y demas
+    int posicion_clickeada;
+    int contador_de_clicks=0;
+    int contador_de_clicks_fuera=0;
     /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
     const int tam_torres = 9;
     int coordenadas_X_Y_torres[2]; /// X=0 Y=1
@@ -377,6 +378,7 @@ int juego()
         torres_t3[i]=Boton(59,71,coordenadas_X_Y_torres_t3[0],coordenadas_X_Y_torres_t3[1]);
         torres_equis[i]=Boton(19,18,coordenadas_X_Y_equis[0],coordenadas_X_Y_equis[1]);
     }
+
     /// Declaracion del vector de menues de torres
     bool menu_torre[tam_torres], spawn_torre[tam_torres][3], spawnear[tam_torres], Ocupado[tam_torres];
     for (i=0; i<tam_torres; i++)
@@ -389,6 +391,7 @@ int juego()
     ponerEnFalso(menu_torre, tam_torres);
     ponerEnFalso(spawnear, tam_torres);
     ponerEnFalso(Ocupado, tam_torres);
+
     /// Texturas
     Texture textura_menu_torre, textura_torre_1, textura_torre_2, textura_torre_3, rango_torre;
     if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
@@ -406,6 +409,7 @@ int juego()
     if (!rango_torre.loadFromFile("img/rango.png"))
         return -1;
     rango_torre.setSmooth(true);
+
     /// Sprites
     Sprite Sprite_menu_torre[tam_torres], Sprite_torre_1[tam_torres], Sprite_torre_2[tam_torres], Sprite_torre_3[tam_torres];
     Sprite Sprite_rango_torres[tam_torres];
@@ -430,13 +434,6 @@ int juego()
     int a = 0;
     /// ----------------------------------------------------------------------------------------------------------------------
     ///*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ///Zona de declaracion de variables tipo rango-torres
-    Sprite rango_prueba;
-    rango_prueba.setTexture(textura_rango);
-    rango_prueba.setColor(Color(24,81,213,100));
-    rango_prueba.setPosition(130,378);
-
     /*
     Rect<jojo>::Rect(200,200,50,50);
     */
@@ -555,11 +552,18 @@ int juego()
                         spawnear[i]=true;
                         habilitacionmouse=false;
                         posicion_clickeada=i;
+                        contador_de_clicks++;
                     }
                     else
                     {
                         ///SE CIERRA EL MENU DE TORRES
                         menu_torre[i]=false;
+                        if (contador_de_clicks>1)
+                        {
+                            spawnear[i]=false;
+                        }
+                        contador_de_clicks++;
+
                         /// Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
                         /// no sea el que se clickeo anteriormente
                         for(int k=0; k<tam_torres; k++)
@@ -572,7 +576,7 @@ int juego()
                     }
                     if (habilitacionmouse)
                     {
-                        for(int x=0; x<tam_torres; x++)
+                        for(x=0; x<tam_torres; x++)
                         {
                             if (spawnear[i]==true)
                             {
