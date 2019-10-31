@@ -399,7 +399,7 @@ int juego()
     {
         ///menu
         Sprite_menu_torre[x].setTexture(textura_menu_torre);
-        Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-40);
+        Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
         ///torre 1
         Sprite_torre_1[x].setTexture(textura_torre_1);
         Sprite_torre_1[x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
@@ -539,38 +539,46 @@ int juego()
                         ///SE ABRE EL MENU DE TORRES
                         menu_torre[i]=true;
                         spawnear[i]=true;
+                        habilitacionmouse=false;
                     }
                     else
                     {
+                        ///SE CIERRA EL MENU DE TORRES
                         menu_torre[i]=false;
+
                     }
-                    for(int x=0; x<tam_torres; x++)
+
+                    if (habilitacionmouse)
                     {
-                        if (spawnear[i]==true)
+                        for(int x=0; x<tam_torres; x++)
                         {
-                            if (Ocupado[i]==false&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                            if (spawnear[i]==true)
                             {
-                                /// Se spawnea la torre 1
-                                spawn_torre[i][0]=true;
-                                /// El espacio de la torre 1 esta siendo ocupado por la torre 1
-                                Ocupado[i]=true;
-                            }
-                            if (Ocupado[i]==false&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
-                            {
-                                /// Se spawnea la torre 2
-                                spawn_torre[i][1]=true;
-                                /// El espacio de la torre 1 esta siendo ocupado por la torre 2
-                                Ocupado[i]=true;
-                            }
-                            if (Ocupado[i]==false&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
-                            {
-                                /// Se spawnea la torre 3
-                                spawn_torre[i][2]=true;
-                                /// El espacio de la torre 1 esta siendo ocupado por la torre 3
-                                Ocupado[i]=true;
+                                if (Ocupado[i]==false&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                                {
+                                    /// Se spawnea la torre 1
+                                    spawn_torre[i][0]=true;
+                                    /// El espacio de la torre 1 esta siendo ocupado por la torre 1
+                                    Ocupado[i]=true;
+                                }
+                                if (Ocupado[i]==false&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                                {
+                                    /// Se spawnea la torre 2
+                                    spawn_torre[i][1]=true;
+                                    /// El espacio de la torre 1 esta siendo ocupado por la torre 2
+                                    Ocupado[i]=true;
+                                }
+                                if (Ocupado[i]==false&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                                {
+                                    /// Se spawnea la torre 3
+                                    spawn_torre[i][2]=true;
+                                    /// El espacio de la torre 1 esta siendo ocupado por la torre 3
+                                    Ocupado[i]=true;
+                                }
                             }
                         }
                     }
+
                 }
                 ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
                 habilitacionmouse=false;
@@ -602,9 +610,10 @@ int juego()
 
                 for (d=1; d<=objetos; d++)
                 {
-                    if (vidas[d-1]>0) {
-                    window.draw(v[d-1]);
-                    window.draw(vidas_texto[d-1].getTexto());
+                    if (vidas[d-1]>0)
+                    {
+                        window.draw(v[d-1]);
+                        window.draw(vidas_texto[d-1].getTexto());
                     }
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
@@ -618,8 +627,8 @@ int juego()
                     }
                     */
                 }
-
-                 for (x=0; x<tam_torres; x++)
+///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
+                for (x=0; x<tam_torres; x++)
                 {
                     for(int y=0; y<3; y++)
                     {
@@ -643,6 +652,8 @@ int juego()
                     {
                         window.draw(Sprite_menu_torre[x]);
                     }
+///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
+
 
                 }
 
@@ -780,9 +791,11 @@ int juego()
                     vidas_texto[i-1].setTransparencia(opacidad_bichos[i-1]);
                     mov_derecha(v,i-1,velocidad);
                 }
-                else {
+                else
+                {
                     estados[i-1]=7;
-                    vidas[i-1]=0;}
+                    vidas[i-1]=0;
+                }
                 break;
             case 7:
                 break;
