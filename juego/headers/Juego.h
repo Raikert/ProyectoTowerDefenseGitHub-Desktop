@@ -594,33 +594,6 @@ int juego()
                 window.draw(tiempo_texto.getTexto());
                 window.draw(rango_prueba);
 
-                for (x=0; x<tam_torres; x++)
-                {
-                    if (menu_torre[x]==true)
-                    {
-                        window.draw(Sprite_menu_torre[x]);
-                    }
-                    for(int y=0; y<3; y++)
-                    {
-                        if (spawn_torre[x][y]==true)
-                        {
-                            switch (y)
-                            {
-                            case 0:
-                                window.draw(Sprite_torre_1[x]);
-                                break;
-                            case 1:
-                                window.draw(Sprite_torre_2[x]);
-                                break;
-                            case 2:
-                                window.draw(Sprite_torre_3[x]);
-                                break;
-                            }
-                        }
-                    }
-
-                }
-
                 if (!boolmusica)
                 {
                     musica_juego.play();
@@ -645,6 +618,34 @@ int juego()
                     }
                     */
                 }
+
+                 for (x=0; x<tam_torres; x++)
+                {
+                    for(int y=0; y<3; y++)
+                    {
+                        if (spawn_torre[x][y]==true)
+                        {
+                            switch (y)
+                            {
+                            case 0:
+                                window.draw(Sprite_torre_1[x]);
+                                break;
+                            case 1:
+                                window.draw(Sprite_torre_2[x]);
+                                break;
+                            case 2:
+                                window.draw(Sprite_torre_3[x]);
+                                break;
+                            }
+                        }
+                    }
+                    if (menu_torre[x]==true)
+                    {
+                        window.draw(Sprite_menu_torre[x]);
+                    }
+
+                }
+
                 if (PixelPerfectTest(v[i-1],rango_prueba))
                 {
                     v[i-1].setColor(Color(145,50,77,opacidad_bichos[i-1]));
