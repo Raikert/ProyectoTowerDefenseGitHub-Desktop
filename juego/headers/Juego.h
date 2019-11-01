@@ -510,6 +510,55 @@ int juego()
         vidas_texto[i]=vida_texto;
     }
     ///-------------------------------
+
+    ///------Animaciones de los zombies-------
+    ///Explicacion del IntRect o rectangulo de una imagen.
+
+    ///Imaginen que tienen un cuadro vacio, y a su vez tienen
+    ///la pintura en un paño de lana al que quieren poner en ese
+    ///cuadro, pero q tambien ustedes pretenden mostrar solo una
+    ///parte de ese paño. Si lo asociamos con esto seria asi:
+    ///El Sprite es el cuadro.
+    ///La textura es el paño o imagen.
+    ///lo que quieren mostrar es la variable de tipo IntRect.
+
+    ///ahora, una vez q montaron todo, lo que quieren hacer es
+    ///recortar el paño al cual montaron al cuadro, entonces como
+    ///se hace?
+    ///Primero crean una variable de tipó IntRect, que significa
+    ///rectangulo interior o zona de recorte. Ahora bien, que
+    ///significan todas esas coordenadas?.
+    ///Las primeras 2: tanto el 15 y el 34 es la posicion en donde
+    ///va a empezar ese rectangulo, igual q la posicion de los sprites
+    ///en la esquina izquierda superior, y los otros 2 son el ancho y
+    ///el alto de su rectangulo o recorte, el orden para las primeras
+    ///dos es igual a la q veniamos usando, primero en X, despues en Y
+    ///las otras 2 es primero el ancho, despues el alto.
+
+    ///Hasta ahora todo bien no?, eso espero xddd
+
+    ///Si se fijan mas abajo van a ver una variable nueva que se llama
+    ///Clock o tiempo, es una variable q desde q es declarada
+    ///cuenta tiempo, ya sea en segundos, minutos, lo q sea.
+    ///pero lo q usariamos nosotros seria mas q nada los segundos
+    ///asi q para obtener la cantidad de seg q tiene el CLock
+    ///hay q usar el metodo GetElapsedTime() pero q a su vez
+    ///nos entregue el tiempo en segundos entonces le agregamos
+    ///AsSeconds(), y asi obtendriamos el tiempo en seg q tiene
+    ///actualmente nuestro juego, sin contar los minutos obvio.
+    ///pero q me imagino q tambien se podra almacenar en otra variable
+    ///de tipo int y podriamos armar un relojito para el juego.
+
+    Texture sprites;
+    if (!sprites.loadFromFile("img/8tipos-removebg-preview.png")) return -1;
+    IntRect porcion_de_sprite(15,34,26,46);
+    Sprite animacion_abajo(sprites,porcion_de_sprite);
+    animacion_abajo.setPosition(714,356);
+    int num_sprite=2;
+    bool retorno=false;
+    Clock segundos;
+    ///---------------------------------------
+
     while (window.isOpen())
     {
         Event event;
@@ -520,6 +569,44 @@ int juego()
                 window.close();
             }
         }
+
+        ///Animaciones de los zombies ----
+        if (segundos.getElapsedTime().asSeconds()>0.375f) {
+        switch (num_sprite) {
+    ///left es X
+    ///top es Y
+    ///width es ancho
+    ///height es alto
+    case 1:
+        porcion_de_sprite.left=15;
+        porcion_de_sprite.top=34;
+        porcion_de_sprite.width=26;
+        porcion_de_sprite.height=46;
+        num_sprite=2;
+        retorno=false;
+        break;
+        case 2:
+            porcion_de_sprite.left=57;
+        porcion_de_sprite.top=32;
+        porcion_de_sprite.width=26;
+        porcion_de_sprite.height=47;
+            if (retorno) num_sprite=1;
+            else num_sprite=3;
+        break;
+        case 3:
+            porcion_de_sprite.left=99;
+        porcion_de_sprite.top=34;
+        porcion_de_sprite.width=27;
+        porcion_de_sprite.height=46;
+            num_sprite=2;
+            retorno=true;
+        break;
+        }
+        animacion_abajo.setTextureRect(porcion_de_sprite);
+        segundos.restart();
+        }
+        ///---------
+
         mousexy[0]=Mouse::getPosition(window).x;
         mousexy[1]=Mouse::getPosition(window).y;
         mousex.setVariable(mousexy[0]);
@@ -707,9 +794,8 @@ int juego()
             case -1:
                 menu.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(menu);
-                window.draw(nueva_partida.getBoton());
                 /// window.draw(texto_prueba);
-
+                window.draw(animacion_abajo);
                 window.draw(mousex.getTexto());
                 window.draw(mousey.getTexto());
 
