@@ -560,7 +560,7 @@ int juego()
                         menu_torre[i]=false;
                         if (contador_de_clicks>1)
                         {
-                            spawnear[i]=false;
+                            //spawnear[i]=false;
                         }
                         contador_de_clicks++;
 
