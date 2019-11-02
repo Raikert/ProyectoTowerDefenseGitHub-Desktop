@@ -53,7 +53,7 @@ int juego()
     animacion_abajo.setColor(Color::Transparent);
     int num_sprite=2;
     bool retorno=false;
-    Clock segundos;
+    Clock animaciones;
     ///---------------------------------------
 
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
@@ -576,7 +576,7 @@ int juego()
         }
 
         ///Animaciones de los zombies ----
-        if (segundos.getElapsedTime().asSeconds()>0.375f) {
+        if (animaciones.getElapsedTime().asSeconds()>0.375f) {
         switch (num_sprite) {
     ///left es X
     ///top es Y
@@ -611,7 +611,7 @@ int juego()
         for (a=0;a<cantidad_bichos;a++) {
         v[a].setTextureRect(porcion_de_sprite);
         }
-        segundos.restart();
+        animaciones.restart();
         }
         ///---------
 
