@@ -3,6 +3,59 @@
 
 int juego()
 {
+    ///------Animaciones de los zombies-------
+    ///Explicacion del IntRect o rectangulo de una imagen.
+
+    ///Imaginen que tienen un cuadro vacio, y a su vez tienen
+    ///la pintura en un paño de lana al que quieren poner en ese
+    ///cuadro, pero q tambien ustedes pretenden mostrar solo una
+    ///parte de ese paño. Si lo asociamos con esto seria asi:
+    ///El Sprite es el cuadro.
+    ///La textura es el paño o imagen.
+    ///lo que quieren mostrar es la variable de tipo IntRect.
+
+    ///ahora, una vez q montaron todo, lo que quieren hacer es
+    ///recortar el paño al cual montaron al cuadro, entonces como
+    ///se hace?
+    ///Primero crean una variable de tipó IntRect, que significa
+    ///rectangulo interior o zona de recorte. Ahora bien, que
+    ///significan todas esas coordenadas?.
+    ///Las primeras 2: tanto el 15 y el 34 es la posicion en donde
+    ///va a empezar ese rectangulo, igual q la posicion de los sprites
+    ///en la esquina izquierda superior, y los otros 2 son el ancho y
+    ///el alto de su rectangulo o recorte, el orden para las primeras
+    ///dos es igual a la q veniamos usando, primero en X, despues en Y
+    ///las otras 2 es primero el ancho, despues el alto.
+
+    ///Hasta ahora todo bien no?, eso espero xddd
+
+    ///Si se fijan mas abajo van a ver una variable nueva que se llama
+    ///Clock o tiempo, es una variable q desde q es declarada
+    ///cuenta tiempo, ya sea en segundos, minutos, lo q sea.
+    ///pero lo q usariamos nosotros seria mas q nada los segundos
+    ///asi q para obtener la cantidad de seg q tiene el CLock
+    ///hay q usar el metodo GetElapsedTime() pero q a su vez
+    ///nos entregue el tiempo en segundos entonces le agregamos
+    ///AsSeconds(), y asi obtendriamos el tiempo en seg q tiene
+    ///actualmente nuestro juego, sin contar los minutos obvio.
+    ///pero q me imagino q tambien se podra almacenar en otra variable
+    ///de tipo int y podriamos armar un relojito para el juego.
+
+    Texture sprites;
+    if (!sprites.loadFromFile("img/8tipos-removebg-preview.png")) return -1;
+    IntRect porcion_de_sprite(15,34,26,46);
+    Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
+    //--solo para mostrarlo en el menu jeje
+    animacion_muestra_menu=animacion_abajo;
+    animacion_muestra_menu.setPosition(668,317);
+    //-------
+    animacion_abajo.setPosition(285,0);
+    animacion_abajo.setColor(Color::Transparent);
+    int num_sprite=2;
+    bool retorno=false;
+    Clock segundos;
+    ///---------------------------------------
+
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
     int i,x,te,d;
 
@@ -15,7 +68,7 @@ int juego()
 
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
     const int cantidad_bichos=10;
-    const float velocidad=0.8;
+    const float velocidad=0.7;
     float opacidad_bichos[cantidad_bichos];
     for (i=0; i<cantidad_bichos; i++)
     {
@@ -27,7 +80,7 @@ int juego()
         return -10;
 
     Sprite v[cantidad_bichos];
-    cargar_vector_sprites(v,bicho.getSprite(),cantidad_bichos);
+    cargar_vector_sprites(v,animacion_abajo,cantidad_bichos);
 
     ///Camino lvl1 para modificaciones de colision por error de colisiones con los bichos - comentado
 
@@ -511,54 +564,6 @@ int juego()
     }
     ///-------------------------------
 
-    ///------Animaciones de los zombies-------
-    ///Explicacion del IntRect o rectangulo de una imagen.
-
-    ///Imaginen que tienen un cuadro vacio, y a su vez tienen
-    ///la pintura en un paño de lana al que quieren poner en ese
-    ///cuadro, pero q tambien ustedes pretenden mostrar solo una
-    ///parte de ese paño. Si lo asociamos con esto seria asi:
-    ///El Sprite es el cuadro.
-    ///La textura es el paño o imagen.
-    ///lo que quieren mostrar es la variable de tipo IntRect.
-
-    ///ahora, una vez q montaron todo, lo que quieren hacer es
-    ///recortar el paño al cual montaron al cuadro, entonces como
-    ///se hace?
-    ///Primero crean una variable de tipó IntRect, que significa
-    ///rectangulo interior o zona de recorte. Ahora bien, que
-    ///significan todas esas coordenadas?.
-    ///Las primeras 2: tanto el 15 y el 34 es la posicion en donde
-    ///va a empezar ese rectangulo, igual q la posicion de los sprites
-    ///en la esquina izquierda superior, y los otros 2 son el ancho y
-    ///el alto de su rectangulo o recorte, el orden para las primeras
-    ///dos es igual a la q veniamos usando, primero en X, despues en Y
-    ///las otras 2 es primero el ancho, despues el alto.
-
-    ///Hasta ahora todo bien no?, eso espero xddd
-
-    ///Si se fijan mas abajo van a ver una variable nueva que se llama
-    ///Clock o tiempo, es una variable q desde q es declarada
-    ///cuenta tiempo, ya sea en segundos, minutos, lo q sea.
-    ///pero lo q usariamos nosotros seria mas q nada los segundos
-    ///asi q para obtener la cantidad de seg q tiene el CLock
-    ///hay q usar el metodo GetElapsedTime() pero q a su vez
-    ///nos entregue el tiempo en segundos entonces le agregamos
-    ///AsSeconds(), y asi obtendriamos el tiempo en seg q tiene
-    ///actualmente nuestro juego, sin contar los minutos obvio.
-    ///pero q me imagino q tambien se podra almacenar en otra variable
-    ///de tipo int y podriamos armar un relojito para el juego.
-
-    Texture sprites;
-    if (!sprites.loadFromFile("img/8tipos-removebg-preview.png")) return -1;
-    IntRect porcion_de_sprite(15,34,26,46);
-    Sprite animacion_abajo(sprites,porcion_de_sprite);
-    animacion_abajo.setPosition(714,356);
-    int num_sprite=2;
-    bool retorno=false;
-    Clock segundos;
-    ///---------------------------------------
-
     while (window.isOpen())
     {
         Event event;
@@ -602,7 +607,10 @@ int juego()
             retorno=true;
         break;
         }
-        animacion_abajo.setTextureRect(porcion_de_sprite);
+        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+        for (a=0;a<cantidad_bichos;a++) {
+        v[a].setTextureRect(porcion_de_sprite);
+        }
         segundos.restart();
         }
         ///---------
@@ -786,7 +794,7 @@ int juego()
                         }
                     }
                 }
-                vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+10,v[i-1].getPosition().y+25);
+                vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+13,v[i-1].getPosition().y+48);
             }
             ///Pequeña maquina de estados
             switch (estados[i-1])
@@ -795,7 +803,7 @@ int juego()
                 menu.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(menu);
                 /// window.draw(texto_prueba);
-                window.draw(animacion_abajo);
+                window.draw(animacion_muestra_menu);
                 window.draw(mousex.getTexto());
                 window.draw(mousey.getTexto());
 
