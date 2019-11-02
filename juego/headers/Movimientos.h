@@ -1,6 +1,10 @@
 #ifndef MOVIMIENTOS_H_INCLUDED
 #define MOVIMIENTOS_H_INCLUDED
 
+using namespace std;
+using namespace sf;
+using namespace Collision;
+
 ///funciones hibridas con objetos
 
 void mov_obj_abajo(Sprite v[],int objeto,float velocidad_y)

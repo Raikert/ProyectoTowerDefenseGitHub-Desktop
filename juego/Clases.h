@@ -1,12 +1,5 @@
 #ifndef CLASES_H_INCLUDED
 #define CLASES_H_INCLUDED
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include "windows.h"
-#include <iostream>
-#include <cstdlib>
-#include <clocale>
-#include "Collision.hpp"
 
 using namespace std;
 using namespace sf;

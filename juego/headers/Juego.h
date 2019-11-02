@@ -1,6 +1,10 @@
 #ifndef JUEGO_H_INCLUDED
 #define JUEGO_H_INCLUDED
 
+using namespace std;
+using namespace sf;
+using namespace Collision;
+
 int juego()
 {
     ///------Animaciones de los zombies-------

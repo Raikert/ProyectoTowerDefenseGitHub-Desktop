@@ -1,6 +1,10 @@
 #ifndef COLISION_DANIO_H_INCLUDED
 #define COLISION_DANIO_H_INCLUDED
 
+using namespace std;
+using namespace sf;
+using namespace Collision;
+
 /*
     /// Creacion de el texto vida ----------------------------------------
     Font tipo_texto_vida;
