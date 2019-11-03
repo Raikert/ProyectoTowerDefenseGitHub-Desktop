@@ -46,7 +46,8 @@ int juego()
     ///de tipo int y podriamos armar un relojito para el juego.
 
     Texture sprites;
-    if (!sprites.loadFromFile("img/8tipos-removebg-preview.png")) return -1;
+    if (!sprites.loadFromFile("img/8tipos-removebg-preview.png"))
+        return -1;
     IntRect porcion_de_sprite(15,34,26,46);
     Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
     //--solo para mostrarlo en el menu jeje
@@ -167,6 +168,10 @@ int juego()
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Estados
+    bool menu_abierto=false;
+    bool mouse_afuera=false;
+
     /// Variables para la verificacion de clicks y demas
     int posicion_clickeada;
     int contador_de_clicks=0;
@@ -469,7 +474,7 @@ int juego()
 
     /// Sprites
     Sprite Sprite_menu_torre[tam_torres], Sprite_torre_1[tam_torres], Sprite_torre_2[tam_torres], Sprite_torre_3[tam_torres];
-    Sprite Sprite_rango_torres[tam_torres];
+    Sprite Sprite_rango_torre_t1[tam_torres], Sprite_rango_torre_t2[tam_torres], Sprite_rango_torre_t3[tam_torres];
     for (x=0; x<tam_torres; x++)
     {
         ///menu
@@ -484,9 +489,15 @@ int juego()
         ///torre 3
         Sprite_torre_3[x].setTexture(textura_torre_3);
         Sprite_torre_3[x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
-        ///rango de daño
-        Sprite_rango_torres[x].setTexture(rango_torre);
-        Sprite_rango_torres[x].setColor(Color(255,255,255,100));
+        ///rango de daño T1
+        Sprite_rango_torre_t1[x].setTexture(rango_torre);
+        Sprite_rango_torre_t1[x].setColor(Color(255,255,255,100));
+        ///rango de daño T2
+        Sprite_rango_torre_t2[x].setTexture(rango_torre);
+        Sprite_rango_torre_t2[x].setColor(Color(1,1,255,50));
+        ///rango de daño T3
+        Sprite_rango_torre_t3[x].setTexture(rango_torre);
+        Sprite_rango_torre_t3[x].setColor(Color(100,100,100,100));
     }
     int a = 0;
     /// ----------------------------------------------------------------------------------------------------------------------
@@ -580,42 +591,47 @@ int juego()
         }
 
         ///Animaciones de los zombies ----
-        if (animaciones.getElapsedTime().asSeconds()>0.375f) {
-        switch (num_sprite) {
-    ///left es X
-    ///top es Y
-    ///width es ancho
-    ///height es alto
-    case 1:
-        porcion_de_sprite.left=15;
-        porcion_de_sprite.top=34;
-        porcion_de_sprite.width=26;
-        porcion_de_sprite.height=46;
-        num_sprite=2;
-        retorno=false;
-        break;
-        case 2:
-            porcion_de_sprite.left=57;
-        porcion_de_sprite.top=32;
-        porcion_de_sprite.width=26;
-        porcion_de_sprite.height=47;
-            if (retorno) num_sprite=1;
-            else num_sprite=3;
-        break;
-        case 3:
-            porcion_de_sprite.left=99;
-        porcion_de_sprite.top=34;
-        porcion_de_sprite.width=27;
-        porcion_de_sprite.height=46;
-            num_sprite=2;
-            retorno=true;
-        break;
-        }
-        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-        for (a=0;a<cantidad_bichos;a++) {
-        v[a].setTextureRect(porcion_de_sprite);
-        }
-        animaciones.restart();
+        if (animaciones.getElapsedTime().asSeconds()>0.375f)
+        {
+            switch (num_sprite)
+            {
+            ///left es X
+            ///top es Y
+            ///width es ancho
+            ///height es alto
+            case 1:
+                porcion_de_sprite.left=15;
+                porcion_de_sprite.top=34;
+                porcion_de_sprite.width=26;
+                porcion_de_sprite.height=46;
+                num_sprite=2;
+                retorno=false;
+                break;
+            case 2:
+                porcion_de_sprite.left=57;
+                porcion_de_sprite.top=32;
+                porcion_de_sprite.width=26;
+                porcion_de_sprite.height=47;
+                if (retorno)
+                    num_sprite=1;
+                else
+                    num_sprite=3;
+                break;
+            case 3:
+                porcion_de_sprite.left=99;
+                porcion_de_sprite.top=34;
+                porcion_de_sprite.width=27;
+                porcion_de_sprite.height=46;
+                num_sprite=2;
+                retorno=true;
+                break;
+            }
+            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+            for (a=0; a<cantidad_bichos; a++)
+            {
+                v[a].setTextureRect(porcion_de_sprite);
+            }
+            animaciones.restart();
         }
         ///---------
 
@@ -642,6 +658,7 @@ int juego()
                         boolmusicajuego=true;
                     }
                 }
+                /// Torres
                 for (i=0; i<tam_torres; i++)
                 {
                     if (mousexy[0]>=torres[i].getEsix()&&mousexy[0]<=torres[i].getEsdx()&&mousexy[1]>=torres[i].getEsiy()&&mousexy[1]<=torres[i].getEidy())
@@ -677,23 +694,23 @@ int juego()
                     {
                         for(x=0; x<tam_torres; x++)
                         {
-                            if (spawnear[i]==true)
+                            if (Ocupado[i]==false&&spawnear[i]==true)
                             {
-                                if (Ocupado[i]==false&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                                if (mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
                                 {
                                     /// Se spawnea la torre 1
                                     spawn_torre[i][0]=true;
                                     /// El espacio de la torre 1 esta siendo ocupado por la torre 1
                                     Ocupado[i]=true;
                                 }
-                                if (Ocupado[i]==false&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                                if (mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
                                 {
                                     /// Se spawnea la torre 2
                                     spawn_torre[i][1]=true;
                                     /// El espacio de la torre 1 esta siendo ocupado por la torre 2
                                     Ocupado[i]=true;
                                 }
-                                if (Ocupado[i]==false&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                                if (mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
                                 {
                                     /// Se spawnea la torre 3
                                     spawn_torre[i][2]=true;
@@ -709,8 +726,8 @@ int juego()
             }
         }
         else
-            ///una vez que se solto el mouse, recien se habilita para una nueva accion
-            habilitacionmouse=true;
+        ///una vez que se solto el mouse, recien se habilita para una nueva accion
+        habilitacionmouse=true;
 
         window.clear();
 
@@ -730,7 +747,36 @@ int juego()
                     musica_juego.play();
                     boolmusica=true;
                 }
+///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
+                for (x=0; x<tam_torres; x++)
+                {
+                    for(int y=0; y<3; y++)
+                    {
+                        if (spawn_torre[x][y]==true)
+                        {
+                            switch (y)
+                            {
+                            case 0:
+                                Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
+                                window.draw(Sprite_rango_torre_t1[x]);
+                                window.draw(Sprite_torre_1[x]);
+                                break;
+                            case 1:
+                                Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
+                                window.draw(Sprite_rango_torre_t2[x]);
+                                window.draw(Sprite_torre_2[x]);
+                                break;
+                            case 2:
+                                Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
+                                window.draw(Sprite_rango_torre_t3[x]);
+                                window.draw(Sprite_torre_3[x]);
+                                break;
+                            }
 
+                        }
+                    }
+                }
+///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
                 for (d=1; d<=objetos; d++)
                 {
                     if (vidas[d-1]>0)
@@ -750,45 +796,48 @@ int juego()
                     }
                     */
                 }
-///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
                 for (x=0; x<tam_torres; x++)
                 {
-                    for(int y=0; y<3; y++)
-                    {
-                        if (spawn_torre[x][y]==true)
-                        {
-                            switch (y)
-                            {
-                            case 0:
-                                window.draw(Sprite_torre_1[x]);
-                                window.draw(Sprite_rango_torres[x]);
-                                break;
-                            case 1:
-                                window.draw(Sprite_torre_2[x]);
-                                window.draw(Sprite_rango_torres[x]);
-                                break;
-                            case 2:
-                                window.draw(Sprite_torre_3[x]);
-                                window.draw(Sprite_rango_torres[x]);
-                                break;
-                            }
-                            Sprite_rango_torres[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
-                        }
-                    }
                     if (menu_torre[x]==true)
                     {
                         window.draw(Sprite_menu_torre[x]);
                     }
                 }
-///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
-                for (int x=0; x<tam_torres; x++)
+
+                for (x=0; x<tam_torres; x++)
                 {
                     /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
-                    if (PixelPerfectTest(v[i-1],Sprite_rango_torres[x])==true)
+                    if (PixelPerfectTest(v[i-1],Sprite_rango_torre_t1[x]))
+                    {
+                        if (tiempo%20==0)
+                        {
+                            vidas[i-1]--;
+                            vidas_texto[i-1].setVariable(vidas[i-1]);
+                            v[i-1].setColor(Color(50,50,77,opacidad_bichos[i-1]));
+                        }
+                        else
+                        {
+                            v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                        }
+                    }
+                    if (PixelPerfectTest(v[i-1],Sprite_rango_torre_t2[x]))
+                    {
+                        if (tiempo%100==0)
+                        {
+                            vidas[i-1]-=15;
+                            vidas_texto[i-1].setVariable(vidas[i-1]);
+                            v[i-1].setColor(Color(50,50,77,opacidad_bichos[i-1]));
+                        }
+                        else
+                        {
+                            v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                        }
+                    }
+                    if (PixelPerfectTest(v[i-1],Sprite_rango_torre_t3[x]))
                     {
                         if (tiempo%50==0)
                         {
-                            vidas[i-1]--;
+                            vidas[i-1]-=3;
                             vidas_texto[i-1].setVariable(vidas[i-1]);
                             v[i-1].setColor(Color(50,50,77,opacidad_bichos[i-1]));
                         }
