@@ -46,9 +46,9 @@ int juego()
     ///de tipo int y podriamos armar un relojito para el juego.
 
     Texture sprites;
-    if (!sprites.loadFromFile("img/8tipos-removebg-preview.png"))
+    if (!sprites.loadFromFile("img/zombie.png"))
         return -1;
-    IntRect porcion_de_sprite(15,34,26,46);
+    IntRect porcion_de_sprite(0,0,36,50);
     Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
     //--solo para mostrarlo en el menu jeje
     animacion_muestra_menu=animacion_abajo;
@@ -59,6 +59,9 @@ int juego()
     int num_sprite=2;
     bool retorno=false;
     Clock animaciones;
+
+
+
     ///---------------------------------------
 
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
@@ -591,7 +594,9 @@ int juego()
         }
 
         ///Animaciones de los zombies ----
-        if (animaciones.getElapsedTime().asSeconds()>0.375f)
+/*
+        ///ANIMACION ARRIBA
+        if (animaciones.getElapsedTime().asSeconds()>0.200f)
         {
             switch (num_sprite)
             {
@@ -600,28 +605,28 @@ int juego()
             ///width es ancho
             ///height es alto
             case 1:
-                porcion_de_sprite.left=15;
-                porcion_de_sprite.top=34;
-                porcion_de_sprite.width=26;
-                porcion_de_sprite.height=46;
+                porcion_de_sprite.left=0;
+                porcion_de_sprite.top=0;
+                porcion_de_sprite.width=30;
+                porcion_de_sprite.height=48;
                 num_sprite=2;
                 retorno=false;
                 break;
             case 2:
-                porcion_de_sprite.left=57;
-                porcion_de_sprite.top=32;
-                porcion_de_sprite.width=26;
-                porcion_de_sprite.height=47;
+                porcion_de_sprite.left=40;
+                porcion_de_sprite.top=0;
+                porcion_de_sprite.width=32;
+                porcion_de_sprite.height=48;
                 if (retorno)
                     num_sprite=1;
                 else
                     num_sprite=3;
                 break;
             case 3:
-                porcion_de_sprite.left=99;
-                porcion_de_sprite.top=34;
-                porcion_de_sprite.width=27;
-                porcion_de_sprite.height=46;
+                porcion_de_sprite.left=83;
+                porcion_de_sprite.top=0;
+                porcion_de_sprite.width=28;
+                porcion_de_sprite.height=49;
                 num_sprite=2;
                 retorno=true;
                 break;
@@ -633,6 +638,135 @@ int juego()
             }
             animaciones.restart();
         }
+
+
+        ///ANIMACION DERECHA
+        if (animaciones.getElapsedTime().asSeconds()>0.200f)
+        {
+            switch (num_sprite)
+            {
+            case 1:
+                porcion_de_sprite.left=0;
+                porcion_de_sprite.top=54;
+                porcion_de_sprite.width=30;
+                porcion_de_sprite.height=48;
+                num_sprite=2;
+                retorno=false;
+                break;
+            case 2:
+                porcion_de_sprite.left=40;
+                porcion_de_sprite.top=54;
+                porcion_de_sprite.width=32;
+                porcion_de_sprite.height=48;
+                if (retorno)
+                    num_sprite=1;
+                else
+                    num_sprite=3;
+                break;
+            case 3:
+                porcion_de_sprite.left=83;
+                porcion_de_sprite.top=54;
+                porcion_de_sprite.width=28;
+                porcion_de_sprite.height=49;
+                num_sprite=2;
+                retorno=true;
+                break;
+            }
+            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+            for (a=0; a<cantidad_bichos; a++)
+            {
+                v[a].setTextureRect(porcion_de_sprite);
+            }
+            animaciones.restart();
+        }
+        */
+
+        ///ANIMACION ABAJO
+
+                if (animaciones.getElapsedTime().asSeconds()>0.200f)
+        {
+            switch (num_sprite)
+            {
+            case 1:
+                porcion_de_sprite.left=0;
+                porcion_de_sprite.top=111;
+                porcion_de_sprite.width=30;
+                porcion_de_sprite.height=48;
+                num_sprite=2;
+                retorno=false;
+                break;
+            case 2:
+                porcion_de_sprite.left=40;
+                porcion_de_sprite.top=111;
+                porcion_de_sprite.width=32;
+                porcion_de_sprite.height=48;
+                if (retorno)
+                    num_sprite=1;
+                else
+                    num_sprite=3;
+                break;
+            case 3:
+                porcion_de_sprite.left=83;
+                porcion_de_sprite.top=111;
+                porcion_de_sprite.width=28;
+                porcion_de_sprite.height=49;
+                num_sprite=2;
+                retorno=true;
+                break;
+            }
+            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+            for (a=0; a<cantidad_bichos; a++)
+            {
+                v[a].setTextureRect(porcion_de_sprite);
+            }
+            animaciones.restart();
+        }
+
+
+       /// ANIMACION IZQUIERDA
+        /*
+
+
+                if (animaciones.getElapsedTime().asSeconds()>0.200f)
+        {
+            switch (num_sprite)
+            {
+            case 1:
+                porcion_de_sprite.left=0;
+                porcion_de_sprite.top=166;
+                porcion_de_sprite.width=30;
+                porcion_de_sprite.height=48;
+                num_sprite=2;
+                retorno=false;
+                break;
+            case 2:
+                porcion_de_sprite.left=40;
+                porcion_de_sprite.top=166;
+                porcion_de_sprite.width=32;
+                porcion_de_sprite.height=48;
+                if (retorno)
+                    num_sprite=1;
+                else
+                    num_sprite=3;
+                break;
+            case 3:
+                porcion_de_sprite.left=80;
+                porcion_de_sprite.top=166;
+                porcion_de_sprite.width=28;
+                porcion_de_sprite.height=49;
+                num_sprite=2;
+                retorno=true;
+                break;
+            }
+            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+            for (a=0; a<cantidad_bichos; a++)
+            {
+                v[a].setTextureRect(porcion_de_sprite);
+            }
+            animaciones.restart();
+        }
+*/
+
         ///---------
 
         mousexy[0]=Mouse::getPosition(window).x;
