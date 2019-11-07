@@ -7,6 +7,11 @@ using namespace Collision;
 
 int juego()
 {
+    const int cantidad_bichos=10;
+
+    ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
+    int i,x,te,d;
+
     ///------Animaciones de los zombies-------
     ///Explicacion del IntRect o rectangulo de una imagen.
 
@@ -56,16 +61,18 @@ int juego()
     //-------
     animacion_abajo.setPosition(285,0);
     animacion_abajo.setColor(Color::Transparent);
-    int num_sprite=2;
-    bool retorno=false;
-    Clock animaciones;
+    int num_sprite[cantidad_bichos];
+    for (i=0; i<cantidad_bichos; i++)
+    {
+        num_sprite[i]=2;
+    }
+    bool retorno[cantidad_bichos];
+    ponerEnFalso(retorno,cantidad_bichos);
+    Clock animaciones[cantidad_bichos];
 
 
 
     ///---------------------------------------
-
-    ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d;
 
     ///definicion de la ventana del juego
     RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
@@ -75,7 +82,6 @@ int juego()
     window.setFramerateLimit(60);
 
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
-    const int cantidad_bichos=10;
     const float velocidad=0.7;
     float opacidad_bichos[cantidad_bichos];
     for (i=0; i<cantidad_bichos; i++)
@@ -594,178 +600,14 @@ int juego()
         }
 
         ///Animaciones de los zombies ----
-/*
-        ///ANIMACION ARRIBA
-        if (animaciones.getElapsedTime().asSeconds()>0.200f)
+
+        for(i=1; i<cantidad_bichos; i++)
         {
-            switch (num_sprite)
-            {
-            ///left es X
-            ///top es Y
-            ///width es ancho
-            ///height es alto
-            case 1:
-                porcion_de_sprite.left=0;
-                porcion_de_sprite.top=0;
-                porcion_de_sprite.width=30;
-                porcion_de_sprite.height=48;
-                num_sprite=2;
-                retorno=false;
-                break;
-            case 2:
-                porcion_de_sprite.left=40;
-                porcion_de_sprite.top=0;
-                porcion_de_sprite.width=32;
-                porcion_de_sprite.height=48;
-                if (retorno)
-                    num_sprite=1;
-                else
-                    num_sprite=3;
-                break;
-            case 3:
-                porcion_de_sprite.left=83;
-                porcion_de_sprite.top=0;
-                porcion_de_sprite.width=28;
-                porcion_de_sprite.height=49;
-                num_sprite=2;
-                retorno=true;
-                break;
-            }
-            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
             for (a=0; a<cantidad_bichos; a++)
             {
-                v[a].setTextureRect(porcion_de_sprite);
+
             }
-            animaciones.restart();
         }
-
-
-        ///ANIMACION DERECHA
-        if (animaciones.getElapsedTime().asSeconds()>0.200f)
-        {
-            switch (num_sprite)
-            {
-            case 1:
-                porcion_de_sprite.left=0;
-                porcion_de_sprite.top=54;
-                porcion_de_sprite.width=30;
-                porcion_de_sprite.height=48;
-                num_sprite=2;
-                retorno=false;
-                break;
-            case 2:
-                porcion_de_sprite.left=40;
-                porcion_de_sprite.top=54;
-                porcion_de_sprite.width=32;
-                porcion_de_sprite.height=48;
-                if (retorno)
-                    num_sprite=1;
-                else
-                    num_sprite=3;
-                break;
-            case 3:
-                porcion_de_sprite.left=83;
-                porcion_de_sprite.top=54;
-                porcion_de_sprite.width=28;
-                porcion_de_sprite.height=49;
-                num_sprite=2;
-                retorno=true;
-                break;
-            }
-            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-            for (a=0; a<cantidad_bichos; a++)
-            {
-                v[a].setTextureRect(porcion_de_sprite);
-            }
-            animaciones.restart();
-        }
-        */
-
-        ///ANIMACION ABAJO
-
-                if (animaciones.getElapsedTime().asSeconds()>0.200f)
-        {
-            switch (num_sprite)
-            {
-            case 1:
-                porcion_de_sprite.left=0;
-                porcion_de_sprite.top=111;
-                porcion_de_sprite.width=30;
-                porcion_de_sprite.height=48;
-                num_sprite=2;
-                retorno=false;
-                break;
-            case 2:
-                porcion_de_sprite.left=40;
-                porcion_de_sprite.top=111;
-                porcion_de_sprite.width=32;
-                porcion_de_sprite.height=48;
-                if (retorno)
-                    num_sprite=1;
-                else
-                    num_sprite=3;
-                break;
-            case 3:
-                porcion_de_sprite.left=83;
-                porcion_de_sprite.top=111;
-                porcion_de_sprite.width=28;
-                porcion_de_sprite.height=49;
-                num_sprite=2;
-                retorno=true;
-                break;
-            }
-            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-            for (a=0; a<cantidad_bichos; a++)
-            {
-                v[a].setTextureRect(porcion_de_sprite);
-            }
-            animaciones.restart();
-        }
-
-
-       /// ANIMACION IZQUIERDA
-        /*
-
-
-                if (animaciones.getElapsedTime().asSeconds()>0.200f)
-        {
-            switch (num_sprite)
-            {
-            case 1:
-                porcion_de_sprite.left=0;
-                porcion_de_sprite.top=166;
-                porcion_de_sprite.width=30;
-                porcion_de_sprite.height=48;
-                num_sprite=2;
-                retorno=false;
-                break;
-            case 2:
-                porcion_de_sprite.left=40;
-                porcion_de_sprite.top=166;
-                porcion_de_sprite.width=32;
-                porcion_de_sprite.height=48;
-                if (retorno)
-                    num_sprite=1;
-                else
-                    num_sprite=3;
-                break;
-            case 3:
-                porcion_de_sprite.left=80;
-                porcion_de_sprite.top=166;
-                porcion_de_sprite.width=28;
-                porcion_de_sprite.height=49;
-                num_sprite=2;
-                retorno=true;
-                break;
-            }
-            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-            for (a=0; a<cantidad_bichos; a++)
-            {
-                v[a].setTextureRect(porcion_de_sprite);
-            }
-            animaciones.restart();
-        }
-*/
 
         ///---------
 
@@ -860,8 +702,8 @@ int juego()
             }
         }
         else
-        ///una vez que se solto el mouse, recien se habilita para una nueva accion
-        habilitacionmouse=true;
+            ///una vez que se solto el mouse, recien se habilita para una nueva accion
+            habilitacionmouse=true;
 
         window.clear();
 
@@ -983,6 +825,174 @@ int juego()
                 }
                 vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+13,v[i-1].getPosition().y+48);
             }
+
+            switch (estados[i-1])
+            {
+            case 4:
+                ///ANIMACION ARRIBA
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    ///left es X
+                    ///top es Y
+                    ///width es ancho
+                    ///height es alto
+                    case 1:
+                        porcion_de_sprite.left=0;
+                        porcion_de_sprite.top=0;
+                        porcion_de_sprite.width=30;
+                        porcion_de_sprite.height=48;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=40;
+                        porcion_de_sprite.top=0;
+                        porcion_de_sprite.width=32;
+                        porcion_de_sprite.height=48;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=83;
+                        porcion_de_sprite.top=0;
+                        porcion_de_sprite.width=28;
+                        porcion_de_sprite.height=49;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            case 3:
+            case 5:
+            case 6:
+                ///ANIMACION DERECHA
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=0;
+                        porcion_de_sprite.top=54;
+                        porcion_de_sprite.width=30;
+                        porcion_de_sprite.height=48;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=40;
+                        porcion_de_sprite.top=54;
+                        porcion_de_sprite.width=32;
+                        porcion_de_sprite.height=48;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=83;
+                        porcion_de_sprite.top=54;
+                        porcion_de_sprite.width=28;
+                        porcion_de_sprite.height=49;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            case 0:
+            case 2:
+            case -1:
+                ///ANIMACION ABAJO
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=0;
+                        porcion_de_sprite.top=111;
+                        porcion_de_sprite.width=30;
+                        porcion_de_sprite.height=48;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=40;
+                        porcion_de_sprite.top=111;
+                        porcion_de_sprite.width=32;
+                        porcion_de_sprite.height=48;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=83;
+                        porcion_de_sprite.top=111;
+                        porcion_de_sprite.width=28;
+                        porcion_de_sprite.height=49;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            case 1:
+                /// ANIMACION IZQUIERDA
+
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=0;
+                        porcion_de_sprite.top=166;
+                        porcion_de_sprite.width=30;
+                        porcion_de_sprite.height=48;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=40;
+                        porcion_de_sprite.top=166;
+                        porcion_de_sprite.width=32;
+                        porcion_de_sprite.height=48;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=80;
+                        porcion_de_sprite.top=166;
+                        porcion_de_sprite.width=28;
+                        porcion_de_sprite.height=49;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            default:
+                break;
+            }
+
             ///Pequeña maquina de estados
             switch (estados[i-1])
             {
