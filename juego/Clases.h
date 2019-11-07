@@ -158,6 +158,19 @@ public:
     }
 };
 
+/*
+
+class Coordenada{
+    float x, y;
+    public:
+
+
+};
+
+Coordenada si, sd, ii, id;
+si.getX()
+
+*/
 class Boton
 {
 private:

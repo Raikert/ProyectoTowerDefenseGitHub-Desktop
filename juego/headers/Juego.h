@@ -12,6 +12,15 @@ int juego()
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
     int i,x,te,d;
 
+
+    /// VARIABLES DE MONSTRUOS
+    int monstruos_lvl_1=2;
+    int monstruos_lvl_2=2;
+    int monstruos_lvl_3=2;
+
+    /// VARIABLE QUE CUENTA LOS MONSTRUOS
+    int monstruos_en_juego=0;
+
     ///------Animaciones de los zombies-------
     ///Explicacion del IntRect o rectangulo de una imagen.
 
@@ -177,6 +186,25 @@ int juego()
     Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
+    ///-----Dinero de juego-----
+    int dinero;
+    dinero=1000;
+    Texto dinero_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",dinero,20,0,0);
+    dinero_texto.setVariable(dinero);
+    dinero_texto.setTransparencia(255);
+    dinero_texto.setPosicion(940,117);
+
+    ///-----Vida de juego-----
+    int vida_juego;
+    vida_juego=1000;
+    Texto vida_juego_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vida_juego,20,0,0);
+    vida_juego_texto.setVariable(vida_juego);
+    vida_juego_texto.setTransparencia(255);
+    vida_juego_texto.setPosicion(940,138);
+
+    /// VECTOR DE BANDERAS PARA LA MUERTE DE LOS BICHOS PARA OBTENER DINERO:
+    bool muerto_por_1ra_vez[cantidad_bichos];
+
     /// Estados
     bool menu_abierto=false;
     bool mouse_afuera=false;
@@ -503,6 +531,7 @@ int juego()
         Sprite_rango_torre_t1[x].setColor(Color(255,255,255,100));
         ///rango de daño T2
         Sprite_rango_torre_t2[x].setTexture(rango_torre);
+        //Sprite_rango_torre_t2[x].setScale(1,1);
         Sprite_rango_torre_t2[x].setColor(Color(1,1,255,50));
         ///rango de daño T3
         Sprite_rango_torre_t3[x].setTexture(rango_torre);
@@ -672,26 +701,32 @@ int juego()
                         {
                             if (Ocupado[i]==false&&spawnear[i]==true)
                             {
-                                if (mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                                if (dinero>=100&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
                                 {
                                     /// Se spawnea la torre 1
                                     spawn_torre[i][0]=true;
                                     /// El espacio de la torre 1 esta siendo ocupado por la torre 1
                                     Ocupado[i]=true;
+                                    dinero-=100;
+                                    dinero_texto.setVariable(dinero);
                                 }
-                                if (mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                                if (dinero>=200&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
                                 {
                                     /// Se spawnea la torre 2
                                     spawn_torre[i][1]=true;
                                     /// El espacio de la torre 1 esta siendo ocupado por la torre 2
                                     Ocupado[i]=true;
+                                    dinero-=200;
+                                    dinero_texto.setVariable(dinero);
                                 }
-                                if (mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                                if (dinero>=150&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
                                 {
                                     /// Se spawnea la torre 3
                                     spawn_torre[i][2]=true;
                                     /// El espacio de la torre 1 esta siendo ocupado por la torre 3
                                     Ocupado[i]=true;
+                                    dinero-=150;
+                                    dinero_texto.setVariable(dinero);
                                 }
                             }
                         }
@@ -711,13 +746,19 @@ int juego()
         {
             if (estados[i-1]!=-1)
             {
+                /// MAPA DEL JUEGO
                 window.draw(mapa);
-
+                /// COORDENADAS DEL MOUSE - MOMENTANEO
                 window.draw(mousex.getTexto());
                 window.draw(mousey.getTexto());
-
+                /// VARIABLE TIEMPO - MOMENTANEO
                 window.draw(tiempo_texto.getTexto());
+                /// VIDA DEL JUEGO
+                window.draw(vida_juego_texto.getTexto());
+                /// DINERO DEL JUEGO
+                window.draw(dinero_texto.getTexto());
 
+                /// REPRODUCTOR DE MUSICA
                 if (!boolmusica)
                 {
                     musica_juego.play();
@@ -759,6 +800,12 @@ int juego()
                     {
                         window.draw(v[d-1]);
                         window.draw(vidas_texto[d-1].getTexto());
+                    }
+                    else if (muerto_por_1ra_vez[d-1]==false && estados[d-1]!=7)
+                    {
+                        dinero+=100;
+                        dinero_texto.setVariable(dinero);
+                        muerto_por_1ra_vez[d-1]=true;
                     }
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
@@ -1114,6 +1161,11 @@ int juego()
                 else
                 {
                     estados[i-1]=7;
+                    if(vidas[i-1]>0)
+                    {
+                        vida_juego-=vidas[i-1];
+                        vida_juego_texto.setVariable(vida_juego);
+                    }
                     vidas[i-1]=0;
                 }
                 break;
