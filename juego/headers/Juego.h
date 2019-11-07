@@ -13,13 +13,21 @@ int juego()
     int i,x,te,d;
 
 
-    /// VARIABLES DE MONSTRUOS
+    /** /// VARIABLES DE MONSTRUOS
     int monstruos_lvl_1=2;
     int monstruos_lvl_2=2;
     int monstruos_lvl_3=2;
 
     /// VARIABLE QUE CUENTA LOS MONSTRUOS
     int monstruos_en_juego=0;
+    */
+
+    /// PRUEBA CON LA CLASE COLA
+    Cola Cola_Torre[9];
+    for (int o=0; o<9; o++)
+    {
+        Cola_Torre[o]=Cola (10);
+    }
 
     ///------Animaciones de los zombies-------
     ///Explicacion del IntRect o rectangulo de una imagen.
@@ -528,13 +536,18 @@ int juego()
         Sprite_torre_3[x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
         ///rango de daño T1
         Sprite_rango_torre_t1[x].setTexture(rango_torre);
+        Sprite_rango_torre_t1[x].scale(1,1.22);
+        Sprite_rango_torre_t1[x].setPosition(1000,600);
         Sprite_rango_torre_t1[x].setColor(Color(255,255,255,100));
         ///rango de daño T2
         Sprite_rango_torre_t2[x].setTexture(rango_torre);
-        //Sprite_rango_torre_t2[x].setScale(1,1);
+        Sprite_rango_torre_t2[x].scale(1,1.22);
+        Sprite_rango_torre_t2[x].setPosition(1000,600);
         Sprite_rango_torre_t2[x].setColor(Color(1,1,255,50));
         ///rango de daño T3
         Sprite_rango_torre_t3[x].setTexture(rango_torre);
+        Sprite_rango_torre_t3[x].scale(1,1.22);
+        Sprite_rango_torre_t3[x].setPosition(1000,600);
         Sprite_rango_torre_t3[x].setColor(Color(100,100,100,100));
     }
     int a = 0;
@@ -774,17 +787,17 @@ int juego()
                             switch (y)
                             {
                             case 0:
-                                Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
+                                Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
                                 window.draw(Sprite_rango_torre_t1[x]);
                                 window.draw(Sprite_torre_1[x]);
                                 break;
                             case 1:
-                                Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
+                                Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
                                 window.draw(Sprite_rango_torre_t2[x]);
                                 window.draw(Sprite_torre_2[x]);
                                 break;
                             case 2:
-                                Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-40);
+                                Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
                                 window.draw(Sprite_rango_torre_t3[x]);
                                 window.draw(Sprite_torre_3[x]);
                                 break;

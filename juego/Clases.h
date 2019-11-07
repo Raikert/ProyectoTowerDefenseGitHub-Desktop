@@ -8,6 +8,53 @@ using namespace Collision;
 setlocale(LC_ALL,"spanish");
 */
 
+/// CLASE COLA --------------------------------------------------------------
+class Cola
+{
+private:
+    int punto_inicio, punto_fin, tamanio;
+    int *cola_dinamica;
+public:
+    Cola(int);
+    ~Cola()
+    {
+        delete cola_dinamica;
+    }
+    bool agregar(int);
+    bool sacar(int &);
+};
+
+Cola::Cola(int t=0)
+{
+    tamanio=t;
+    cola_dinamica=new int[tamanio];
+    if (cola_dinamica==NULL)
+    {
+        exit(1);
+    }
+    punto_inicio=punto_fin=0;
+}
+
+bool Cola::agregar(int x)
+{
+    if (punto_fin=tamanio)
+        return false;
+    cola_dinamica[punto_fin]=x;
+    punto_fin++;
+    return true;
+}
+
+bool Cola::sacar(int &x)
+{
+    if (punto_inicio==punto_fin) return false;
+    x=cola_dinamica[punto_inicio];
+    punto_inicio++;
+    return true;
+}
+/// ------------------------------------------------------------------------------------
+
+
+/// CLASE TEXTO
 class Texto
 {
 private:
@@ -61,11 +108,13 @@ public:
     {
         texto.setFillColor(color);
     }
-    void setPosicion (float x,float y) {
-    texto.setPosition(x,y);
+    void setPosicion (float x,float y)
+    {
+        texto.setPosition(x,y);
     }
-    void setTransparencia(float t) {
-    texto.setFillColor(Color(0,0,0,t));
+    void setTransparencia(float t)
+    {
+        texto.setFillColor(Color(0,0,0,t));
     }
 };
 
