@@ -20,11 +20,12 @@ public:
     {
         delete cola_dinamica;
     }
+    Cola () {}
     bool agregar(int);
     bool sacar(int &);
 };
 
-Cola::Cola(int t=0)
+Cola::Cola(int t)
 {
     tamanio=t;
     cola_dinamica=new int[tamanio];
@@ -37,7 +38,7 @@ Cola::Cola(int t=0)
 
 bool Cola::agregar(int x)
 {
-    if (punto_fin=tamanio)
+    if (punto_fin==tamanio)
         return false;
     cola_dinamica[punto_fin]=x;
     punto_fin++;

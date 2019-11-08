@@ -17,6 +17,5 @@ int main()
 {
     ///puede devolver tanto un 0 si el programa termino bien, como otro valor
     ///xq sino nunca sabriamos si un archivo se cargo correctamente, que main mas chiquito ajajaj
-    int variable_programa=juego();
-    return variable_programa;
+    return juego();
 }
