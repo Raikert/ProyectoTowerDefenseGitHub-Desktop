@@ -164,9 +164,9 @@ int juego()
 
     ///Si gente, le puse MUSICA WEEEEE
     Music musica_menu,musica_juego;
-    if (!musica_menu.openFromFile("musica/song_sneaky_driver.ogg"))
+    if (!musica_menu.openFromFile("musica/menu_song.ogg"))
         return -1;
-    if (!musica_juego.openFromFile("musica/glorious morning.ogg"))
+    if (!musica_juego.openFromFile("musica/lvl1_song.ogg"))
         return -1;
 
     ///volumen de la musica del menu
