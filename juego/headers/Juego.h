@@ -7,6 +7,11 @@ using namespace Collision;
 
 int juego()
 {
+    ///variables de la ventana del juego
+    int tamx,tamy,tamx_actual=1000,tamy_actual=600;
+    Vector2f pixeles_convertidos;
+    ///---------------------------------
+
     const int cantidad_bichos=10;
 
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
@@ -92,12 +97,11 @@ int juego()
     ///---------------------------------------
 
     ///definicion de la ventana del juego
-    RenderWindow window(VideoMode(1000, 600), "Tower Defense - La defensa del fuerte nicomando");
+    RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte nicomando");
 
     ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
-
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
     const float velocidad=0.7;
     float opacidad_bichos[cantidad_bichos];
@@ -640,7 +644,6 @@ int juego()
                 window.close();
             }
         }
-
         ///Animaciones de los zombies ----
 
         for(i=1; i<cantidad_bichos; i++)
@@ -653,8 +656,19 @@ int juego()
 
         ///---------
 
+        ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
+        tamx=window.getSize().x;
+        tamy=window.getSize().y;
+        if (tamx!=tamx_actual||tamy!=tamy_actual) {
+        pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
+        mousexy[0]=pixeles_convertidos.x;
+        mousexy[1]=pixeles_convertidos.y;
+        }
+        ///---------------------------------------------------------------------------------------------------------
+        else {
         mousexy[0]=Mouse::getPosition(window).x;
         mousexy[1]=Mouse::getPosition(window).y;
+        }
         mousex.setVariable(mousexy[0]);
         mousey.setVariable(mousexy[1]);
         ///Configuracion de los botones dentro del juego
@@ -1100,6 +1114,7 @@ int juego()
                         {
                             musica_menu.stop();
                             window.close();
+
                         }
 
                     }
