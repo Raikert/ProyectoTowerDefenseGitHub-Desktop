@@ -93,30 +93,30 @@ int juego()
     Clock animaciones[cantidad_bichos];
 
 
-/*
+    /*
 
-    Texture sprites;
-    if (!sprites.loadFromFile("img/zombie2.png"))
-        return -1;
-    IntRect porcion_de_sprite(0,0,36,50);
-    Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
-    //--solo para mostrarlo en el menu jeje
-    animacion_muestra_menu=animacion_abajo;
-    animacion_muestra_menu.setPosition(668,317);
-    //-------
-    animacion_abajo.setPosition(285,0);
-    animacion_abajo.setColor(Color::Transparent);
-    animacion_abajo.setScale(0.5,0.5);
-    int num_sprite[cantidad_bichos];
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        num_sprite[i]=2;
-    }
-    bool retorno[cantidad_bichos];
-    ponerEnFalso(retorno,cantidad_bichos);
-    Clock animaciones[cantidad_bichos];
+        Texture sprites;
+        if (!sprites.loadFromFile("img/zombie2.png"))
+            return -1;
+        IntRect porcion_de_sprite(0,0,36,50);
+        Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
+        //--solo para mostrarlo en el menu jeje
+        animacion_muestra_menu=animacion_abajo;
+        animacion_muestra_menu.setPosition(668,317);
+        //-------
+        animacion_abajo.setPosition(285,0);
+        animacion_abajo.setColor(Color::Transparent);
+        animacion_abajo.setScale(0.5,0.5);
+        int num_sprite[cantidad_bichos];
+        for (i=0; i<cantidad_bichos; i++)
+        {
+            num_sprite[i]=2;
+        }
+        bool retorno[cantidad_bichos];
+        ponerEnFalso(retorno,cantidad_bichos);
+        Clock animaciones[cantidad_bichos];
 
-*/
+    */
 
 
     ///---------------------------------------
@@ -684,15 +684,17 @@ int juego()
         ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
         tamx=window.getSize().x;
         tamy=window.getSize().y;
-        if (tamx!=tamx_actual||tamy!=tamy_actual) {
-        pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
-        mousexy[0]=pixeles_convertidos.x;
-        mousexy[1]=pixeles_convertidos.y;
+        if (tamx!=tamx_actual||tamy!=tamy_actual)
+        {
+            pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
+            mousexy[0]=pixeles_convertidos.x;
+            mousexy[1]=pixeles_convertidos.y;
         }
         ///---------------------------------------------------------------------------------------------------------
-        else {
-        mousexy[0]=Mouse::getPosition(window).x;
-        mousexy[1]=Mouse::getPosition(window).y;
+        else
+        {
+            mousexy[0]=Mouse::getPosition(window).x;
+            mousexy[1]=Mouse::getPosition(window).y;
         }
         mousex.setVariable(mousexy[0]);
         mousey.setVariable(mousexy[1]);
@@ -1463,6 +1465,41 @@ int juego()
                     break;
                 */
             }
+
+            /*
+
+            for(int x=0; x<10;x++){
+             switch (x)
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+
+
+            }
+
+
+
+
+
+
+            */
         }
         if (tiempo%200==0)
         {
