@@ -93,6 +93,31 @@ int juego()
     Clock animaciones[cantidad_bichos];
 
 
+/*
+
+    Texture sprites;
+    if (!sprites.loadFromFile("img/zombie2.png"))
+        return -1;
+    IntRect porcion_de_sprite(0,0,36,50);
+    Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
+    //--solo para mostrarlo en el menu jeje
+    animacion_muestra_menu=animacion_abajo;
+    animacion_muestra_menu.setPosition(668,317);
+    //-------
+    animacion_abajo.setPosition(285,0);
+    animacion_abajo.setColor(Color::Transparent);
+    animacion_abajo.setScale(0.5,0.5);
+    int num_sprite[cantidad_bichos];
+    for (i=0; i<cantidad_bichos; i++)
+    {
+        num_sprite[i]=2;
+    }
+    bool retorno[cantidad_bichos];
+    ponerEnFalso(retorno,cantidad_bichos);
+    Clock animaciones[cantidad_bichos];
+
+*/
+
 
     ///---------------------------------------
 
@@ -899,6 +924,180 @@ int juego()
                 }
                 vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+13,v[i-1].getPosition().y+48);
             }
+
+
+
+
+            /*
+            switch (estados[i-1])
+            {
+            case 4:
+                ///ANIMACION ARRIBA
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    ///left es X
+                    ///top es Y
+                    ///width es ancho
+                    ///height es alto
+                    case 1:
+                        porcion_de_sprite.left=22;
+                        porcion_de_sprite.top=13;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=88;
+                        porcion_de_sprite.top=13;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=155;
+                        porcion_de_sprite.top=13;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            case 3:
+            case 5:
+            case 6:
+                ///ANIMACION DERECHA
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=23;
+                        porcion_de_sprite.top=101;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=91;
+                        porcion_de_sprite.top=98;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=72;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=157;
+                        porcion_de_sprite.top=101;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            case 0:
+            case 2:
+            case -1:
+                ///ANIMACION ABAJO
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=22;
+                        porcion_de_sprite.top=191;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=88;
+                        porcion_de_sprite.top=189;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=155;
+                        porcion_de_sprite.top=190;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            case 1:
+                /// ANIMACION IZQUIERDA
+
+                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=17;
+                        porcion_de_sprite.top=277;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=83;
+                        porcion_de_sprite.top=275;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=149;
+                        porcion_de_sprite.top=276;
+                        porcion_de_sprite.width=45;
+                        porcion_de_sprite.height=70;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+                break;
+            default:
+                break;
+            }
+
+
+            */
 
             switch (estados[i-1])
             {
