@@ -16,7 +16,7 @@ int juego()
     ///---------------------------------
 
     const int cantidad_bichos=10;
-    const float velocidad=0.7;
+    const float velocidad=2;
     float opacidad_bichos[cantidad_bichos];
     for (i=0; i<cantidad_bichos; i++)
     {
@@ -24,6 +24,7 @@ int juego()
     }
 
     Sprite v[cantidad_bichos];
+    bool menu_principal=true;
 
     /** /// VARIABLES DE MONSTRUOS
     int monstruos_lvl_1=2;
@@ -671,6 +672,7 @@ int juego()
         }
         ///Animaciones de los zombies ----
 
+        /*
         for(i=1; i<cantidad_bichos; i++)
         {
             for (a=0; a<cantidad_bichos; a++)
@@ -680,7 +682,7 @@ int juego()
         }
 
         ///---------
-
+*/
         ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
         tamx=window.getSize().x;
         tamy=window.getSize().y;
@@ -796,10 +798,100 @@ int juego()
 
         window.clear();
 
+        ///  COMIENZA EL JUEGO
+
+        if (vida_juego<=0) {
+        menu_principal=true;
+        vida_juego=100;
+        }
+        if (menu_principal) {
+        menu.setColor(Color(255,255,255,opacidad_menu));
+                window.draw(menu);
+                /// window.draw(texto_prueba);
+                window.draw(animacion_muestra_menu);
+                window.draw(mousex.getTexto());
+                window.draw(mousey.getTexto());
+
+                if (opacidad_menu<255)
+                {
+                    opacidad_menu+=5;
+                }
+                else
+                {
+                    ///Configuracion de los botones en el menu principal
+                    if (Mouse::isButtonPressed(Mouse::Left))
+                    {
+
+                        ///Nueva partida
+                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
+                        {
+                            /*
+                            volumen_menu-=0.1;
+                            musica_menu.setVolume(volumen_menu);
+                                */
+                            musica_menu.stop();
+
+                            mousex.setColor(Color::Black);
+                            mousey.setColor(Color::Black);
+
+                            menu_principal=false;
+                        }
+                        ///Cargar Partida
+                        if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
+                        {
+                            musica_menu.stop();
+                            musica_juego.play();
+
+                        }
+                        ///Salir
+                        if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
+                        {
+                            musica_menu.stop();
+                            window.close();
+
+                        }
+
+                    }
+                }
+                if (animaciones[0].getElapsedTime().asSeconds()>0.200f)
+                {
+                    switch (num_sprite[i-1])
+                    {
+                    case 1:
+                        porcion_de_sprite.left=0;
+                        porcion_de_sprite.top=111;
+                        porcion_de_sprite.width=30;
+                        porcion_de_sprite.height=48;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=false;
+                        break;
+                    case 2:
+                        porcion_de_sprite.left=40;
+                        porcion_de_sprite.top=111;
+                        porcion_de_sprite.width=32;
+                        porcion_de_sprite.height=48;
+                        if (retorno[i-1])
+                            num_sprite[i-1]=1;
+                        else
+                            num_sprite[i-1]=3;
+                        break;
+                    case 3:
+                        porcion_de_sprite.left=83;
+                        porcion_de_sprite.top=111;
+                        porcion_de_sprite.width=28;
+                        porcion_de_sprite.height=49;
+                        num_sprite[i-1]=2;
+                        retorno[i-1]=true;
+                        break;
+                    }
+                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                    v[i-1].setTextureRect(porcion_de_sprite);
+                    animaciones[i-1].restart();
+                }
+        }
+        else {
         for (i=1; i<=objetos; i++)
         {
-            if (estados[i-1]!=-1)
-            {
                 /// MAPA DEL JUEGO
                 window.draw(mapa);
                 /// COORDENADAS DEL MOUSE - MOMENTANEO
@@ -925,7 +1017,6 @@ int juego()
                     }
                 }
                 vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+13,v[i-1].getPosition().y+48);
-            }
 
 
 
@@ -1271,58 +1362,7 @@ int juego()
             ///Pequeña maquina de estados
             switch (estados[i-1])
             {
-            case -1:
-                menu.setColor(Color(255,255,255,opacidad_menu));
-                window.draw(menu);
-                /// window.draw(texto_prueba);
-                window.draw(animacion_muestra_menu);
-                window.draw(mousex.getTexto());
-                window.draw(mousey.getTexto());
-
-                if (opacidad_menu<255)
-                {
-                    opacidad_menu+=5;
-                }
-                else
-                {
-                    ///Configuracion de los botones en el menu principal
-                    if (Mouse::isButtonPressed(Mouse::Left))
-                    {
-
-                        ///Nueva partida
-                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
-                        {
-                            /*
-                            volumen_menu-=0.1;
-                            musica_menu.setVolume(volumen_menu);
-                                */
-                            musica_menu.stop();
-
-                            mousex.setColor(Color::Black);
-                            mousey.setColor(Color::Black);
-
-                            estados[0]=0;
-                        }
-                        ///Cargar Partida
-                        if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
-                        {
-                            musica_menu.stop();
-                            musica_juego.play();
-
-                        }
-                        ///Salir
-                        if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
-                        {
-                            musica_menu.stop();
-                            window.close();
-
-                        }
-
-                    }
-                }
-                break;
             case 0:
-
                 ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
                 ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
                 if (/*PixelPerfectTest(v[i-1],camino1.getSprite())*/v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
@@ -1501,6 +1541,7 @@ int juego()
 
             */
         }
+    }
         if (tiempo%200==0)
         {
             if (objetos<cantidad_bichos)
@@ -1509,8 +1550,7 @@ int juego()
                 tiempo=1;
             }
         }
-        if (estados[0]!=-1)
-        {
+        if (!menu_principal) {
             tiempo++;
 
             ///Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
@@ -1539,6 +1579,7 @@ int juego()
         circulo1.setPosition(circulo1.getPosition().x,y);
         }
         */
+        /// FIN DEL ELSE
         window.display();
     }
     return 0;
