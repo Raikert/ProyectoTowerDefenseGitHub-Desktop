@@ -7,16 +7,23 @@ using namespace Collision;
 
 int juego()
 {
+    ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
+    int i,x,te,d;
+
     ///variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
     Vector2f pixeles_convertidos;
     ///---------------------------------
 
     const int cantidad_bichos=10;
+    const float velocidad=0.7;
+    float opacidad_bichos[cantidad_bichos];
+    for (i=0; i<cantidad_bichos; i++)
+    {
+        opacidad_bichos[i]=0;
+    }
 
-    ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d;
-
+    Sprite v[cantidad_bichos];
 
     /** /// VARIABLES DE MONSTRUOS
     int monstruos_lvl_1=2;
@@ -92,7 +99,7 @@ int juego()
     ponerEnFalso(retorno,cantidad_bichos);
     Clock animaciones[cantidad_bichos];
 
-
+    cargar_vector_sprites(v,animacion_abajo,cantidad_bichos);
     /*
 
         Texture sprites;
@@ -128,19 +135,12 @@ int juego()
     ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
-    const float velocidad=0.7;
-    float opacidad_bichos[cantidad_bichos];
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        opacidad_bichos[i]=0;
-    }
+    /*
     Sprites bicho("img/bicho_reside_circulo.png",opacidad_bichos,285,0);
 
     if (!bicho.getConfirmacion())
         return -10;
-
-    Sprite v[cantidad_bichos];
-    cargar_vector_sprites(v,animacion_abajo,cantidad_bichos);
+        */
 
     ///Camino lvl1 para modificaciones de colision por error de colisiones con los bichos - comentado
 
