@@ -8,7 +8,7 @@ using namespace Collision;
 int juego()
 {
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d;
+    int i,x,te,d,o;
 
     ///variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
@@ -16,14 +16,25 @@ int juego()
     ///---------------------------------
 
     const int cantidad_bichos=10;
-    const float velocidad=2;
-    float opacidad_bichos[cantidad_bichos];
+    Zombie v[cantidad_bichos];
+    Clock tiempo_zombies[cantidad_bichos];
+    IntRect porcion_de_sprite(0,0,36,50);
+    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,0.8);
+    Texto vidas_texto[cantidad_bichos];
+    Texto vidas_texto_variable("tipos_de_texto/OpenSans-BoldItalic.ttf",aldeano.getVida(),15,aldeano.getX()+13,aldeano.getY()+48);
+    if (!vidas_texto_variable.getConfirmacion()) return -10;
     for (i=0; i<cantidad_bichos; i++)
     {
-        opacidad_bichos[i]=0;
+        vidas_texto[i]=vidas_texto_variable;
     }
+    Zombie aldeano_menu("img/zombie.png",668,317,porcion_de_sprite,0.5,255);
+    Clock tiempo_aldeano_menu;
+    if (!aldeano.getConfirmacion())
+        return -10;
+    if (!aldeano_menu.getConfirmacion())
+        return -10;
+    cargar_vector_sprites(v,aldeano,cantidad_bichos);
 
-    Sprite v[cantidad_bichos];
     bool menu_principal=true;
 
     /** /// VARIABLES DE MONSTRUOS
@@ -37,9 +48,9 @@ int juego()
 
     /// PRUEBA CON LA CLASE COLA
     Cola Cola_Torre[9];
-    for (int o=0; o<9; o++)
+    for (o=0; o<9; o++)
     {
-        Cola_Torre[o]=Cola (10);
+        Cola_Torre[o]=Cola(10);
     }
 
     ///------Animaciones de los zombies-------
@@ -80,27 +91,6 @@ int juego()
     ///pero q me imagino q tambien se podra almacenar en otra variable
     ///de tipo int y podriamos armar un relojito para el juego.
 
-    Texture sprites;
-    if (!sprites.loadFromFile("img/zombie.png"))
-        return -1;
-    IntRect porcion_de_sprite(0,0,36,50);
-    Sprite animacion_abajo(sprites,porcion_de_sprite),animacion_muestra_menu;
-    //--solo para mostrarlo en el menu jeje
-    animacion_muestra_menu=animacion_abajo;
-    animacion_muestra_menu.setPosition(668,317);
-    //-------
-    animacion_abajo.setPosition(285,0);
-    animacion_abajo.setColor(Color::Transparent);
-    int num_sprite[cantidad_bichos];
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        num_sprite[i]=2;
-    }
-    bool retorno[cantidad_bichos];
-    ponerEnFalso(retorno,cantidad_bichos);
-    Clock animaciones[cantidad_bichos];
-
-    cargar_vector_sprites(v,animacion_abajo,cantidad_bichos);
     /*
 
         Texture sprites;
@@ -151,7 +141,7 @@ int juego()
         return -10;
     */
 
-    Texture textura_mapa,textura_bicho,textura_menu,textura_rango;
+    Texture textura_mapa,textura_menu,textura_rango;
 
     if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
@@ -159,8 +149,6 @@ int juego()
         return -1;
     if (!textura_rango.loadFromFile("img/rango.png"))
         return -1;
-
-    textura_bicho.setSmooth(true);
     textura_rango.setSmooth(true);
     textura_menu.setSmooth(true);
     textura_mapa.setSmooth(true);
@@ -227,18 +215,12 @@ int juego()
     ///-----Dinero de juego-----
     int dinero;
     dinero=1000;
-    Texto dinero_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",dinero,20,0,0);
-    dinero_texto.setVariable(dinero);
-    dinero_texto.setTransparencia(255);
-    dinero_texto.setPosicion(940,117);
+    Texto dinero_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",dinero,20,940,117,Color::Black);
 
     ///-----Vida de juego-----
     int vida_juego;
     vida_juego=1000;
-    Texto vida_juego_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vida_juego,20,0,0);
-    vida_juego_texto.setVariable(vida_juego);
-    vida_juego_texto.setTransparencia(255);
-    vida_juego_texto.setPosicion(940,138);
+    Texto vida_juego_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vida_juego,20,940,138,Color::Black);
 
     /// VECTOR DE BANDERAS PARA LA MUERTE DE LOS BICHOS PARA OBTENER DINERO:
     bool muerto_por_1ra_vez[cantidad_bichos];
@@ -587,13 +569,8 @@ int juego()
     Rect<jojo>::Rect(200,200,50,50);
     */
 
-    int estados[cantidad_bichos];
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        estados[i]=0;
-    }
-    estados[0]=-1;
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
+
     for (i=0; i<=cantidad_bichos-1; i++)
     {
         ///Seria un corte de control donde por cada vuelta de J se cargara un frame de un tipo de bicho, faltaria la forma
@@ -617,6 +594,7 @@ int juego()
         /*
         }*/
     }
+
     int objetos=1;
     int tiempo=1;
 
@@ -645,21 +623,6 @@ int juego()
         return -1;
     ///-------------------------
 
-    ///-----Vida de los monstruos-----
-    int vidas[cantidad_bichos];
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        vidas[i]=100;
-    }
-    Texto vidas_texto[cantidad_bichos],vida_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vidas[0],15,v[0].getPosition().x+10, v[0].getPosition().y+25);
-    if (!vida_texto.getConfirmacion())
-        return -1;
-    for (i=0; i<cantidad_bichos; i++)
-    {
-        vidas_texto[i]=vida_texto;
-    }
-    ///-------------------------------
-
     while (window.isOpen())
     {
         Event event;
@@ -682,7 +645,7 @@ int juego()
         }
 
         ///---------
-*/
+        */
         ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
         tamx=window.getSize().x;
         tamy=window.getSize().y;
@@ -701,197 +664,170 @@ int juego()
         mousex.setVariable(mousexy[0]);
         mousey.setVariable(mousexy[1]);
         ///Configuracion de los botones dentro del juego
-        if (Mouse::isButtonPressed(Mouse::Left))
-        {
-            if (habilitacionmouse)
-            {
-                ///sonido
-                if (mousexy[0]>=sonido.getEsix()&&mousexy[0]<=sonido.getEsdx()&&mousexy[1]>=sonido.getEsdy()&&mousexy[1]<=sonido.getEidy())
-                {
-                    if (boolmusicajuego)
-                    {
-                        musica_juego.setVolume(0.f);
-                        boolmusicajuego=false;
-                    }
-                    else
-                    {
-                        musica_juego.setVolume(50.f);
-                        boolmusicajuego=true;
-                    }
-                }
-                /// Torres
-                for (i=0; i<tam_torres; i++)
-                {
-                    if (mousexy[0]>=torres[i].getEsix()&&mousexy[0]<=torres[i].getEsdx()&&mousexy[1]>=torres[i].getEsiy()&&mousexy[1]<=torres[i].getEidy())
-                    {
-                        ///SE ABRE EL MENU DE TORRES
-                        menu_torre[i]=true;
-                        spawnear[i]=true;
-                        habilitacionmouse=false;
-                        posicion_clickeada=i;
-                        contador_de_clicks++;
-                    }
-                    else
-                    {
-                        ///SE CIERRA EL MENU DE TORRES
-                        menu_torre[i]=false;
-                        if (contador_de_clicks>1)
-                        {
-                            //spawnear[i]=false;
-                        }
-                        contador_de_clicks++;
-
-                        /// Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
-                        /// no sea el que se clickeo anteriormente
-                        for(int k=0; k<tam_torres; k++)
-                        {
-                            if (k != posicion_clickeada)
-                            {
-                                spawnear[k]=false;
-                            }
-                        }
-                    }
-                    if (habilitacionmouse)
-                    {
-                        for(x=0; x<tam_torres; x++)
-                        {
-                            if (Ocupado[i]==false&&spawnear[i]==true)
-                            {
-                                if (dinero>=100&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
-                                {
-                                    /// Se spawnea la torre 1
-                                    spawn_torre[i][0]=true;
-                                    /// El espacio de la torre 1 esta siendo ocupado por la torre 1
-                                    Ocupado[i]=true;
-                                    dinero-=100;
-                                    dinero_texto.setVariable(dinero);
-                                }
-                                if (dinero>=200&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
-                                {
-                                    /// Se spawnea la torre 2
-                                    spawn_torre[i][1]=true;
-                                    /// El espacio de la torre 1 esta siendo ocupado por la torre 2
-                                    Ocupado[i]=true;
-                                    dinero-=200;
-                                    dinero_texto.setVariable(dinero);
-                                }
-                                if (dinero>=150&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
-                                {
-                                    /// Se spawnea la torre 3
-                                    spawn_torre[i][2]=true;
-                                    /// El espacio de la torre 1 esta siendo ocupado por la torre 3
-                                    Ocupado[i]=true;
-                                    dinero-=150;
-                                    dinero_texto.setVariable(dinero);
-                                }
-                            }
-                        }
-                    }
-                }
-                ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
-                habilitacionmouse=false;
-            }
-        }
-        else
-            ///una vez que se solto el mouse, recien se habilita para una nueva accion
-            habilitacionmouse=true;
 
         window.clear();
 
         ///  COMIENZA EL JUEGO
 
-        if (vida_juego<=0) {
-        menu_principal=true;
-        vida_juego=100;
-        }
-        if (menu_principal) {
-        menu.setColor(Color(255,255,255,opacidad_menu));
-                window.draw(menu);
-                /// window.draw(texto_prueba);
-                window.draw(animacion_muestra_menu);
-                window.draw(mousex.getTexto());
-                window.draw(mousey.getTexto());
-
-                if (opacidad_menu<255)
-                {
-                    opacidad_menu+=5;
-                }
-                else
-                {
-                    ///Configuracion de los botones en el menu principal
-                    if (Mouse::isButtonPressed(Mouse::Left))
-                    {
-
-                        ///Nueva partida
-                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
-                        {
-                            /*
-                            volumen_menu-=0.1;
-                            musica_menu.setVolume(volumen_menu);
-                                */
-                            musica_menu.stop();
-
-                            mousex.setColor(Color::Black);
-                            mousey.setColor(Color::Black);
-
-                            menu_principal=false;
-                        }
-                        ///Cargar Partida
-                        if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
-                        {
-                            musica_menu.stop();
-                            musica_juego.play();
-
-                        }
-                        ///Salir
-                        if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
-                        {
-                            musica_menu.stop();
-                            window.close();
-
-                        }
-
-                    }
-                }
-                if (animaciones[0].getElapsedTime().asSeconds()>0.200f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=0;
-                        porcion_de_sprite.top=111;
-                        porcion_de_sprite.width=30;
-                        porcion_de_sprite.height=48;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=40;
-                        porcion_de_sprite.top=111;
-                        porcion_de_sprite.width=32;
-                        porcion_de_sprite.height=48;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=83;
-                        porcion_de_sprite.top=111;
-                        porcion_de_sprite.width=28;
-                        porcion_de_sprite.height=49;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-        }
-        else {
-        for (i=1; i<=objetos; i++)
+        if (vida_juego<=0)
         {
+            menu_principal=true;
+            vida_juego=1000;
+        }
+        if (menu_principal)
+        {
+            menu.setColor(Color(255,255,255,opacidad_menu));
+            window.draw(menu);
+            /// window.draw(texto_prueba);
+            window.draw(aldeano_menu.getZombie());
+            window.draw(mousex.getTexto());
+            window.draw(mousey.getTexto());
+
+            if (opacidad_menu<255)
+            {
+                opacidad_menu+=5;
+            }
+            else
+            {
+                ///Configuracion de los botones en el menu principal
+                if (Mouse::isButtonPressed(Mouse::Left))
+                {
+
+                    ///Nueva partida
+                    if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
+                    {
+                        /*
+                        volumen_menu-=0.1;
+                        musica_menu.setVolume(volumen_menu);
+                            */
+                        musica_menu.stop();
+
+                        mousex.setColor(Color::Black);
+                        mousey.setColor(Color::Black);
+
+                        menu_principal=false;
+                    }
+                    ///Cargar Partida
+                    if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
+                    {
+                        musica_menu.stop();
+                        musica_juego.play();
+
+                    }
+                    ///Salir
+                    if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
+                    {
+                        musica_menu.stop();
+                        window.close();
+
+                    }
+
+                }
+            }
+            aldeano_menu.cambiar_frame_sprite(tiempo_aldeano_menu);
+
+        }
+        else
+        {
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                if (habilitacionmouse)
+                {
+                    ///sonido
+                    if (mousexy[0]>=sonido.getEsix()&&mousexy[0]<=sonido.getEsdx()&&mousexy[1]>=sonido.getEsdy()&&mousexy[1]<=sonido.getEidy())
+                    {
+                        if (boolmusicajuego)
+                        {
+                            musica_juego.setVolume(0.f);
+                            boolmusicajuego=false;
+                        }
+                        else
+                        {
+                            musica_juego.setVolume(50.f);
+                            boolmusicajuego=true;
+                        }
+                    }
+                    /// Torres
+                    for (i=0; i<tam_torres; i++)
+                    {
+                        if (mousexy[0]>=torres[i].getEsix()&&mousexy[0]<=torres[i].getEsdx()&&mousexy[1]>=torres[i].getEsiy()&&mousexy[1]<=torres[i].getEidy())
+                        {
+                            ///SE ABRE EL MENU DE TORRES
+                            menu_torre[i]=true;
+                            spawnear[i]=true;
+                            habilitacionmouse=false;
+                            posicion_clickeada=i;
+                            contador_de_clicks++;
+                        }
+                        else
+                        {
+                            ///SE CIERRA EL MENU DE TORRES
+                            menu_torre[i]=false;
+                            if (contador_de_clicks>1)
+                            {
+                                //spawnear[i]=false;
+                            }
+                            contador_de_clicks++;
+
+                            /// Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
+                            /// no sea el que se clickeo anteriormente
+                            for(int k=0; k<tam_torres; k++)
+                            {
+                                if (k != posicion_clickeada)
+                                {
+                                    spawnear[k]=false;
+                                }
+                            }
+                        }
+                        if (habilitacionmouse)
+                        {
+                            for(x=0; x<tam_torres; x++)
+                            {
+                                if (Ocupado[i]==false&&spawnear[i]==true)
+                                {
+                                    if (dinero>=100&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                                    {
+                                        /// Se spawnea la torre 1
+                                        spawn_torre[i][0]=true;
+                                        /// El espacio de la torre 1 esta siendo ocupado por la torre 1
+                                        Ocupado[i]=true;
+                                        dinero-=100;
+                                        dinero_texto.setVariable(dinero);
+                                    }
+                                    if (dinero>=200&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                                    {
+                                        /// Se spawnea la torre 2
+                                        spawn_torre[i][1]=true;
+                                        /// El espacio de la torre 1 esta siendo ocupado por la torre 2
+                                        Ocupado[i]=true;
+                                        dinero-=200;
+                                        dinero_texto.setVariable(dinero);
+                                    }
+                                    if (dinero>=150&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                                    {
+                                        /// Se spawnea la torre 3
+                                        spawn_torre[i][2]=true;
+                                        /// El espacio de la torre 1 esta siendo ocupado por la torre 3
+                                        Ocupado[i]=true;
+                                        dinero-=150;
+                                        dinero_texto.setVariable(dinero);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
+                    habilitacionmouse=false;
+                }
+            }
+            else
+            {
+                ///una vez que se solto el mouse, recien se habilita para una nueva accion
+                habilitacionmouse=true;
+            }
+
+            for (i=1; i<=objetos; i++)
+            {
                 /// MAPA DEL JUEGO
                 window.draw(mapa);
                 /// COORDENADAS DEL MOUSE - MOMENTANEO
@@ -942,12 +878,12 @@ int juego()
 ///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
                 for (d=1; d<=objetos; d++)
                 {
-                    if (vidas[d-1]>0)
+                    if (v[d-1].getVida()>0)
                     {
-                        window.draw(v[d-1]);
+                        window.draw(v[d-1].getZombie());
                         window.draw(vidas_texto[d-1].getTexto());
                     }
-                    else if (muerto_por_1ra_vez[d-1]==false && estados[d-1]!=7)
+                    else if (muerto_por_1ra_vez[d-1]==false && v[d-1].getEstado()!=7)
                     {
                         dinero+=100;
                         dinero_texto.setVariable(dinero);
@@ -976,583 +912,411 @@ int juego()
                 for (x=0; x<tam_torres; x++)
                 {
                     /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
-                    if (PixelPerfectTest(v[i-1],Sprite_rango_torre_t1[x]))
+                    if (PixelPerfectTest(v[i-1].getZombie(),Sprite_rango_torre_t1[x]))
                     {
                         if (tiempo%20==0)
                         {
-                            vidas[i-1]--;
-                            vidas_texto[i-1].setVariable(vidas[i-1]);
-                            v[i-1].setColor(Color(50,50,77,opacidad_bichos[i-1]));
+                            v[i-1].reducir_vida(1);
+                            vidas_texto[i-1].setVariable(v[i-1].getVida());
+                            v[i-1].setColor(50,50,77);
                         }
                         else
                         {
-                            v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                            v[i-1].setColor(255,255,255);
                         }
                     }
-                    if (PixelPerfectTest(v[i-1],Sprite_rango_torre_t2[x]))
+                    if (PixelPerfectTest(v[i-1].getZombie(),Sprite_rango_torre_t2[x]))
                     {
                         if (tiempo%100==0)
                         {
-                            vidas[i-1]-=15;
-                            vidas_texto[i-1].setVariable(vidas[i-1]);
-                            v[i-1].setColor(Color(50,50,77,opacidad_bichos[i-1]));
+                            v[i-1].reducir_vida(15);
+                            vidas_texto[i-1].setVariable(v[i-1].getVida());
+                            v[i-1].setColor(50,50,77);
                         }
                         else
                         {
-                            v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                            v[i-1].setColor(255,255,255);
                         }
                     }
-                    if (PixelPerfectTest(v[i-1],Sprite_rango_torre_t3[x]))
+                    if (PixelPerfectTest(v[i-1].getZombie(),Sprite_rango_torre_t3[x]))
                     {
                         if (tiempo%50==0)
                         {
-                            vidas[i-1]-=3;
-                            vidas_texto[i-1].setVariable(vidas[i-1]);
-                            v[i-1].setColor(Color(50,50,77,opacidad_bichos[i-1]));
+                            v[i-1].reducir_vida(3);
+                            vidas_texto[i-1].setVariable(v[i-1].getVida());
+                            v[i-1].setColor(50,50,77);
                         }
                         else
                         {
-                            v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
+                            v[i-1].setColor(255,255,255);
                         }
                     }
                 }
-                vidas_texto[i-1].setPosicion(v[i-1].getPosition().x+13,v[i-1].getPosition().y+48);
+                vidas_texto[i-1].setPosicion(v[i-1].getX()+13,v[i-1].getY()+48);
 
 
 
 
-            /*
-            switch (estados[i-1])
-            {
-            case 4:
-                ///ANIMACION ARRIBA
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    ///left es X
-                    ///top es Y
-                    ///width es ancho
-                    ///height es alto
-                    case 1:
-                        porcion_de_sprite.left=22;
-                        porcion_de_sprite.top=13;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=88;
-                        porcion_de_sprite.top=13;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=155;
-                        porcion_de_sprite.top=13;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            case 3:
-            case 5:
-            case 6:
-                ///ANIMACION DERECHA
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=23;
-                        porcion_de_sprite.top=101;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=91;
-                        porcion_de_sprite.top=98;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=72;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=157;
-                        porcion_de_sprite.top=101;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            case 0:
-            case 2:
-            case -1:
-                ///ANIMACION ABAJO
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=22;
-                        porcion_de_sprite.top=191;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=88;
-                        porcion_de_sprite.top=189;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=155;
-                        porcion_de_sprite.top=190;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            case 1:
-                /// ANIMACION IZQUIERDA
-
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=17;
-                        porcion_de_sprite.top=277;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=83;
-                        porcion_de_sprite.top=275;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=149;
-                        porcion_de_sprite.top=276;
-                        porcion_de_sprite.width=45;
-                        porcion_de_sprite.height=70;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            default:
-                break;
-            }
-
-
-            */
-
-            switch (estados[i-1])
-            {
-            case 4:
-                ///ANIMACION ARRIBA
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    ///left es X
-                    ///top es Y
-                    ///width es ancho
-                    ///height es alto
-                    case 1:
-                        porcion_de_sprite.left=0;
-                        porcion_de_sprite.top=0;
-                        porcion_de_sprite.width=30;
-                        porcion_de_sprite.height=48;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=40;
-                        porcion_de_sprite.top=0;
-                        porcion_de_sprite.width=32;
-                        porcion_de_sprite.height=48;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=83;
-                        porcion_de_sprite.top=0;
-                        porcion_de_sprite.width=28;
-                        porcion_de_sprite.height=49;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            case 3:
-            case 5:
-            case 6:
-                ///ANIMACION DERECHA
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=0;
-                        porcion_de_sprite.top=54;
-                        porcion_de_sprite.width=30;
-                        porcion_de_sprite.height=48;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=40;
-                        porcion_de_sprite.top=54;
-                        porcion_de_sprite.width=32;
-                        porcion_de_sprite.height=48;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=83;
-                        porcion_de_sprite.top=54;
-                        porcion_de_sprite.width=28;
-                        porcion_de_sprite.height=49;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            case 0:
-            case 2:
-            case -1:
-                ///ANIMACION ABAJO
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=0;
-                        porcion_de_sprite.top=111;
-                        porcion_de_sprite.width=30;
-                        porcion_de_sprite.height=48;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=40;
-                        porcion_de_sprite.top=111;
-                        porcion_de_sprite.width=32;
-                        porcion_de_sprite.height=48;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=83;
-                        porcion_de_sprite.top=111;
-                        porcion_de_sprite.width=28;
-                        porcion_de_sprite.height=49;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            case 1:
-                /// ANIMACION IZQUIERDA
-
-                if (animaciones[i-1].getElapsedTime().asSeconds()>0.200f)
-                {
-                    switch (num_sprite[i-1])
-                    {
-                    case 1:
-                        porcion_de_sprite.left=0;
-                        porcion_de_sprite.top=166;
-                        porcion_de_sprite.width=30;
-                        porcion_de_sprite.height=48;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=false;
-                        break;
-                    case 2:
-                        porcion_de_sprite.left=40;
-                        porcion_de_sprite.top=166;
-                        porcion_de_sprite.width=32;
-                        porcion_de_sprite.height=48;
-                        if (retorno[i-1])
-                            num_sprite[i-1]=1;
-                        else
-                            num_sprite[i-1]=3;
-                        break;
-                    case 3:
-                        porcion_de_sprite.left=80;
-                        porcion_de_sprite.top=166;
-                        porcion_de_sprite.width=28;
-                        porcion_de_sprite.height=49;
-                        num_sprite[i-1]=2;
-                        retorno[i-1]=true;
-                        break;
-                    }
-                    animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                    v[i-1].setTextureRect(porcion_de_sprite);
-                    animaciones[i-1].restart();
-                }
-                break;
-            default:
-                break;
-            }
-
-            ///Pequeña maquina de estados
-            switch (estados[i-1])
-            {
-            case 0:
-                ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
-                ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
-                if (/*PixelPerfectTest(v[i-1],camino1.getSprite())*/v[i-1].getPosition().y<199&&v[i-1].getPosition().x==285)
-                {
-                    if(opacidad_bichos[i-1]<255)
-                    {
-                        opacidad_bichos[i-1]+=5;
-                        v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
-                        vidas_texto[i-1].setTransparencia(opacidad_bichos[i-1]);
-                    }
-                    mov_obj_abajo(v,i-1,velocidad);
-                }
-                else
-                    estados[i-1]=1;
-                break;
-
-            case 1:
-                if (v[i-1].getPosition().x>47)
-                {
-                    mov_obj_izq(v,i-1,velocidad);
-                }
-                else
-                    estados[i-1]=2;
-                break;
-            case 2:
-                if (v[i-1].getPosition().y<500)
-                {
-                    mov_obj_abajo(v,i-1,velocidad);
-                }
-                else
-                    estados[i-1]=3;
-                break;
-            case 3:
-                if (v[i-1].getPosition().x<485)
-                {
-                    mov_derecha(v,i-1,velocidad);
-                }
-                else
-                    estados[i-1]=4;
-                break;
-            case 4:
-                if (v[i-1].getPosition().y>177)
-                {
-                    mov_obj_arriba(v,i-1,velocidad);
-                }
-                else
-                    estados[i-1]=5;
-                break;
-            case 5:
-                if (v[i-1].getPosition().x<700)
-                {
-                    mov_derecha(v,i-1,velocidad);
-                }
-                else
-                    estados[i-1]=6;
-                break;
-            case 6:
-                if (opacidad_bichos[i-1]!=0)
-                {
-                    opacidad_bichos[i-1]-=5;
-                    v[i-1].setColor(Color(255,255,255,opacidad_bichos[i-1]));
-                    vidas_texto[i-1].setTransparencia(opacidad_bichos[i-1]);
-                    mov_derecha(v,i-1,velocidad);
-                }
-                else
-                {
-                    estados[i-1]=7;
-                    if(vidas[i-1]>0)
-                    {
-                        vida_juego-=vidas[i-1];
-                        vida_juego_texto.setVariable(vida_juego);
-                    }
-                    vidas[i-1]=0;
-                }
-                break;
-            case 7:
-                break;
-
-                ///movimientos en diagonal
                 /*
-                case 1:
-                    if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
+                switch (estados[i-1])
+                {
+                case 4:
+                    ///ANIMACION ARRIBA
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
                     {
-                        mov_diagonal_izq_abajo(&circulo1,0.1,0.038);
-
+                        switch (num_sprite[i-1])
+                        {
+                        ///left es X
+                        ///top es Y
+                        ///width es ancho
+                        ///height es alto
+                        case 1:
+                            porcion_de_sprite.left=22;
+                            porcion_de_sprite.top=13;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=88;
+                            porcion_de_sprite.top=13;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=155;
+                            porcion_de_sprite.top=13;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
+                        }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        v[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
                     }
-                    else
-                        estado=2;
-                    break;glorious morning
-                case 2:
-                    if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
-                    {
-                glorious morning           mov_obj_abajo(v,objetos,0.1);
-
-                    }
-                    else
-                        estado=10;
                     break;
-                case 10:
-                    if (circulo1.getPosition().y>429&&circulo1.getPosition().y<500)
+                case 3:
+                case 5:
+                case 6:
+                    ///ANIMACION DERECHA
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
                     {
-                        mov_diagonal_der_abajo(&circulo1,0.1,0.1);
+                        switch (num_sprite[i-1])
+                        {
+                        case 1:
+                            porcion_de_sprite.left=23;
+                            porcion_de_sprite.top=101;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=91;
+                            porcion_de_sprite.top=98;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=72;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=157;
+                            porcion_de_sprite.top=101;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
+                        }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        v[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
+                    }
+                    break;
+                case 0:
+                case 2:
+                case -1:
+                    ///ANIMACION ABAJO
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                    {
+                        switch (num_sprite[i-1])
+                        {
+                        case 1:
+                            porcion_de_sprite.left=22;
+                            porcion_de_sprite.top=191;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=88;
+                            porcion_de_sprite.top=189;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=155;
+                            porcion_de_sprite.top=190;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
+                        }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        v[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
+                    }
+                    break;
+                case 1:
+                    /// ANIMACION IZQUIERDA
+
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                    {
+                        switch (num_sprite[i-1])
+                        {
+                        case 1:
+                            porcion_de_sprite.left=17;
+                            porcion_de_sprite.top=277;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=83;
+                            porcion_de_sprite.top=275;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=149;
+                            porcion_de_sprite.top=276;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
+                        }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        v[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
+                    }
+                    break;
+                default:
+                    break;
+                }
+
+
+                */
+                v[i-1].cambiar_frame_sprite(tiempo_zombies[i-1]);
+
+                ///Pequeña maquina de estados
+                switch (v[i-1].getEstado())
+                {
+                case 0:
+                    ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
+                    ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
+                    if (/*PixelPerfectTest(v[i-1],camino1.getSprite())*/v[i-1].getY()<199&&v[i-1].getX()==285)
+                    {
+                        if(v[i-1].getOpacidad()<255)
+                        {
+                            v[i-1].incrementar_opacidad(5);
+                            vidas_texto[i-1].setTransparencia(v[i-1].getOpacidad());
+                        }
+                        v[i-1].mover_abajo();
                     }
                     else
-                        estado=3;
+                        v[i-1].setEstado(1);
+                    break;
+                case 1:
+                    if (v[i-1].getX()>47)
+                    {
+                        v[i-1].mover_izq();
+                    }
+                    else
+                        v[i-1].setEstado(2);
+                    break;
+                case 2:
+                    if (v[i-1].getY()<500)
+                    {
+                        v[i-1].mover_abajo();
+                    }
+                    else
+                        v[i-1].setEstado(3);
+                    break;
+                case 3:
+                    if (v[i-1].getX()<485)
+                    {
+                        v[i-1].mover_derecha();
+                    }
+                    else
+                        v[i-1].setEstado(4);
+                    break;
+                case 4:
+                    if (v[i-1].getY()>177)
+                    {
+                        v[i-1].mover_arriba();
+                    }
+                    else
+                        v[i-1].setEstado(5);
+                    break;
+                case 5:
+                    if (v[i-1].getX()<700)
+                    {
+                        v[i-1].mover_derecha();
+                    }
+                    else
+                        v[i-1].setEstado(6);
+                    break;
+                case 6:
+                    if (v[i-1].getOpacidad()!=0)
+                    {
+                        v[i-1].decrementar_opacidad(5);
+                        vidas_texto[i-1].setTransparencia(v[i-1].getOpacidad());
+                        v[i-1].mover_derecha();
+                    }
+                    else
+                    {
+                        v[i-1].setEstado(7);
+                        if(v[i-1].getVida()>0)
+                        {
+                            vida_juego-=v[i-1].getVida();
+                            vida_juego_texto.setVariable(vida_juego);
+                        }
+                        v[i-1].setVida(0);
+                    }
+                    break;
+                case 7:
+                    break;
+
+                    ///movimientos en diagonal
+                    /*
+                    case 1:
+                        if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
+                        {
+                            mov_diagonal_izq_abajo(&circulo1,0.1,0.038);
+
+                        }
+                        else
+                            estado=2;
+                        break;glorious morning
+                    case 2:
+                        if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
+                        {
+                    glorious morning           mov_obj_abajo(v,objetos,0.1);
+
+                        }
+                        else
+                            estado=10;
+                        break;
+                    case 10:
+                        if (circulo1.getPosition().y>429&&circulo1.getPosition().y<500)
+                        {
+                            mov_diagonal_der_abajo(&circulo1,0.1,0.1);
+                        }
+                        else
+                            estado=3;
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        if (circulo1.getPosition().x>292&&circulo1.getPosition().x<570)
+                        {
+                            mov_diagonal_der_arriba(&circulo1,0.1,0.1);
+                        }
+                        else
+                            estado=5;
+                        break;
+                    case 5:
+                        if(circulo1.getPosition().x<637)
+                        {
+                            mov_derecha(&circulo1,0.1);
+                        }
+                        else
+                            estado=6;
+                        break;
+                    case 6:
+                        if (circulo1.getPosition().x>637&&circulo1.getPosition().x<700)
+                        {
+                            mov_derecha(&circulo1,0.1);
+                            if(opacidad>0)
+                            {
+                                opacidad-=0.4;
+                                circulo1.setFillColor(Color(255,255,255,opacidad));
+                            }
+                        }
+                        else
+                        {
+                            circulo1.setPosition(290,0);
+                            estado=0;
+                        }
+                        break;
+                    */
+                }
+
+                /*
+
+                for(int x=0; x<10;x++){
+                 switch (x)
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
                     break;
                 case 3:
                     break;
                 case 4:
-                    if (circulo1.getPosition().x>292&&circulo1.getPosition().x<570)
-                    {
-                        mov_diagonal_der_arriba(&circulo1,0.1,0.1);
-                    }
-                    else
-                        estado=5;
                     break;
                 case 5:
-                    if(circulo1.getPosition().x<637)
-                    {
-                        mov_derecha(&circulo1,0.1);
-                    }
-                    else
-                        estado=6;
                     break;
                 case 6:
-                    if (circulo1.getPosition().x>637&&circulo1.getPosition().x<700)
-                    {
-                        mov_derecha(&circulo1,0.1);
-                        if(opacidad>0)
-                        {
-                            opacidad-=0.4;
-                            circulo1.setFillColor(Color(255,255,255,opacidad));
-                        }
-                    }
-                    else
-                    {
-                        circulo1.setPosition(290,0);
-                        estado=0;
-                    }
                     break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+
+
+                }
+
+
+
+
+
+
                 */
             }
-
-            /*
-
-            for(int x=0; x<10;x++){
-             switch (x)
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-
-
-            }
-
-
-
-
-
-
-            */
-        }
-    }
-        if (tiempo%200==0)
-        {
-            if (objetos<cantidad_bichos)
+            if (tiempo%200==0)
             {
-                objetos++;
-                tiempo=1;
+                if (objetos<cantidad_bichos)
+                {
+                    objetos++;
+                    tiempo=1;
+                }
             }
-        }
-        if (!menu_principal) {
             tiempo++;
-
             ///Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
 
             ///--------
