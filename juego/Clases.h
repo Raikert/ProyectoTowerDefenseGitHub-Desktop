@@ -205,6 +205,7 @@ private:
     bool textura_cargada;
     Sprite zombie_sprite_propiedad;
     float x,y;
+    bool muerto;
     Animacion animacion_propiedad;
     IntRect porcion_de_imagen_propiedad;
     int opacidad;
@@ -234,6 +235,7 @@ public:
             vida=vi;
             velocidad=ve;
             estado=0;
+            muerto=false;
         }
     }
     Zombie () {}
@@ -241,6 +243,7 @@ public:
     {
         return zombie_sprite_propiedad;
     }
+    bool getMuerto() {return muerto;}
     int getEstado ()
     {
         return estado;
@@ -266,6 +269,7 @@ public:
         return velocidad;
     }
     void setEstado (int e) {estado=e;}
+    void setMuerto (bool m=true) {muerto=m;}
     void setColor (int rojo,int verde,int azul,int opacida=255)
     {
         zombie_sprite_propiedad.setColor(Color(rojo,verde,azul,opacida));

@@ -19,7 +19,7 @@ int juego()
     Zombie v[cantidad_bichos];
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
-    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,0.8);
+    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,2);
     Texto vidas_texto[cantidad_bichos];
     Texto vidas_texto_variable("tipos_de_texto/OpenSans-BoldItalic.ttf",aldeano.getVida(),15,aldeano.getX()+13,aldeano.getY()+48);
     if (!vidas_texto_variable.getConfirmacion()) return -10;
@@ -221,9 +221,6 @@ int juego()
     int vida_juego;
     vida_juego=1000;
     Texto vida_juego_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vida_juego,20,940,138,Color::Black);
-
-    /// VECTOR DE BANDERAS PARA LA MUERTE DE LOS BICHOS PARA OBTENER DINERO:
-    bool muerto_por_1ra_vez[cantidad_bichos];
 
     /// Estados
     bool menu_abierto=false;
@@ -673,6 +670,12 @@ int juego()
         {
             menu_principal=true;
             vida_juego=1000;
+            vida_juego_texto.setVariable(vida_juego);
+            cargar_vector_sprites(v,aldeano,cantidad_bichos);
+            tiempo=1;
+            objetos=1;
+            musica_juego.stop();
+            musica_menu.play();
         }
         if (menu_principal)
         {
@@ -883,11 +886,11 @@ int juego()
                         window.draw(v[d-1].getZombie());
                         window.draw(vidas_texto[d-1].getTexto());
                     }
-                    else if (muerto_por_1ra_vez[d-1]==false && v[d-1].getEstado()!=7)
+                    else if (v[d-1].getMuerto()&& v[d-1].getEstado()!=7)
                     {
                         dinero+=100;
                         dinero_texto.setVariable(dinero);
-                        muerto_por_1ra_vez[d-1]=true;
+                        v[d-1].setMuerto();
                     }
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
