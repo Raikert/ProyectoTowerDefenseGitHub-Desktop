@@ -676,6 +676,7 @@ int juego()
             objetos=1;
             musica_juego.stop();
             musica_menu.play();
+            opacidad_menu=0;
         }
         if (menu_principal)
         {
@@ -704,6 +705,7 @@ int juego()
                         musica_menu.setVolume(volumen_menu);
                             */
                         musica_menu.stop();
+                        musica_juego.play();
 
                         mousex.setColor(Color::Black);
                         mousey.setColor(Color::Black);
