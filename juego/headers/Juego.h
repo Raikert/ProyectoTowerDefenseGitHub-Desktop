@@ -22,7 +22,8 @@ int juego()
     Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,2);
     Texto vidas_texto[cantidad_bichos];
     Texto vidas_texto_variable("tipos_de_texto/OpenSans-BoldItalic.ttf",aldeano.getVida(),15,aldeano.getX()+13,aldeano.getY()+48);
-    if (!vidas_texto_variable.getConfirmacion()) return -10;
+    if (!vidas_texto_variable.getConfirmacion())
+        return -10;
     for (i=0; i<cantidad_bichos; i++)
     {
         vidas_texto[i]=vidas_texto_variable;
@@ -35,7 +36,7 @@ int juego()
         return -10;
     cargar_vector_sprites(v,aldeano,cantidad_bichos);
 
-    bool menu_principal=true;
+    bool menu_principal=true,oleada_fin;
 
     /** /// VARIABLES DE MONSTRUOS
     int monstruos_lvl_1=2;
@@ -143,7 +144,7 @@ int juego()
 
     Texture textura_mapa,textura_menu,textura_rango;
 
-    if (!textura_mapa.loadFromFile("img/008.png"))
+    if (!textura_mapa.loadFromFile("img/008 - copia.png"))
         return -1;
     if (!textura_menu.loadFromFile("img/006.jpg"))
         return -1;
@@ -209,7 +210,9 @@ int juego()
     ///el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
     ///Util para ver en q posicion de la pantalla se ubica el boton.
 
-    Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377),salir(237,38,351,437),sonido(55,50,872,487);
+    Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377,255),salir(237,38,351,437),sonido(55,50,872,487);
+    Boton nueva_oleada(49,45,823,433,255);
+    Boton guardar_partida(152,44,824,545,255);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
     ///-----Dinero de juego-----
@@ -219,7 +222,7 @@ int juego()
 
     ///-----Vida de juego-----
     int vida_juego;
-    vida_juego=1000;
+    vida_juego=100;
     Texto vida_juego_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vida_juego,20,940,138,Color::Black);
 
     /// Estados
@@ -752,6 +755,24 @@ int juego()
                             boolmusicajuego=true;
                         }
                     }
+                    ///Oleada
+                    if (mousexy[0]>=nueva_oleada.getEsix()&&mousexy[0]<=nueva_oleada.getEsdx()&&mousexy[1]>=nueva_oleada.getEsdy()&&mousexy[1]<=nueva_oleada.getEidy())
+                    {
+                        musica_juego.stop();
+                        for (i=0; i<cantidad_bichos; i++)
+                        {
+                            if (v[i].getVida()<0)
+                            {
+                                oleada_fin=true;
+                            }
+                            else
+                                oleada_fin=false;
+                        }
+                        if (oleada_fin)
+                        {
+                         ///oleada.incrementar(v);
+                        }
+                    }
                     /// Torres
                     for (i=0; i<tam_torres; i++)
                     {
@@ -835,6 +856,7 @@ int juego()
             {
                 /// MAPA DEL JUEGO
                 window.draw(mapa);
+                window.draw(guardar_partida.getBoton());
                 /// COORDENADAS DEL MOUSE - MOMENTANEO
                 window.draw(mousex.getTexto());
                 window.draw(mousey.getTexto());

@@ -592,4 +592,23 @@ public:
     }
 };
 
+class cargar_partida{
+
+private:
+    int vidas;
+    int dinero;
+    int oleada;
+
+public:
+    int getvidas(){return vidas;}
+    int getdinero(){return dinero;}
+    int getoleada(){return oleada;}
+    void setvidas(int x){vidas=x;}
+    void setdinero(int x){dinero=x;}
+    void setoleada(int x){oleada=x;}
+    bool leerendisco(int pos){}
+    bool grabarendiso (){}
+
+};
+
 #endif // CLASES_H_INCLUDED
