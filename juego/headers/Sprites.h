@@ -1,10 +1,6 @@
 #ifndef SPRITES_H_INCLUDED
 #define SPRITES_H_INCLUDED
 
-using namespace std;
-using namespace sf;
-using namespace Collision;
-
 void cargar_vector_sprites (Zombie *v,Zombie &tipo,int cantidad_bichos)
 {
     for (int i=0; i<cantidad_bichos; i++)
