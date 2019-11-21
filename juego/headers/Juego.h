@@ -579,7 +579,7 @@ int juego()
     /*
     Rect<jojo>::Rect(200,200,50,50);
     */
-
+//vidas
     float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
 
     for (i=0; i<=cantidad_bichos-1; i++)
@@ -687,15 +687,35 @@ int juego()
             {
                 fin_juego=false;
                 menu_principal=true;
+
                 vida_juego=const_vida_juego;
                 vida_juego_texto.setVariable(vida_juego);
                 cargar_vector_sprites(v,aldeano,cantidad_bichos);
+                for(int o=0; o<cantidad_bichos; o++)
+                {
+                   vidas_texto[o-1].setVariable(v[o-1].getVida());
+                }
+                dinero=100;
+                dinero_texto.setVariable((dinero));
                 tiempo=1;
                 objetos=1;
                 musica_derrota.stop();
                 musica_menu.play();
                 opacidad_menu=0;
                 boolmusicaderrota=false;
+
+                for(int l=0; l<tam_torres; l++)
+                {
+                    /// TORRES -------------------------------------
+                    spawn_torre[l][0]=false;
+                    spawn_torre[l][1]=false;
+                    spawn_torre[l][2]=false;
+
+                    /// RANGOS -------------------------------------
+                    Sprite_rango_torre_t1[l].setPosition(10000,0);
+                    Sprite_rango_torre_t2[l].setPosition(10000,0);
+                    Sprite_rango_torre_t3[l].setPosition(10000,0);
+                }
             }
         }
         if (fin_juego)
@@ -879,13 +899,13 @@ int juego()
                                 {
                                     if (Ocupado[i]==false&&spawnear[i]==true)
                                     {
-                                        if (dinero>=100&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                                        if (dinero>=150&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
                                         {
                                             /// Se spawnea la torre 1
                                             spawn_torre[i][0]=true;
                                             /// El espacio de la torre 1 esta siendo ocupado por la torre 1
                                             Ocupado[i]=true;
-                                            dinero-=100;
+                                            dinero-=150;
                                             dinero_texto.setVariable(dinero);
                                         }
                                         if (dinero>=200&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
@@ -897,13 +917,13 @@ int juego()
                                             dinero-=200;
                                             dinero_texto.setVariable(dinero);
                                         }
-                                        if (dinero>=150&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                                        if (dinero>=100&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
                                         {
                                             /// Se spawnea la torre 3
                                             spawn_torre[i][2]=true;
                                             /// El espacio de la torre 1 esta siendo ocupado por la torre 3
                                             Ocupado[i]=true;
-                                            dinero-=150;
+                                            dinero-=100;
                                             dinero_texto.setVariable(dinero);
                                         }
                                     }
@@ -1010,7 +1030,7 @@ int juego()
                         /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
                         if (PixelPerfectTest(v[i-1].getZombie(),Sprite_rango_torre_t1[x]))
                         {
-                            if (tiempo%20==0)
+                            if (tiempo%10==0)
                             {
                                 v[i-1].reducir_vida(1);
                                 vidas_texto[i-1].setVariable(v[i-1].getVida());
@@ -1025,7 +1045,7 @@ int juego()
                         {
                             if (tiempo%100==0)
                             {
-                                v[i-1].reducir_vida(15);
+                                v[i-1].reducir_vida(30);
                                 vidas_texto[i-1].setVariable(v[i-1].getVida());
                                 v[i-1].setColor(50,50,77);
                             }
@@ -1038,7 +1058,7 @@ int juego()
                         {
                             if (tiempo%50==0)
                             {
-                                v[i-1].reducir_vida(3);
+                                v[i-1].reducir_vida(10);
                                 vidas_texto[i-1].setVariable(v[i-1].getVida());
                                 v[i-1].setColor(50,50,77);
                             }

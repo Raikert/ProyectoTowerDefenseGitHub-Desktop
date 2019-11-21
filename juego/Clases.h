@@ -213,7 +213,7 @@ private:
     float velocidad;
     int estado;
 public:
-    Zombie (const string& nombre_imagen,float posx,float posy,IntRect porcion_de_imagen,float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (const string& nombre_imagen,float posx,float posy,IntRect porcion_de_imagen,float ve=2,int opacida=0, int dinero=100,int vi=100)
     {
 
         if(!CreateTextureAndBitmask(zombie_textura_propiedad,nombre_imagen))
