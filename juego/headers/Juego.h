@@ -219,7 +219,7 @@ int juego()
     ///el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
     ///Util para ver en q posicion de la pantalla se ubica el boton.
 
-    Boton nueva_partida(237,38,351,316),cargar_partida(237,38,351,377,255),salir(237,38,351,437),sonido(55,50,872,487);
+    Boton nueva_partida(237,38,351,316),cargar_partida_boton(237,38,351,377,255),salir(237,38,351,437),sonido(55,50,872,487);
     Boton nueva_oleada(49,45,823,433,255);
     Boton guardar_partida(152,44,824,545,255);
     Boton pausa(49,45,875,433);
@@ -749,7 +749,7 @@ int juego()
                     {
 
                         ///Nueva partida
-                        if (mousexy[0]>=nueva_partida.getEsix()&&mousexy[0]<=nueva_partida.getEsdx()&&mousexy[1]>=nueva_partida.getEsdy()&&mousexy[1]<=nueva_partida.getEidy())
+                        if (nueva_partida.click(mousexy))
                         {
                             /*
                             volumen_menu-=0.1;
@@ -764,14 +764,14 @@ int juego()
                             menu_principal=false;
                         }
                         ///Cargar Partida
-                        if (mousexy[0]>=cargar_partida.getEsix()&&mousexy[0]<=cargar_partida.getEsdx()&&mousexy[1]>=cargar_partida.getEsdy()&&mousexy[1]<=cargar_partida.getEidy())
+                        if (cargar_partida_boton.click(mousexy))
                         {
                             musica_menu.stop();
                             musica_juego.play();
 
                         }
                         ///Salir
-                        if (mousexy[0]>=salir.getEsix()&&mousexy[0]<=salir.getEsdx()&&mousexy[1]>=salir.getEsdy()&&mousexy[1]<=salir.getEidy())
+                        if (salir.click(mousexy))
                         {
                             musica_menu.stop();
                             window.close();
@@ -790,7 +790,7 @@ int juego()
                     if (habilitacionmouse)
                     {
                         ///pausa del juego
-                        if (mousexy[0]>=pausa.getEsix()&&mousexy[0]<=pausa.getEsdx()&&mousexy[1]>=pausa.getEsdy()&&mousexy[1]<=pausa.getEidy())
+                        if (pausa.click(mousexy))
                         {
                             musica_juego.pause();
                             while (true)
@@ -821,7 +821,7 @@ int juego()
                                 mousey.setVariable(mousexy[1]);
                                 if (Mouse::isButtonPressed(Mouse::Left))
                                 {
-                                    if (mousexy[0]>=reanudar.getEsix()&&mousexy[0]<=reanudar.getEsdx()&&mousexy[1]>=reanudar.getEsdy()&&mousexy[1]<=reanudar.getEidy())
+                                    if (reanudar.click(mousexy))
                                     {
                                         musica_juego.play();
                                         break;
@@ -830,7 +830,7 @@ int juego()
                             }
                         }
                         ///sonido
-                        if (mousexy[0]>=sonido.getEsix()&&mousexy[0]<=sonido.getEsdx()&&mousexy[1]>=sonido.getEsdy()&&mousexy[1]<=sonido.getEidy())
+                        if (sonido.click(mousexy))
                         {
                             if (boolmusicajuego)
                             {
@@ -844,7 +844,7 @@ int juego()
                             }
                         }
                         ///Oleada
-                        if (mousexy[0]>=nueva_oleada.getEsix()&&mousexy[0]<=nueva_oleada.getEsdx()&&mousexy[1]>=nueva_oleada.getEsdy()&&mousexy[1]<=nueva_oleada.getEidy())
+                        if (nueva_oleada.click(mousexy))
                         {
                             musica_juego.stop();
                             for (i=0; i<cantidad_bichos; i++)
@@ -864,7 +864,7 @@ int juego()
                         /// Torres
                         for (i=0; i<tam_torres; i++)
                         {
-                            if (mousexy[0]>=torres[i].getEsix()&&mousexy[0]<=torres[i].getEsdx()&&mousexy[1]>=torres[i].getEsiy()&&mousexy[1]<=torres[i].getEidy())
+                            if (torres[i].click(mousexy))
                             {
                                 ///SE ABRE EL MENU DE TORRES
                                 menu_torre[i]=true;
@@ -899,7 +899,7 @@ int juego()
                                 {
                                     if (Ocupado[i]==false&&spawnear[i]==true)
                                     {
-                                        if (dinero>=150&&mousexy[0]>=torres_t1[i].getEsix()&&mousexy[0]<=torres_t1[i].getEsdx()&&mousexy[1]>=torres_t1[i].getEsiy()&&mousexy[1]<=torres_t1[i].getEidy())
+                                        if (dinero>=150&&torres_t1[i].click(mousexy))
                                         {
                                             /// Se spawnea la torre 1
                                             spawn_torre[i][0]=true;
@@ -908,7 +908,7 @@ int juego()
                                             dinero-=150;
                                             dinero_texto.setVariable(dinero);
                                         }
-                                        if (dinero>=200&&mousexy[0]>=torres_t2[i].getEsix()&&mousexy[0]<=torres_t2[i].getEsdx()&&mousexy[1]>=torres_t2[i].getEsiy()&&mousexy[1]<=torres_t2[i].getEidy())
+                                        if (dinero>=200&&torres_t2[i].click(mousexy))
                                         {
                                             /// Se spawnea la torre 2
                                             spawn_torre[i][1]=true;
@@ -917,7 +917,7 @@ int juego()
                                             dinero-=200;
                                             dinero_texto.setVariable(dinero);
                                         }
-                                        if (dinero>=100&&mousexy[0]>=torres_t3[i].getEsix()&&mousexy[0]<=torres_t3[i].getEsdx()&&mousexy[1]>=torres_t3[i].getEsiy()&&mousexy[1]<=torres_t3[i].getEidy())
+                                        if (dinero>=100&&torres_t3[i].click(mousexy))
                                         {
                                             /// Se spawnea la torre 3
                                             spawn_torre[i][2]=true;

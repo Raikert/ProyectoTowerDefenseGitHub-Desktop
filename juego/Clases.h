@@ -513,28 +513,14 @@ void Zombie::cambiar_frame_sprite(Clock &tiempo)
     }
 }
 
-/*
-
-class Coordenada{
-    float x, y;
-    public:
-
-
-};
-
-Coordenada si, sd, ii, id;
-si.getX()
-
-*/
-
 class Boton
 {
 private:
     float esi[2],esd[2],eii[2],eid[2];
     RectangleShape boton;
-    int tamaniox,tamanioy;
+    int tamaniox,tamanioy,transparencia;
 public:
-    Boton(float x=0,float y=0,float posx=0,float posy=0,int transparencia=0)
+    Boton(float x,float y,float posx,float posy,int Transparencia=0)
     {
         boton.setSize(Vector2f(x,y));
         esi[0]=posx;
@@ -546,10 +532,17 @@ public:
         eid[0]=posx+(x-1);
         eid[1]=posy+(y-1);
         boton.setPosition(posx,posy);
+        transparencia=Transparencia;
         boton.setFillColor(Color(255,255,255,transparencia));
         tamaniox=x;
         tamanioy=y;
     }
+    Boton () {}
+    bool click(int *v) {
+    if (v[0]>=esi[0]&&v[0]<=esd[0]&&v[1]>=esd[1]&&v[1]<=eid[1]) return true;
+    return false;
+    }
+    int getTransparencia () {return transparencia;}
     int getEsix()
     {
         return esi[0];
@@ -588,7 +581,8 @@ public:
     }
     void setTransparencia(int t)
     {
-        boton.setFillColor(Color(255,255,255,t));
+        transparencia=t;
+        boton.setFillColor(Color(255,255,255,transparencia));
     }
 };
 
