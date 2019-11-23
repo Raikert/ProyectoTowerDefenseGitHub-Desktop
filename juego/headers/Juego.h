@@ -16,7 +16,7 @@ int juego()
     ///---------------------------------
 
     ///vida del la base
-    const int const_vida_juego=100;
+    const int const_vida_juego=1000;
     ///-------------
 
     const int cantidad_bichos=10;
@@ -769,6 +769,7 @@ int juego()
                     spawn_torre[l][0]=false;
                     spawn_torre[l][1]=false;
                     spawn_torre[l][2]=false;
+                    Ocupado[l]=false;
 
                     /// RANGOS -------------------------------------
                     for(int f=0; f<cantidad_torres; f++)
