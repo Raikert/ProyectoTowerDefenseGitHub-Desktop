@@ -23,7 +23,7 @@ int juego()
     Zombie enemigo[cantidad_bichos];
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
-    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,0.5);
+    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,2);
     if (!aldeano.getConfirmacion())
         return -10;
     Texto vidas_texto[cantidad_bichos];
@@ -752,9 +752,9 @@ int juego()
                 cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                 for(int o=0; o<cantidad_bichos; o++)
                 {
-                    vidas_texto[o-1].setVariable(enemigo[o-1].getVida());
+                    vidas_texto[o].setVariable(enemigo[o].getVida());
                 }
-                dinero=100;
+                dinero=1000;
                 dinero_texto.setVariable((dinero));
                 tiempo=1;
                 objetos=1;
@@ -1095,8 +1095,15 @@ int juego()
                             }
                         }
                     }
-                    vidas_texto[i-1].setPosicion(enemigo[i-1].getX()+13,enemigo[i-1].getY()+48);
-
+                    if (enemigo[i-1].getVida()>0)
+                    {
+                        vidas_texto[i-1].setPosicion(enemigo[i-1].getX()+13,enemigo[i-1].getY()+48);
+                    }
+                    else
+                    {
+                        vidas_texto[i-1].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                        vidas_texto[i-1].setTransparencia(0);
+                    }
 
 
 
@@ -1453,7 +1460,7 @@ int juego()
 
                     */
                 }
-                if (tiempo%10==0)
+                if (tiempo%150==0)
                 {
                     if (objetos<cantidad_bichos)
                     {
@@ -1467,7 +1474,6 @@ int juego()
                 tiempo_texto.setVariable(tiempo);
                 ///--------
 
-
                 /// SIGUIENTE OLEADA
                 for(int h=0; h<cantidad_bichos; h++)
                 {
@@ -1480,14 +1486,19 @@ int juego()
                         siguiente_oleada=true;
                         vida_aumentada+=100;
                         aldeano.setVida(vida_aumentada);
-                        vidas_texto_variable.setVariable(vida_aumentada);
-                        tiempo=1;
+                        for(int p=0; p<cantidad_bichos; p++)
+                        {
+                            vidas_texto[p].setVariable(vida_aumentada);
+                        }
+                        bichos_muertos=0;
                     }
                 }
                 if(siguiente_oleada==true)
                 {
                     objetos=1;
+                    tiempo=1;
                     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                    siguiente_oleada=false;
                 }
                 else
                 {
