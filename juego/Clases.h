@@ -63,8 +63,9 @@ private:
     Font formato_de_letra;
     Text texto;
     bool formato_cargado;
+    bool Borde;
 public:
-    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color=Color::Transparent)
+    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color=Color::Transparent,bool borde=false)
     {
         if (!formato_de_letra.loadFromFile(letra))
             formato_cargado=false;
@@ -81,6 +82,13 @@ public:
             string variable_string = string(variable_char);
             texto.setString(variable_string);
             texto.setFillColor(color);
+            if (borde)
+            {
+                texto.setOutlineThickness(2.f);
+                Borde=true;
+            }
+            else
+                Borde=false;
         }
     }
     Texto () {}
@@ -117,7 +125,19 @@ public:
     }
     void setTransparencia(float t)
     {
-        texto.setFillColor(Color(0,0,0,t));
+        texto.setFillColor(Color(texto.getFillColor().r,texto.getFillColor().g,texto.getFillColor().b,t));
+        if (Borde)
+        {
+            texto.setOutlineColor(Color(texto.getOutlineColor().r,texto.getOutlineColor().g,texto.getOutlineColor().b,t));
+        }
+    }
+    void setBorde_tamanio(float tamanio)
+    {
+        texto.setOutlineThickness(tamanio);
+    }
+    void setBorde_Color (const Color& color)
+    {
+        texto.setOutlineColor(color);
     }
 };
 
@@ -243,7 +263,10 @@ public:
     {
         return zombie_sprite_propiedad;
     }
-    bool getMuerto() {return muerto;}
+    bool getMuerto()
+    {
+        return muerto;
+    }
     int getEstado ()
     {
         return estado;
@@ -268,8 +291,14 @@ public:
     {
         return velocidad;
     }
-    void setEstado (int e) {estado=e;}
-    void setMuerto (bool m=true) {muerto=m;}
+    void setEstado (int e)
+    {
+        estado=e;
+    }
+    void setMuerto (bool m=true)
+    {
+        muerto=m;
+    }
     void setColor (int rojo,int verde,int azul,int opacida=255)
     {
         zombie_sprite_propiedad.setColor(Color(rojo,verde,azul,opacida));
@@ -333,18 +362,18 @@ public:
     }
     void mover_izq()
     {
-    x-=velocidad;
-    setX(x);
+        x-=velocidad;
+        setX(x);
     }
     void mover_derecha()
     {
-    x+=velocidad;
-    setX(x);
+        x+=velocidad;
+        setX(x);
     }
     void mover_arriba()
     {
-    y-=velocidad;
-    setY(y);
+        y-=velocidad;
+        setY(y);
     }
 };
 
@@ -538,11 +567,16 @@ public:
         tamanioy=y;
     }
     Boton () {}
-    bool click(int *v) {
-    if (v[0]>=esi[0]&&v[0]<=esd[0]&&v[1]>=esd[1]&&v[1]<=eid[1]) return true;
-    return false;
+    bool click(int *v)
+    {
+        if (v[0]>=esi[0]&&v[0]<=esd[0]&&v[1]>=esd[1]&&v[1]<=eid[1])
+            return true;
+        return false;
     }
-    int getTransparencia () {return transparencia;}
+    int getTransparencia ()
+    {
+        return transparencia;
+    }
     int getEsix()
     {
         return esi[0];
@@ -586,7 +620,8 @@ public:
     }
 };
 
-class cargar_partida{
+class cargar_partida
+{
 
 private:
     int vidas;
@@ -594,14 +629,32 @@ private:
     int oleada;
 
 public:
-    int getvidas(){return vidas;}
-    int getdinero(){return dinero;}
-    int getoleada(){return oleada;}
-    void setvidas(int x){vidas=x;}
-    void setdinero(int x){dinero=x;}
-    void setoleada(int x){oleada=x;}
-    bool leerendisco(int pos){}
-    bool grabarendiso (){}
+    int getvidas()
+    {
+        return vidas;
+    }
+    int getdinero()
+    {
+        return dinero;
+    }
+    int getoleada()
+    {
+        return oleada;
+    }
+    void setvidas(int x)
+    {
+        vidas=x;
+    }
+    void setdinero(int x)
+    {
+        dinero=x;
+    }
+    void setoleada(int x)
+    {
+        oleada=x;
+    }
+    bool leerendisco(int pos) {}
+    bool grabarendiso () {}
 
 };
 

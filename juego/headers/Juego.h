@@ -17,30 +17,37 @@ int juego()
 
     ///vida del la base
     const int const_vida_juego=1000;
+    const int tiempo_spawn=10;
     ///-------------
 
     const int cantidad_bichos=10;
     Zombie enemigo[cantidad_bichos];
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
-    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,2);
+    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,0.8);
     if (!aldeano.getConfirmacion())
         return -10;
     Texto vidas_texto[cantidad_bichos];
-    Texto vidas_texto_variable("tipos_de_texto/OpenSans-BoldItalic.ttf",aldeano.getVida(),15,aldeano.getX()+13,aldeano.getY()+48);
+    Texto vidas_texto_variable("tipos_de_texto/letra_pintura.ttf",aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
     if (!vidas_texto_variable.getConfirmacion())
         return -10;
+    vidas_texto_variable.setBorde_Color(Color(255,0,255,0));
+    vidas_texto_variable.setBorde_tamanio(0.5);
     for (i=0; i<cantidad_bichos; i++)
     {
         vidas_texto[i]=vidas_texto_variable;
     }
-    Zombie aldeano_menu("img/zombie.png",668,317,porcion_de_sprite,2,255);
+    Zombie aldeano_menu("img/zombie.png",571,367,porcion_de_sprite,2,255);
     Clock tiempo_aldeano_menu;
     if (!aldeano_menu.getConfirmacion())
         return -10;
     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
 
     bool menu_principal=true,oleada_fin,fin_juego=false;
+    int oleada=1;
+
+    ///Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
+
     /** /// VARIABLES DE MONSTRUOS
     int monstruos_lvl_1=2;
     int monstruos_lvl_2=2;
@@ -147,9 +154,9 @@ int juego()
 
     Texture textura_mapa,textura_menu,textura_rango,textura_derrota;
 
-    if (!textura_mapa.loadFromFile("img/008 - copia.png"))
+    if (!textura_mapa.loadFromFile("img/008.png"))
         return -1;
-    if (!textura_menu.loadFromFile("img/006.jpg"))
+    if (!textura_menu.loadFromFile("img/fondo_menu_nuevo.jpg"))
         return -1;
     if (!textura_rango.loadFromFile("img/rango.png"))
         return -1;
@@ -179,10 +186,10 @@ int juego()
     {
         mousexy[i]=0;
     }
-    Texto mousex("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[0],18,627,545,Color::White);
+    Texto mousex("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[0],18,537,438,Color::White);
     if (!mousex.getConfirmacion())
         return -1;
-    Texto mousey("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[1],18,693,549,Color::White);
+    Texto mousey("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[1],18,600,438,Color::White);
     if (!mousey.getConfirmacion())
         return -1;
 
@@ -195,14 +202,14 @@ int juego()
     if (!musica_derrota.openFromFile("musica/derrota.ogg"))
         return -113;
     ///volumen de la musica del menu
-    musica_menu.setVolume(50.f);
+    musica_menu.setVolume(3.f);
     // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.play();
     musica_menu.setLoop(true);
-    musica_juego.setVolume(50.f);
+    musica_juego.setVolume(3.f);
     musica_juego.setLoop(true);
     musica_derrota.setLoop(true);
-    musica_derrota.setVolume(50.f);
+    musica_derrota.setVolume(3.f);
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false;
 
     ///con esta variable se cambia la cantidad de monstruos en el mundo
@@ -218,7 +225,7 @@ int juego()
     ///el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
     ///Util para ver en q posicion de la pantalla se ubica el boton.
 
-    Boton nueva_partida(237,38,351,316),cargar_partida_boton(237,38,351,377,255),salir(237,38,351,437),sonido(55,50,872,487);
+    Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(55,50,872,487);
     Boton nueva_oleada(49,45,823,433,255);
     Boton guardar_partida(152,44,824,545,255);
     Boton pausa(49,45,875,433);
@@ -249,13 +256,15 @@ int juego()
     ///-----Dinero de juego-----
     int dinero;
     dinero=1000;
-    Texto dinero_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",dinero,20,940,117,Color::Black);
-
+    Texto dinero_texto("tipos_de_texto/letra_increible_con_borde.ttf",dinero,25,937,147,Color(4,174,21,255),true);
+    if (!dinero_texto.getConfirmacion())
+        return -11;
     ///-----Vida de juego-----
     int vida_juego;
     vida_juego=const_vida_juego;
-    Texto vida_juego_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",vida_juego,20,940,138,Color::Black);
-
+    Texto vida_juego_texto("tipos_de_texto/letra_increible_con_borde.ttf",vida_juego,25,874,110,Color(241,65,91,255),true);
+    if (!dinero_texto.getConfirmacion())
+        return -90;
     /// Estados
     bool menu_abierto=false;
     bool mouse_afuera=false;
@@ -749,6 +758,8 @@ int juego()
 
                 vida_juego=const_vida_juego;
                 vida_juego_texto.setVariable(vida_juego);
+                aldeano.setVida(100);
+                vida_aumentada=100;
                 cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                 for(int o=0; o<cantidad_bichos; o++)
                 {
@@ -762,7 +773,8 @@ int juego()
                 musica_menu.play();
                 opacidad_menu=0;
                 boolmusicaderrota=false;
-
+                mousex.setColor(Color::White);
+                mousey.setColor(Color::White);
                 for(int l=0; l<tam_torres; l++)
                 {
                     /// TORRES -------------------------------------
@@ -908,7 +920,6 @@ int juego()
                         ///Oleada
                         if (nueva_oleada.click(mousexy))
                         {
-                            musica_juego.stop();
                             for (i=0; i<cantidad_bichos; i++)
                             {
                                 if (enemigo[i].getVida()<0)
@@ -1461,7 +1472,7 @@ int juego()
 
                     */
                 }
-                if (tiempo%150==0)
+                if (tiempo%tiempo_spawn==0)
                 {
                     if (objetos<cantidad_bichos)
                     {
@@ -1505,7 +1516,6 @@ int juego()
                 {
                     bichos_muertos=0;
                 }
-
             }
         }
         ///Pruebas iniciales con circulos
