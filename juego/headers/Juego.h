@@ -227,6 +227,7 @@ int juego()
 
     Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(55,50,872,487);
     Boton nueva_oleada(49,45,823,433,255);
+    Boton derrota_boton(1000,600,0,0);
     Boton guardar_partida(152,44,824,545,255);
     Boton pausa(49,45,875,433);
     Boton reanudar(49,45,927,433);
@@ -711,6 +712,26 @@ int juego()
             {
                 window.close();
             }
+            ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
+            if (event.type != Event::LostFocus)
+            {
+                tamx=window.getSize().x;
+                tamy=window.getSize().y;
+                if (tamx!=tamx_actual||tamy!=tamy_actual)
+                {
+                    pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
+                    mousexy[0]=pixeles_convertidos.x;
+                    mousexy[1]=pixeles_convertidos.y;
+                }
+                ///---------------------------------------------------------------------------------------------------------
+                else
+                {
+                    mousexy[0]=Mouse::getPosition(window).x;
+                    mousexy[1]=Mouse::getPosition(window).y;
+                }
+                mousex.setVariable(mousexy[0]);
+                mousey.setVariable(mousexy[1]);
+            }
         }
         ///Animaciones de los zombies ----
 
@@ -725,23 +746,8 @@ int juego()
 
         ///---------
         */
-        ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
-        tamx=window.getSize().x;
-        tamy=window.getSize().y;
-        if (tamx!=tamx_actual||tamy!=tamy_actual)
-        {
-            pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
-            mousexy[0]=pixeles_convertidos.x;
-            mousexy[1]=pixeles_convertidos.y;
-        }
-        ///---------------------------------------------------------------------------------------------------------
-        else
-        {
-            mousexy[0]=Mouse::getPosition(window).x;
-            mousexy[1]=Mouse::getPosition(window).y;
-        }
-        mousex.setVariable(mousexy[0]);
-        mousey.setVariable(mousexy[1]);
+
+
         ///Configuracion de los botones dentro del juego
 
         window.clear();
@@ -753,40 +759,43 @@ int juego()
             fin_juego=true;
             if (Mouse::isButtonPressed(Mouse::Left))
             {
-                fin_juego=false;
-                menu_principal=true;
-
-                vida_juego=const_vida_juego;
-                vida_juego_texto.setVariable(vida_juego);
-                aldeano.setVida(100);
-                vida_aumentada=100;
-                cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                for(int o=0; o<cantidad_bichos; o++)
+                if (derrota_boton.click(mousexy))
                 {
-                    vidas_texto[o].setVariable(enemigo[o].getVida());
-                }
-                dinero=1000;
-                dinero_texto.setVariable((dinero));
-                tiempo=1;
-                objetos=1;
-                musica_derrota.stop();
-                musica_menu.play();
-                opacidad_menu=0;
-                boolmusicaderrota=false;
-                mousex.setColor(Color::White);
-                mousey.setColor(Color::White);
-                for(int l=0; l<tam_torres; l++)
-                {
-                    /// TORRES -------------------------------------
-                    spawn_torre[l][0]=false;
-                    spawn_torre[l][1]=false;
-                    spawn_torre[l][2]=false;
-                    Ocupado[l]=false;
+                    fin_juego=false;
+                    menu_principal=true;
 
-                    /// RANGOS -------------------------------------
-                    for(int f=0; f<cantidad_torres; f++)
+                    vida_juego=const_vida_juego;
+                    vida_juego_texto.setVariable(vida_juego);
+                    aldeano.setVida(100);
+                    vida_aumentada=100;
+                    cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                    for(int o=0; o<cantidad_bichos; o++)
                     {
-                        Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
+                        vidas_texto[o].setVariable(enemigo[o].getVida());
+                    }
+                    dinero=1000;
+                    dinero_texto.setVariable((dinero));
+                    tiempo=1;
+                    objetos=1;
+                    musica_derrota.stop();
+                    musica_menu.play();
+                    opacidad_menu=0;
+                    boolmusicaderrota=false;
+                    mousex.setColor(Color::White);
+                    mousey.setColor(Color::White);
+                    for(int l=0; l<tam_torres; l++)
+                    {
+                        /// TORRES -------------------------------------
+                        spawn_torre[l][0]=false;
+                        spawn_torre[l][1]=false;
+                        spawn_torre[l][2]=false;
+                        Ocupado[l]=false;
+
+                        /// RANGOS -------------------------------------
+                        for(int f=0; f<cantidad_torres; f++)
+                        {
+                            Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
+                        }
                     }
                 }
             }
@@ -913,7 +922,7 @@ int juego()
                             }
                             else
                             {
-                                musica_juego.setVolume(50.f);
+                                musica_juego.setVolume(3.f);
                                 boolmusicajuego=true;
                             }
                         }
