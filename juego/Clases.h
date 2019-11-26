@@ -65,7 +65,7 @@ private:
     bool formato_cargado;
     bool Borde;
 public:
-    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color=Color::Transparent,bool borde=false)
+    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color=Color::Black,bool borde=false)
     {
         if (!formato_de_letra.loadFromFile(letra))
             formato_cargado=false;

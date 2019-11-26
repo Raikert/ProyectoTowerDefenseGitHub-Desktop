@@ -17,7 +17,7 @@ int juego()
 
     ///vida del la base
     const int const_vida_juego=1000;
-    const int tiempo_spawn=10;
+    const int tiempo_spawn=200;
     ///-------------
 
     const int cantidad_bichos=10;
@@ -37,10 +37,6 @@ int juego()
     {
         vidas_texto[i]=vidas_texto_variable;
     }
-    Zombie aldeano_menu("img/zombie.png",571,367,porcion_de_sprite,2,255);
-    Clock tiempo_aldeano_menu;
-    if (!aldeano_menu.getConfirmacion())
-        return -10;
     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
 
     bool menu_principal=true,oleada_fin,fin_juego=false;
@@ -182,14 +178,15 @@ int juego()
     menu.setTexture(textura_menu);
     derrota.setTexture(textura_derrota);
     int mousexy[2];
+    bool teclado=false;
     for (i=0; i<2; i++)
     {
         mousexy[i]=0;
     }
-    Texto mousex("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[0],18,537,438,Color::White);
+    Texto mousex("tipos_de_texto/letra_increible_con_borde.ttf",mousexy[0],18,628,540);
     if (!mousex.getConfirmacion())
         return -1;
-    Texto mousey("tipos_de_texto/OpenSans-BoldItalic.ttf",mousexy[1],18,600,438,Color::White);
+    Texto mousey("tipos_de_texto/letra_increible_con_borde.ttf",mousexy[1],18,700,540);
     if (!mousey.getConfirmacion())
         return -1;
 
@@ -210,7 +207,7 @@ int juego()
     musica_juego.setLoop(true);
     musica_derrota.setLoop(true);
     musica_derrota.setVolume(3.f);
-    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false;
+    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false,habilitacion_teclado=true;
 
     ///con esta variable se cambia la cantidad de monstruos en el mundo
 
@@ -698,7 +695,7 @@ int juego()
     ///hacerlo por si mismo, dado que no puede devolver ningun valor, es cosa nuestra asegurarlo.
 
     ///-------------------------
-    Texto tiempo_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",tiempo,25,600,300,Color::Black);
+    Texto tiempo_texto("tipos_de_texto/letra_increible_con_borde.ttf",tiempo,25,667,500);
     if (!tiempo_texto.getConfirmacion())
         return -1;
     ///-------------------------
@@ -731,6 +728,19 @@ int juego()
                 }
                 mousex.setVariable(mousexy[0]);
                 mousey.setVariable(mousexy[1]);
+
+                if (Keyboard::isKeyPressed(Keyboard::D))
+                    {
+                        if (habilitacion_teclado) {
+
+                        if (!teclado)
+                            teclado=true;
+                        else
+                            teclado=false;
+                            habilitacion_teclado=false;
+                        }
+                    }
+                    else habilitacion_teclado=true;
             }
         }
         ///Animaciones de los zombies ----
@@ -781,8 +791,6 @@ int juego()
                     musica_menu.play();
                     opacidad_menu=0;
                     boolmusicaderrota=false;
-                    mousex.setColor(Color::White);
-                    mousey.setColor(Color::White);
                     for(int l=0; l<tam_torres; l++)
                     {
                         /// TORRES -------------------------------------
@@ -817,10 +825,6 @@ int juego()
                 menu.setColor(Color(255,255,255,opacidad_menu));
                 window.draw(menu);
                 /// window.draw(texto_prueba);
-                window.draw(aldeano_menu.getZombie());
-                window.draw(mousex.getTexto());
-                window.draw(mousey.getTexto());
-
                 if (opacidad_menu<255)
                 {
                     opacidad_menu+=5;
@@ -840,10 +844,6 @@ int juego()
                                 */
                             musica_menu.stop();
                             musica_juego.play();
-
-                            mousex.setColor(Color::Black);
-                            mousey.setColor(Color::Black);
-
                             menu_principal=false;
                         }
                         ///Cargar Partida
@@ -863,8 +863,6 @@ int juego()
 
                     }
                 }
-                aldeano_menu.cambiar_frame_sprite(tiempo_aldeano_menu);
-
             }
             else
             {
@@ -1012,11 +1010,14 @@ int juego()
                     /// MAPA DEL JUEGO
                     window.draw(mapa);
 
-                    /// COORDENADAS DEL MOUSE - MOMENTANEO
-                    window.draw(mousex.getTexto());
-                    window.draw(mousey.getTexto());
-                    /// VARIABLE TIEMPO - MOMENTANEO
-                    window.draw(tiempo_texto.getTexto());
+                    if (teclado)
+                    {
+                        /// COORDENADAS DEL MOUSE
+                        window.draw(mousex.getTexto());
+                        window.draw(mousey.getTexto());
+                        /// VARIABLE TIEMPO
+                        window.draw(tiempo_texto.getTexto());
+                    }
 
                     /// VIDA DEL JUEGO
                     window.draw(vida_juego_texto.getTexto());
