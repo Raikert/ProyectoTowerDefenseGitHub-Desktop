@@ -797,14 +797,6 @@ int juego()
                 }
                 ///--------------------------------------------------------------
             }
-
-            ///Cuando se pierde se cambia a estado derrota------
-            if (vida_juego<=0)
-            {
-                estado_juego=1;
-            }
-            ///------------------------------------------------
-
         }
         ///fin de la zona de estados del juego------------------------------------
 
@@ -1001,6 +993,13 @@ int juego()
             break;  ///fin estado menu principal
 
         case 3:   ///ESTADO JUEGO
+
+            ///Cuando se pierde se cambia a estado derrota------
+            if (vida_juego<=0)
+            {
+                estado_juego=1;
+            }
+            ///------------------------------------------------
 
             ///  COMIENZA EL JUEGO
             if (Mouse::isButtonPressed(Mouse::Left))
