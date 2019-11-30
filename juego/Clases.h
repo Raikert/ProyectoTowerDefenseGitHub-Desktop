@@ -620,7 +620,41 @@ public:
     }
 };
 
-class cargar_partida
+class Configuracion
+{
+private:
+    bool sonido_menu;
+public:
+    Configuracion ()
+    {
+        FILE *p;
+        p=fopen("Configuracion.dat","rb");
+        if (p==NULL)
+        {
+            p=fopen("Configuracion.dat","ab");
+            sonido_menu=true;
+        }
+        else
+        {
+            fread(this,sizeof this,1,p);
+        }
+        fclose(p);
+    }
+    bool getSonido_menu()
+    {
+        return sonido_menu;
+    }
+    void setSonido_menu(bool valor)
+    {
+        sonido_menu=valor;
+        FILE *p;
+        p=fopen("Configuracion.dat","rb+");
+        fwrite(this,sizeof this,1,p);
+        fclose(p);
+    }
+};
+
+class Partida
 {
 
 private:

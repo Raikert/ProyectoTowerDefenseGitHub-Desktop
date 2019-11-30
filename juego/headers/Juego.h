@@ -21,6 +21,11 @@ int juego()
     const int cantidad_bichos=10;
     ///-------------
 
+    ///Objetos Archivo-----------
+    Configuracion reg_config;
+    bool primera_vez=true;
+    ///--------------------------
+
     Zombie enemigo[cantidad_bichos];
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
@@ -195,7 +200,6 @@ int juego()
     ///volumen de la musica del menu
     musica_menu.setVolume(3.f);
     // musica_menu.setPlayingOffset(seconds(62.5f));
-    musica_menu.play();
     musica_menu.setLoop(true);
     musica_juego.setVolume(3.f);
     musica_juego.setLoop(true);
@@ -217,11 +221,8 @@ int juego()
     ///Util para ver en q posicion de la pantalla se ubica el boton.
 
     Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(55,50,872,487);
-    Boton nueva_oleada(49,45,823,433,255);
-    Boton derrota_boton(1000,600,0,0);
-    Boton guardar_partida(152,44,824,545,255);
-    Boton pausa(49,45,875,433);
-    Boton reanudar(49,45,927,433);
+    Boton nueva_oleada(49,45,823,433,255), derrota_boton(1000,600,0,0), guardar_partida(152,44,824,545,255), pausa(49,45,875,433);
+    Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
     ///-----Cantidad de torres-----
@@ -949,6 +950,12 @@ int juego()
 
         case 2:  ///ESTADO MENU PRINCIPAL
 
+            if (reg_config.getSonido_menu()&&primera_vez)
+            {
+                musica_menu.play();
+                primera_vez=false;
+            }
+
             menu.setColor(Color(255,255,255,opacidad_menu));
             window.draw(menu);
             /// window.draw(texto_prueba);
@@ -961,34 +968,56 @@ int juego()
                 ///Configuracion de los botones en el menu principal
                 if (Mouse::isButtonPressed(Mouse::Left))
                 {
-
-                    ///Nueva partida
-                    if (nueva_partida.click(mousexy))
+                    if (habilitacionmouse)
                     {
-                        /*
-                        volumen_menu-=0.1;
-                        musica_menu.setVolume(volumen_menu);
-                            */
-                        musica_menu.stop();
-                        musica_juego.play();
-                        estado_juego=3;
-                    }
-                    ///Cargar Partida
-                    if (cargar_partida_boton.click(mousexy))
-                    {
-                        musica_menu.stop();
-                        musica_juego.play();
 
-                    }
-                    ///Salir
-                    if (salir.click(mousexy))
-                    {
-                        musica_menu.stop();
-                        window.close();
+                        ///Nueva partida
+                        if (nueva_partida.click(mousexy))
+                        {
+                            /*
+                            volumen_menu-=0.1;
+                            musica_menu.setVolume(volumen_menu);
+                                */
+                            musica_menu.stop();
+                            musica_juego.play();
+                            estado_juego=3;
+                        }
+                        ///Cargar Partida
+                        if (cargar_partida_boton.click(mousexy))
+                        {
+                            musica_menu.stop();
+                            musica_juego.play();
 
+                        }
+                        ///Salir
+                        if (salir.click(mousexy))
+                        {
+                            musica_menu.stop();
+                            window.close();
+
+                        }
+
+                        ///Sonido
+                        if (sonido_menu.click(mousexy))
+                        {
+                            if (reg_config.getSonido_menu())
+                            {
+                                reg_config.setSonido_menu(false);
+                                musica_menu.setVolume(0.f);
+                            }
+                            else
+                            {
+                                reg_config.setSonido_menu(true);
+                                musica_menu.setVolume(3.f);
+                            }
+
+                        }
+                        habilitacionmouse=false;
                     }
 
                 }
+                else
+                    habilitacionmouse=true;
             }
             break;  ///fin estado menu principal
 
