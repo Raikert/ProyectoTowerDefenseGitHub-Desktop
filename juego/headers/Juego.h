@@ -15,12 +15,12 @@ int juego()
     Vector2f pixeles_convertidos;
     ///---------------------------------
 
-    ///vida del la base
+    ///Constantes practicas
     const int const_vida_juego=1000;
     const int tiempo_spawn=200;
+    const int cantidad_bichos=10;
     ///-------------
 
-    const int cantidad_bichos=10;
     Zombie enemigo[cantidad_bichos];
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
@@ -39,7 +39,7 @@ int juego()
     }
     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
 
-    bool menu_principal=true,oleada_fin,fin_juego=false;
+    bool oleada_fin,fin_juego=false;
     int oleada=1;
 
     ///Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
@@ -126,12 +126,6 @@ int juego()
 
     ///---------------------------------------
 
-    ///definicion de la ventana del juego
-    RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
-
-    ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
-    ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
-    window.setFramerateLimit(60);
     ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
     /*
     Sprites bicho("img/bicho_reside_circulo.png",opacidad_bichos,285,0);
@@ -207,7 +201,7 @@ int juego()
     musica_juego.setLoop(true);
     musica_derrota.setLoop(true);
     musica_derrota.setVolume(3.f);
-    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false,habilitacion_teclado=true;
+    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false;
 
     ///con esta variable se cambia la cantidad de monstruos en el mundo
 
@@ -674,7 +668,7 @@ int juego()
 
     int objetos=1;
     int tiempo=1;
-
+    int estado_juego=2;
     ///Todo lo que se necesita para crear un texto son 2 lineas de codigo, Nueva Clase Texto, Parametros:
 
     ///1)Formato de texto: ruta donde esta alojado el tipo de texto.
@@ -700,16 +694,32 @@ int juego()
         return -1;
     ///-------------------------
 
+    ///definicion de la ventana del juego
+    RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
+
+    ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
+    ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
+    window.setFramerateLimit(60);
+    ///metodo para que no se tome en cuenta las repeticiones al presionar una tecla, similar a la booleana habilitacion_mouse
+    window.setKeyRepeatEnabled(false);
+
     while (window.isOpen())
     {
+        ///Zona de estados del juego-------------------------------------------
         Event event;
         while (window.pollEvent(event))
         {
+
+            ///si la ventana se cierra-------------
             if (event.type == Event::Closed)
             {
                 window.close();
             }
-            ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados-------------
+            ///------------------------------------
+
+
+            ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados------------
+
             if (event.type != Event::LostFocus)
             {
                 tamx=window.getSize().x;
@@ -720,7 +730,7 @@ int juego()
                     mousexy[0]=pixeles_convertidos.x;
                     mousexy[1]=pixeles_convertidos.y;
                 }
-                ///---------------------------------------------------------------------------------------------------------
+
                 else
                 {
                     mousexy[0]=Mouse::getPosition(window).x;
@@ -728,22 +738,77 @@ int juego()
                 }
                 mousex.setVariable(mousexy[0]);
                 mousey.setVariable(mousexy[1]);
+                ///fin resoluciones---------------------------------------------------------------------------------------
+            }
+            ///-------------------------------------------
 
+            ///EVENTO SI UNA TECLA ES PRESIONADA
+
+            if (event.type == Event::KeyPressed)
+            {
+                ///debug del juego------------tecla d---------
                 if (Keyboard::isKeyPressed(Keyboard::D))
-                    {
-                        if (habilitacion_teclado) {
+                {
 
-                        if (!teclado)
-                            teclado=true;
-                        else
-                            teclado=false;
-                            habilitacion_teclado=false;
+                    if (!teclado)
+                        teclado=true;
+                    else
+                    {
+                        teclado=false;
+                    }
+                }
+                ///--------------------------------------------
+
+                ///Salir del juego al menu principal------tecla escape-------------
+                if (Keyboard::isKeyPressed(Keyboard::Escape))
+                {
+                    estado_juego=2;
+                    vida_juego=const_vida_juego;
+                    vida_juego_texto.setVariable(vida_juego);
+                    aldeano.setVida(100);
+                    vida_aumentada=100;
+                    cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                    for(int o=0; o<cantidad_bichos; o++)
+                    {
+                        vidas_texto[o].setVariable(enemigo[o].getVida());
+                    }
+                    dinero=1000;
+                    dinero_texto.setVariable((dinero));
+                    tiempo=1;
+                    objetos=1;
+                    musica_juego.stop();
+                    musica_menu.play();
+                    opacidad_menu=0;
+                    boolmusicajuego=false;
+                    for(int l=0; l<tam_torres; l++)
+                    {
+                        /// TORRES -------------------------------------
+                        spawn_torre[l][0]=false;
+                        spawn_torre[l][1]=false;
+                        spawn_torre[l][2]=false;
+                        Ocupado[l]=false;
+
+                        /// RANGOS -------------------------------------
+                        for(int f=0; f<cantidad_torres; f++)
+                        {
+                            Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
                         }
                     }
-                    else habilitacion_teclado=true;
+                }
+                ///--------------------------------------------------------------
             }
+
+            ///Cuando se pierde se cambia a estado derrota------
+            if (vida_juego<=0)
+            {
+                estado_juego=1;
+            }
+            ///------------------------------------------------
+
         }
-        ///Animaciones de los zombies ----
+        ///fin de la zona de estados del juego------------------------------------
+
+///Animaciones de los zombies ----
 
         /*
         for(i=1; i<cantidad_bichos; i++)
@@ -757,23 +822,104 @@ int juego()
         ///---------
         */
 
-
-        ///Configuracion de los botones dentro del juego
-
         window.clear();
 
-        ///  COMIENZA EL JUEGO
-
-        if (vida_juego<=0)
+///Estados del Juego
+        switch (estado_juego)
         {
-            fin_juego=true;
+        case 0:  ///Cuando el juego esta en pausa, solo se dibuja, no se modifican las variables.
+
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                if (reanudar.click(mousexy))
+                {
+                    musica_juego.play();
+                    estado_juego=3;
+                }
+            }
+
+            /// MAPA DEL JUEGO
+            window.draw(mapa);
+
+            ///DEBUG
+            if (teclado)
+            {
+                /// COORDENADAS DEL MOUSE
+                window.draw(mousex.getTexto());
+                window.draw(mousey.getTexto());
+                /// VARIABLE TIEMPO
+                window.draw(tiempo_texto.getTexto());
+            }
+
+            /// VIDA DEL JUEGO
+            window.draw(vida_juego_texto.getTexto());
+            /// DINERO DEL JUEGO
+            window.draw(dinero_texto.getTexto());
+
+            ///TORRES Y SUS AREAS
+            for (x=0; x<tam_torres; x++)
+            {
+                for(int y=0; y<3; y++)
+                {
+                    if (spawn_torre[x][y]==true)
+                    {
+                        window.draw(Sprite_rango_torre_tipo[y][x]);
+                        window.draw(Sprite_torre_tipo[y][x]);
+
+                        /*
+                        switch (y)
+                        {
+                        case 0:
+                            window.draw(Sprite_rango_torre_t1[x]);
+                            window.draw(Sprite_torre_1[x]);
+                            break;
+                        case 1:
+                            window.draw(Sprite_rango_torre_t2[x]);
+                            window.draw(Sprite_torre_2[x]);
+                            break;
+                        case 2:
+                            window.draw(Sprite_rango_torre_t3[x]);
+                            window.draw(Sprite_torre_3[x]);
+                            break;
+                        }
+                        */
+
+                    }
+                }
+            }
+
+            ///ZOMBIES Y SUS VIDAS
+            for (d=1; d<=objetos; d++)
+            {
+                window.draw(enemigo[d-1].getZombie());
+                window.draw(vidas_texto[d-1].getTexto());
+            }
+
+            ///MENU DE LAS TORRES
+            for (x=0; x<tam_torres; x++)
+            {
+                if (menu_torre[x]==true)
+                {
+                    window.draw(Sprite_menu_torre[x]);
+                }
+            }
+
+            break;  ///fin de estado pausa del juego
+
+        case 1:  ///ESTADO DERROTADO
+
+            window.draw(derrota);
+            if (!boolmusicaderrota)
+            {
+                musica_juego.stop();
+                musica_derrota.play();
+                boolmusicaderrota=true;
+            }
             if (Mouse::isButtonPressed(Mouse::Left))
             {
                 if (derrota_boton.click(mousexy))
                 {
-                    fin_juego=false;
-                    menu_principal=true;
-
+                    estado_juego=2;
                     vida_juego=const_vida_juego;
                     vida_juego_texto.setVariable(vida_juego);
                     aldeano.setVida(100);
@@ -807,752 +953,715 @@ int juego()
                     }
                 }
             }
-        }
-        if (fin_juego)
-        {
-            window.draw(derrota);
-            if (!boolmusicaderrota)
+            break; ///fin del estado derrotado
+
+        case 2:  ///ESTADO MENU PRINCIPAL
+
+            menu.setColor(Color(255,255,255,opacidad_menu));
+            window.draw(menu);
+            /// window.draw(texto_prueba);
+            if (opacidad_menu<255)
             {
-                musica_juego.stop();
-                musica_derrota.play();
-                boolmusicaderrota=true;
-            }
-        }
-        else
-        {
-            if (menu_principal)
-            {
-                menu.setColor(Color(255,255,255,opacidad_menu));
-                window.draw(menu);
-                /// window.draw(texto_prueba);
-                if (opacidad_menu<255)
-                {
-                    opacidad_menu+=5;
-                }
-                else
-                {
-                    ///Configuracion de los botones en el menu principal
-                    if (Mouse::isButtonPressed(Mouse::Left))
-                    {
-
-                        ///Nueva partida
-                        if (nueva_partida.click(mousexy))
-                        {
-                            /*
-                            volumen_menu-=0.1;
-                            musica_menu.setVolume(volumen_menu);
-                                */
-                            musica_menu.stop();
-                            musica_juego.play();
-                            menu_principal=false;
-                        }
-                        ///Cargar Partida
-                        if (cargar_partida_boton.click(mousexy))
-                        {
-                            musica_menu.stop();
-                            musica_juego.play();
-
-                        }
-                        ///Salir
-                        if (salir.click(mousexy))
-                        {
-                            musica_menu.stop();
-                            window.close();
-
-                        }
-
-                    }
-                }
+                opacidad_menu+=5;
             }
             else
             {
+                ///Configuracion de los botones en el menu principal
                 if (Mouse::isButtonPressed(Mouse::Left))
                 {
-                    if (habilitacionmouse)
-                    {
-                        ///pausa del juego
-                        if (pausa.click(mousexy))
-                        {
-                            musica_juego.pause();
-                            while (true)
-                            {
-                                while (window.pollEvent(event))
-                                {
-                                    if (event.type == Event::Closed)
-                                    {
-                                        window.close();
-                                        return 0;
-                                    }
-                                }
-                                tamx=window.getSize().x;
-                                tamy=window.getSize().y;
-                                if (tamx!=tamx_actual||tamy!=tamy_actual)
-                                {
-                                    pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
-                                    mousexy[0]=pixeles_convertidos.x;
-                                    mousexy[1]=pixeles_convertidos.y;
-                                }
-                                ///---------------------------------------------------------------------------------------------------------
-                                else
-                                {
-                                    mousexy[0]=Mouse::getPosition(window).x;
-                                    mousexy[1]=Mouse::getPosition(window).y;
-                                }
-                                mousex.setVariable(mousexy[0]);
-                                mousey.setVariable(mousexy[1]);
-                                if (Mouse::isButtonPressed(Mouse::Left))
-                                {
-                                    if (reanudar.click(mousexy))
-                                    {
-                                        musica_juego.play();
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        ///sonido
-                        if (sonido.click(mousexy))
-                        {
-                            if (boolmusicajuego)
-                            {
-                                musica_juego.setVolume(0.f);
-                                boolmusicajuego=false;
-                            }
-                            else
-                            {
-                                musica_juego.setVolume(3.f);
-                                boolmusicajuego=true;
-                            }
-                        }
-                        ///Oleada
-                        if (nueva_oleada.click(mousexy))
-                        {
-                            for (i=0; i<cantidad_bichos; i++)
-                            {
-                                if (enemigo[i].getVida()<0)
-                                {
-                                    oleada_fin=true;
-                                }
-                                else
-                                    oleada_fin=false;
-                            }
-                            if (oleada_fin)
-                            {
-                                ///oleada.incrementar(v);
-                            }
-                        }
-                        /// Torres
-                        for (i=0; i<tam_torres; i++)
-                        {
-                            if (torres[i].click(mousexy))
-                            {
-                                ///SE ABRE EL MENU DE TORRES
-                                menu_torre[i]=true;
-                                spawnear[i]=true;
-                                habilitacionmouse=false;
-                                posicion_clickeada=i;
-                                contador_de_clicks++;
-                            }
-                            else
-                            {
-                                ///SE CIERRA EL MENU DE TORRES
-                                menu_torre[i]=false;
-                                if (contador_de_clicks>1)
-                                {
-                                    //spawnear[i]=false;
-                                }
-                                contador_de_clicks++;
 
-                                /// Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
-                                /// no sea el que se clickeo anteriormente
-                                for(int k=0; k<tam_torres; k++)
+                    ///Nueva partida
+                    if (nueva_partida.click(mousexy))
+                    {
+                        /*
+                        volumen_menu-=0.1;
+                        musica_menu.setVolume(volumen_menu);
+                            */
+                        musica_menu.stop();
+                        musica_juego.play();
+                        estado_juego=3;
+                    }
+                    ///Cargar Partida
+                    if (cargar_partida_boton.click(mousexy))
+                    {
+                        musica_menu.stop();
+                        musica_juego.play();
+
+                    }
+                    ///Salir
+                    if (salir.click(mousexy))
+                    {
+                        musica_menu.stop();
+                        window.close();
+
+                    }
+
+                }
+            }
+            break;  ///fin estado menu principal
+
+        case 3:   ///ESTADO JUEGO
+
+            ///  COMIENZA EL JUEGO
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                if (habilitacionmouse)
+                {
+                    if (pausa.click(mousexy))
+                    {
+                        musica_juego.pause();
+                        estado_juego=0;
+                    }
+                    ///sonido
+                    if (sonido.click(mousexy))
+                    {
+                        if (boolmusicajuego)
+                        {
+                            musica_juego.setVolume(0.f);
+                            boolmusicajuego=false;
+                        }
+                        else
+                        {
+                            musica_juego.setVolume(3.f);
+                            boolmusicajuego=true;
+                        }
+                    }
+                    ///Oleada
+                    if (nueva_oleada.click(mousexy))
+                    {
+                        for (i=0; i<cantidad_bichos; i++)
+                        {
+                            if (enemigo[i].getVida()<0)
+                            {
+                                oleada_fin=true;
+                            }
+                            else
+                                oleada_fin=false;
+                        }
+                        if (oleada_fin)
+                        {
+                            ///oleada.incrementar(v);
+                        }
+                    }
+                    /// Torres
+                    for (i=0; i<tam_torres; i++)
+                    {
+                        if (torres[i].click(mousexy))
+                        {
+                            ///SE ABRE EL MENU DE TORRES
+                            menu_torre[i]=true;
+                            spawnear[i]=true;
+                            habilitacionmouse=false;
+                            posicion_clickeada=i;
+                            contador_de_clicks++;
+                        }
+                        else
+                        {
+                            ///SE CIERRA EL MENU DE TORRES
+                            menu_torre[i]=false;
+                            if (contador_de_clicks>1)
+                            {
+                                //spawnear[i]=false;
+                            }
+                            contador_de_clicks++;
+
+                            /// Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
+                            /// no sea el que se clickeo anteriormente
+                            for(int k=0; k<tam_torres; k++)
+                            {
+                                if (k != posicion_clickeada)
                                 {
-                                    if (k != posicion_clickeada)
-                                    {
-                                        spawnear[k]=false;
-                                    }
+                                    spawnear[k]=false;
                                 }
                             }
-                            if (habilitacionmouse)
+                        }
+                        if (habilitacionmouse)
+                        {
+                            for(x=0; x<tam_torres; x++)
                             {
-                                for(x=0; x<tam_torres; x++)
+                                if (Ocupado[i]==false&&spawnear[i]==true)
                                 {
-                                    if (Ocupado[i]==false&&spawnear[i]==true)
+                                    for(int u=0; u<cantidad_torres; u++)
                                     {
-                                        for(int u=0; u<cantidad_torres; u++)
+                                        if(dinero>=compra[u]&&torres_tipo[u][i].click(mousexy))
                                         {
-                                            if(dinero>=compra[u]&&torres_tipo[u][i].click(mousexy))
-                                            {
-                                                ///Se spawnea la torre U
-                                                spawn_torre[i][u]=true;
-                                                /// El espacio de la torre 1 esta siendo ocupado por la torre 1
-                                                Ocupado[i]=true;
-                                                dinero-=compra[u];
-                                                dinero_texto.setVariable(dinero);
-                                            }
+                                            ///Se spawnea la torre U
+                                            spawn_torre[i][u]=true;
+                                            /// El espacio de la torre 1 esta siendo ocupado por la torre 1
+                                            Ocupado[i]=true;
+                                            dinero-=compra[u];
+                                            dinero_texto.setVariable(dinero);
                                         }
                                     }
                                 }
                             }
                         }
-                        ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
-                        habilitacionmouse=false;
                     }
+                    ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
+                    habilitacionmouse=false;
+                }
+            }
+            else
+            {
+                ///una vez que se solto el mouse, recien se habilita para una nueva accion
+                habilitacionmouse=true;
+            }
+
+            for (i=1; i<=objetos; i++)
+            {
+                /// MAPA DEL JUEGO
+                window.draw(mapa);
+
+                if (teclado)
+                {
+                    /// COORDENADAS DEL MOUSE
+                    window.draw(mousex.getTexto());
+                    window.draw(mousey.getTexto());
+                    /// VARIABLE TIEMPO
+                    window.draw(tiempo_texto.getTexto());
+                }
+
+                /// VIDA DEL JUEGO
+                window.draw(vida_juego_texto.getTexto());
+                /// DINERO DEL JUEGO
+                window.draw(dinero_texto.getTexto());
+
+                /// REPRODUCTOR DE MUSICA
+                if (!boolmusica)
+                {
+                    musica_juego.play();
+                    boolmusica=true;
+                }
+///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
+                for (x=0; x<tam_torres; x++)
+                {
+                    for(int y=0; y<3; y++)
+                    {
+                        if (spawn_torre[x][y]==true)
+                        {
+                            Sprite_rango_torre_tipo[y][x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                            window.draw(Sprite_rango_torre_tipo[y][x]);
+                            window.draw(Sprite_torre_tipo[y][x]);
+                            /*
+                            switch (y)
+                            {
+                            case 0:
+                                Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                                window.draw(Sprite_rango_torre_t1[x]);
+                                window.draw(Sprite_torre_1[x]);
+                                break;
+                            case 1:
+                                Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                                window.draw(Sprite_rango_torre_t2[x]);
+                                window.draw(Sprite_torre_2[x]);
+                                break;
+                            case 2:
+                                Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                                window.draw(Sprite_rango_torre_t3[x]);
+                                window.draw(Sprite_torre_3[x]);
+                                break;
+                            }
+                            */
+                        }
+                    }
+                }
+///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
+                for (d=1; d<=objetos; d++)
+                {
+                    if (enemigo[d-1].getVida()>0)
+                    {
+                        window.draw(enemigo[d-1].getZombie());
+                        window.draw(vidas_texto[d-1].getTexto());
+                    }
+                    else if (!enemigo[d-1].getMuerto()&& enemigo[d-1].getEstado()!=7)
+                    {
+                        dinero+=100;
+                        dinero_texto.setVariable(dinero);
+                        enemigo[d-1].setMuerto();
+                    }
+                    ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
+                    /*
+                    switch(mini_estados) {
+                    case 1:
+                    break;
+                    case 2:---------
+                    break;
+                    case 3:
+                    break;
+                    }
+                    */
+                }
+                for (x=0; x<tam_torres; x++)
+                {
+                    if (menu_torre[x]==true)
+                    {
+                        window.draw(Sprite_menu_torre[x]);
+                    }
+                }
+
+                for (x=0; x<tam_torres; x++)
+                {
+                    for(int f=0; f<cantidad_torres; f++)
+                    {
+                        /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
+                        if (PixelPerfectTest(enemigo[i-1].getZombie(),Sprite_rango_torre_tipo[f][x]))
+                        {
+                            if (tiempo%intervalo_danio[f]==0)
+                            {
+                                enemigo[i-1].reducir_vida(danio_torre[f]);
+                                vidas_texto[i-1].setVariable(enemigo[i-1].getVida());
+                                enemigo[i-1].setColor(50,50,77);
+                            }
+                            else
+                            {
+                                enemigo[i-1].setColor(255,255,255);
+                            }
+                        }
+                    }
+                }
+                if (enemigo[i-1].getVida()>0)
+                {
+                    vidas_texto[i-1].setPosicion(enemigo[i-1].getX()+13,enemigo[i-1].getY()+48);
                 }
                 else
                 {
-                    ///una vez que se solto el mouse, recien se habilita para una nueva accion
-                    habilitacionmouse=true;
+                    vidas_texto[i-1].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                    vidas_texto[i-1].setTransparencia(0);
                 }
 
-                for (i=1; i<=objetos; i++)
+
+
+                /*
+                switch (estados[i-1])
                 {
-                    /// MAPA DEL JUEGO
-                    window.draw(mapa);
-
-                    if (teclado)
+                case 4:
+                    ///ANIMACION ARRIBA
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
                     {
-                        /// COORDENADAS DEL MOUSE
-                        window.draw(mousex.getTexto());
-                        window.draw(mousey.getTexto());
-                        /// VARIABLE TIEMPO
-                        window.draw(tiempo_texto.getTexto());
-                    }
-
-                    /// VIDA DEL JUEGO
-                    window.draw(vida_juego_texto.getTexto());
-                    /// DINERO DEL JUEGO
-                    window.draw(dinero_texto.getTexto());
-
-                    /// REPRODUCTOR DE MUSICA
-                    if (!boolmusica)
-                    {
-                        musica_juego.play();
-                        boolmusica=true;
-                    }
-///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
-                    for (x=0; x<tam_torres; x++)
-                    {
-                        for(int y=0; y<3; y++)
+                        switch (num_sprite[i-1])
                         {
-                            if (spawn_torre[x][y]==true)
-                            {
-                                Sprite_rango_torre_tipo[y][x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                window.draw(Sprite_rango_torre_tipo[y][x]);
-                                window.draw(Sprite_torre_tipo[y][x]);
-                                /*
-                                switch (y)
-                                {
-                                case 0:
-                                    Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                    window.draw(Sprite_rango_torre_t1[x]);
-                                    window.draw(Sprite_torre_1[x]);
-                                    break;
-                                case 1:
-                                    Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                    window.draw(Sprite_rango_torre_t2[x]);
-                                    window.draw(Sprite_torre_2[x]);
-                                    break;
-                                case 2:
-                                    Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                    window.draw(Sprite_rango_torre_t3[x]);
-                                    window.draw(Sprite_torre_3[x]);
-                                    break;
-                                }
-                                */
-                            }
-                        }
-                    }
-///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
-                    for (d=1; d<=objetos; d++)
-                    {
-                        if (enemigo[d-1].getVida()>0)
-                        {
-                            window.draw(enemigo[d-1].getZombie());
-                            window.draw(vidas_texto[d-1].getTexto());
-                        }
-                        else if (!enemigo[d-1].getMuerto()&& enemigo[d-1].getEstado()!=7)
-                        {
-                            dinero+=100;
-                            dinero_texto.setVariable(dinero);
-                            enemigo[d-1].setMuerto();
-                        }
-                        ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
-                        /*
-                        switch(mini_estados) {
+                        ///left es X
+                        ///top es Y
+                        ///width es ancho
+                        ///height es alto
                         case 1:
-                        break;
-                        case 2:---------
-                        break;
+                            porcion_de_sprite.left=22;
+                            porcion_de_sprite.top=13;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=88;
+                            porcion_de_sprite.top=13;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
                         case 3:
-                        break;
+                            porcion_de_sprite.left=155;
+                            porcion_de_sprite.top=13;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
                         }
-                        */
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        enemigo[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
                     }
-                    for (x=0; x<tam_torres; x++)
+                    break;
+                case 3:
+                case 5:
+                case 6:
+                    ///ANIMACION DERECHA
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
                     {
-                        if (menu_torre[x]==true)
+                        switch (num_sprite[i-1])
                         {
-                            window.draw(Sprite_menu_torre[x]);
+                        case 1:
+                            porcion_de_sprite.left=23;
+                            porcion_de_sprite.top=101;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=91;
+                            porcion_de_sprite.top=98;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=72;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=157;
+                            porcion_de_sprite.top=101;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
                         }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        enemigo[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
                     }
+                    break;
+                case 0:
+                case 2:
+                case -1:
+                    ///ANIMACION ABAJO
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                    {
+                        switch (num_sprite[i-1])
+                        {
+                        case 1:
+                            porcion_de_sprite.left=22;
+                            porcion_de_sprite.top=191;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=88;
+                            porcion_de_sprite.top=189;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=155;
+                            porcion_de_sprite.top=190;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
+                        }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        enemigo[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
+                    }
+                    break;
+                case 1:
+                    /// ANIMACION IZQUIERDA
 
-                    for (x=0; x<tam_torres; x++)
+                    if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
                     {
-                        for(int f=0; f<cantidad_torres; f++)
+                        switch (num_sprite[i-1])
                         {
-                            /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
-                            if (PixelPerfectTest(enemigo[i-1].getZombie(),Sprite_rango_torre_tipo[f][x]))
-                            {
-                                if (tiempo%intervalo_danio[f]==0)
-                                {
-                                    enemigo[i-1].reducir_vida(danio_torre[f]);
-                                    vidas_texto[i-1].setVariable(enemigo[i-1].getVida());
-                                    enemigo[i-1].setColor(50,50,77);
-                                }
-                                else
-                                {
-                                    enemigo[i-1].setColor(255,255,255);
-                                }
-                            }
+                        case 1:
+                            porcion_de_sprite.left=17;
+                            porcion_de_sprite.top=277;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=false;
+                            break;
+                        case 2:
+                            porcion_de_sprite.left=83;
+                            porcion_de_sprite.top=275;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            if (retorno[i-1])
+                                num_sprite[i-1]=1;
+                            else
+                                num_sprite[i-1]=3;
+                            break;
+                        case 3:
+                            porcion_de_sprite.left=149;
+                            porcion_de_sprite.top=276;
+                            porcion_de_sprite.width=45;
+                            porcion_de_sprite.height=70;
+                            num_sprite[i-1]=2;
+                            retorno[i-1]=true;
+                            break;
                         }
+                        animacion_muestra_menu.setTextureRect(porcion_de_sprite);
+                        enemigo[i-1].setTextureRect(porcion_de_sprite);
+                        animaciones[i-1].restart();
                     }
-                    if (enemigo[i-1].getVida()>0)
+                    break;
+                default:
+                    break;
+                }
+
+
+                */
+                enemigo[i-1].cambiar_frame_sprite(tiempo_zombies[i-1]);
+
+                ///Pequeña maquina de estados
+                switch (enemigo[i-1].getEstado())
+                {
+                case 0:
+                    ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
+                    ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
+                    if (/*PixelPerfectTest(enemigo[i-1],camino1.getSprite())*/enemigo[i-1].getY()<199&&enemigo[i-1].getX()==285)
                     {
-                        vidas_texto[i-1].setPosicion(enemigo[i-1].getX()+13,enemigo[i-1].getY()+48);
+                        if(enemigo[i-1].getOpacidad()<255)
+                        {
+                            enemigo[i-1].incrementar_opacidad(5);
+                            vidas_texto[i-1].setTransparencia(enemigo[i-1].getOpacidad());
+                        }
+                        enemigo[i-1].mover_abajo();
+                    }
+                    else
+                        enemigo[i-1].setEstado(1);
+                    break;
+                case 1:
+                    if (enemigo[i-1].getX()>47)
+                    {
+                        enemigo[i-1].mover_izq();
+                    }
+                    else
+                        enemigo[i-1].setEstado(2);
+                    break;
+                case 2:
+                    if (enemigo[i-1].getY()<500)
+                    {
+                        enemigo[i-1].mover_abajo();
+                    }
+                    else
+                        enemigo[i-1].setEstado(3);
+                    break;
+                case 3:
+                    if (enemigo[i-1].getX()<485)
+                    {
+                        enemigo[i-1].mover_derecha();
+                    }
+                    else
+                        enemigo[i-1].setEstado(4);
+                    break;
+                case 4:
+                    if (enemigo[i-1].getY()>177)
+                    {
+                        enemigo[i-1].mover_arriba();
+                    }
+                    else
+                        enemigo[i-1].setEstado(5);
+                    break;
+                case 5:
+                    if (enemigo[i-1].getX()<700)
+                    {
+                        enemigo[i-1].mover_derecha();
+                    }
+                    else
+                        enemigo[i-1].setEstado(6);
+                    break;
+                case 6:
+                    if (enemigo[i-1].getOpacidad()!=0)
+                    {
+                        enemigo[i-1].decrementar_opacidad(5);
+                        vidas_texto[i-1].setTransparencia(enemigo[i-1].getOpacidad());
+                        enemigo[i-1].mover_derecha();
                     }
                     else
                     {
-                        vidas_texto[i-1].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
-                        vidas_texto[i-1].setTransparencia(0);
+                        enemigo[i-1].setEstado(7);
+                        if(enemigo[i-1].getVida()>0)
+                        {
+                            vida_juego-=100;
+                            vida_juego_texto.setVariable(vida_juego);
+                            dinero+=50;
+                            dinero_texto.setVariable(dinero);
+                        }
+                        enemigo[i-1].setVida(0);
                     }
+                    break;
+                case 7:
+                    break;
 
-
-
+                    ///movimientos en diagonal
                     /*
-                    switch (estados[i-1])
-                    {
-                    case 4:
-                        ///ANIMACION ARRIBA
-                        if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                        {
-                            switch (num_sprite[i-1])
-                            {
-                            ///left es X
-                            ///top es Y
-                            ///width es ancho
-                            ///height es alto
-                            case 1:
-                                porcion_de_sprite.left=22;
-                                porcion_de_sprite.top=13;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=false;
-                                break;
-                            case 2:
-                                porcion_de_sprite.left=88;
-                                porcion_de_sprite.top=13;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                if (retorno[i-1])
-                                    num_sprite[i-1]=1;
-                                else
-                                    num_sprite[i-1]=3;
-                                break;
-                            case 3:
-                                porcion_de_sprite.left=155;
-                                porcion_de_sprite.top=13;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=true;
-                                break;
-                            }
-                            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                            enemigo[i-1].setTextureRect(porcion_de_sprite);
-                            animaciones[i-1].restart();
-                        }
-                        break;
-                    case 3:
-                    case 5:
-                    case 6:
-                        ///ANIMACION DERECHA
-                        if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                        {
-                            switch (num_sprite[i-1])
-                            {
-                            case 1:
-                                porcion_de_sprite.left=23;
-                                porcion_de_sprite.top=101;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=false;
-                                break;
-                            case 2:
-                                porcion_de_sprite.left=91;
-                                porcion_de_sprite.top=98;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=72;
-                                if (retorno[i-1])
-                                    num_sprite[i-1]=1;
-                                else
-                                    num_sprite[i-1]=3;
-                                break;
-                            case 3:
-                                porcion_de_sprite.left=157;
-                                porcion_de_sprite.top=101;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=true;
-                                break;
-                            }
-                            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                            enemigo[i-1].setTextureRect(porcion_de_sprite);
-                            animaciones[i-1].restart();
-                        }
-                        break;
-                    case 0:
-                    case 2:
-                    case -1:
-                        ///ANIMACION ABAJO
-                        if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
-                        {
-                            switch (num_sprite[i-1])
-                            {
-                            case 1:
-                                porcion_de_sprite.left=22;
-                                porcion_de_sprite.top=191;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=false;
-                                break;
-                            case 2:
-                                porcion_de_sprite.left=88;
-                                porcion_de_sprite.top=189;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                if (retorno[i-1])
-                                    num_sprite[i-1]=1;
-                                else
-                                    num_sprite[i-1]=3;
-                                break;
-                            case 3:
-                                porcion_de_sprite.left=155;
-                                porcion_de_sprite.top=190;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=true;
-                                break;
-                            }
-                            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                            enemigo[i-1].setTextureRect(porcion_de_sprite);
-                            animaciones[i-1].restart();
-                        }
-                        break;
                     case 1:
-                        /// ANIMACION IZQUIERDA
-
-                        if (animaciones[i-1].getElapsedTime().asSeconds()>0.100f)
+                        if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
                         {
-                            switch (num_sprite[i-1])
-                            {
-                            case 1:
-                                porcion_de_sprite.left=17;
-                                porcion_de_sprite.top=277;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=false;
-                                break;
-                            case 2:
-                                porcion_de_sprite.left=83;
-                                porcion_de_sprite.top=275;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                if (retorno[i-1])
-                                    num_sprite[i-1]=1;
-                                else
-                                    num_sprite[i-1]=3;
-                                break;
-                            case 3:
-                                porcion_de_sprite.left=149;
-                                porcion_de_sprite.top=276;
-                                porcion_de_sprite.width=45;
-                                porcion_de_sprite.height=70;
-                                num_sprite[i-1]=2;
-                                retorno[i-1]=true;
-                                break;
-                            }
-                            animacion_muestra_menu.setTextureRect(porcion_de_sprite);
-                            enemigo[i-1].setTextureRect(porcion_de_sprite);
-                            animaciones[i-1].restart();
-                        }
-                        break;
-                    default:
-                        break;
-                    }
+                            mov_diagonal_izq_abajo(&circulo1,0.1,0.038);
 
-
-                    */
-                    enemigo[i-1].cambiar_frame_sprite(tiempo_zombies[i-1]);
-
-                    ///Pequeña maquina de estados
-                    switch (enemigo[i-1].getEstado())
-                    {
-                    case 0:
-                        ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
-                        ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
-                        if (/*PixelPerfectTest(enemigo[i-1],camino1.getSprite())*/enemigo[i-1].getY()<199&&enemigo[i-1].getX()==285)
-                        {
-                            if(enemigo[i-1].getOpacidad()<255)
-                            {
-                                enemigo[i-1].incrementar_opacidad(5);
-                                vidas_texto[i-1].setTransparencia(enemigo[i-1].getOpacidad());
-                            }
-                            enemigo[i-1].mover_abajo();
                         }
                         else
-                            enemigo[i-1].setEstado(1);
-                        break;
-                    case 1:
-                        if (enemigo[i-1].getX()>47)
-                        {
-                            enemigo[i-1].mover_izq();
-                        }
-                        else
-                            enemigo[i-1].setEstado(2);
-                        break;
+                            estado=2;
+                        break;glorious morning
                     case 2:
-                        if (enemigo[i-1].getY()<500)
+                        if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
                         {
-                            enemigo[i-1].mover_abajo();
+                    glorious morning           mov_obj_abajo(enemigo,objetos,0.1);
+
                         }
                         else
-                            enemigo[i-1].setEstado(3);
+                            estado=10;
                         break;
-                    case 3:
-                        if (enemigo[i-1].getX()<485)
+                    case 10:
+                        if (circulo1.getPosition().y>429&&circulo1.getPosition().y<500)
                         {
-                            enemigo[i-1].mover_derecha();
+                            mov_diagonal_der_abajo(&circulo1,0.1,0.1);
                         }
                         else
-                            enemigo[i-1].setEstado(4);
-                        break;
-                    case 4:
-                        if (enemigo[i-1].getY()>177)
-                        {
-                            enemigo[i-1].mover_arriba();
-                        }
-                        else
-                            enemigo[i-1].setEstado(5);
-                        break;
-                    case 5:
-                        if (enemigo[i-1].getX()<700)
-                        {
-                            enemigo[i-1].mover_derecha();
-                        }
-                        else
-                            enemigo[i-1].setEstado(6);
-                        break;
-                    case 6:
-                        if (enemigo[i-1].getOpacidad()!=0)
-                        {
-                            enemigo[i-1].decrementar_opacidad(5);
-                            vidas_texto[i-1].setTransparencia(enemigo[i-1].getOpacidad());
-                            enemigo[i-1].mover_derecha();
-                        }
-                        else
-                        {
-                            enemigo[i-1].setEstado(7);
-                            if(enemigo[i-1].getVida()>0)
-                            {
-                                vida_juego-=100;
-                                vida_juego_texto.setVariable(vida_juego);
-                                dinero+=50;
-                                dinero_texto.setVariable(dinero);
-                            }
-                            enemigo[i-1].setVida(0);
-                        }
-                        break;
-                    case 7:
-                        break;
-
-                        ///movimientos en diagonal
-                        /*
-                        case 1:
-                            if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
-                            {
-                                mov_diagonal_izq_abajo(&circulo1,0.1,0.038);
-
-                            }
-                            else
-                                estado=2;
-                            break;glorious morning
-                        case 2:
-                            if (circulo1.getPosition().x<35&&circulo1.getPosition().y<429)
-                            {
-                        glorious morning           mov_obj_abajo(enemigo,objetos,0.1);
-
-                            }
-                            else
-                                estado=10;
-                            break;
-                        case 10:
-                            if (circulo1.getPosition().y>429&&circulo1.getPosition().y<500)
-                            {
-                                mov_diagonal_der_abajo(&circulo1,0.1,0.1);
-                            }
-                            else
-                                estado=3;
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            if (circulo1.getPosition().x>292&&circulo1.getPosition().x<570)
-                            {
-                                mov_diagonal_der_arriba(&circulo1,0.1,0.1);
-                            }
-                            else
-                                estado=5;
-                            break;
-                        case 5:
-                            if(circulo1.getPosition().x<637)
-                            {
-                                mov_derecha(&circulo1,0.1);
-                            }
-                            else
-                                estado=6;
-                            break;
-                        case 6:
-                            if (circulo1.getPosition().x>637&&circulo1.getPosition().x<700)
-                            {
-                                mov_derecha(&circulo1,0.1);
-                                if(opacidad>0)
-                                {
-                                    opacidad-=0.4;
-                                    circulo1.setFillColor(Color(255,255,255,opacidad));
-                                }
-                            }
-                            else
-                            {
-                                circulo1.setPosition(290,0);
-                                estado=0;
-                            }
-                            break;
-                        */
-                    }
-
-                    /*
-
-                    for(int x=0; x<10;x++){
-                     switch (x)
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
+                            estado=3;
                         break;
                     case 3:
                         break;
                     case 4:
+                        if (circulo1.getPosition().x>292&&circulo1.getPosition().x<570)
+                        {
+                            mov_diagonal_der_arriba(&circulo1,0.1,0.1);
+                        }
+                        else
+                            estado=5;
                         break;
                     case 5:
+                        if(circulo1.getPosition().x<637)
+                        {
+                            mov_derecha(&circulo1,0.1);
+                        }
+                        else
+                            estado=6;
                         break;
                     case 6:
+                        if (circulo1.getPosition().x>637&&circulo1.getPosition().x<700)
+                        {
+                            mov_derecha(&circulo1,0.1);
+                            if(opacidad>0)
+                            {
+                                opacidad-=0.4;
+                                circulo1.setFillColor(Color(255,255,255,opacidad));
+                            }
+                        }
+                        else
+                        {
+                            circulo1.setPosition(290,0);
+                            estado=0;
+                        }
                         break;
-                    case 7:
-                        break;
-                    case 8:
-                        break;
-                    case 9:
-                        break;
-
-
-                    }
-
-
-
-
-
-
                     */
                 }
-                if (tiempo%tiempo_spawn==0)
-                {
-                    if (objetos<cantidad_bichos)
-                    {
-                        objetos++;
-                    }
-                }
-                tiempo++;
-                ///Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
 
-                ///--------
-                tiempo_texto.setVariable(tiempo);
-                ///--------
+                /*
 
-                /// SIGUIENTE OLEADA
-                for(int h=0; h<cantidad_bichos; h++)
-                {
-                    if(enemigo[h].getVida()<=0)
-                    {
-                        bichos_muertos++;
-                    }
-                    if(bichos_muertos==cantidad_bichos)
-                    {
-                        siguiente_oleada=true;
-                        vida_aumentada+=100;
-                        aldeano.setVida(vida_aumentada);
-                        for(int p=0; p<cantidad_bichos; p++)
-                        {
-                            vidas_texto[p].setVariable(vida_aumentada);
-                        }
-                        bichos_muertos=0;
-                    }
+                for(int x=0; x<10;x++){
+                 switch (x)
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+
+
                 }
-                if(siguiente_oleada==true)
+
+
+
+
+
+
+                */
+            }
+            if (tiempo%tiempo_spawn==0)
+            {
+                if (objetos<cantidad_bichos)
                 {
-                    objetos=1;
-                    tiempo=1;
-                    cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                    siguiente_oleada=false;
+                    objetos++;
                 }
-                else
+            }
+            tiempo++;
+            ///Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
+
+            ///--------
+            tiempo_texto.setVariable(tiempo);
+            ///--------
+
+            /// SIGUIENTE OLEADA
+            for(int h=0; h<cantidad_bichos; h++)
+            {
+                if(enemigo[h].getVida()<=0)
                 {
+                    bichos_muertos++;
+                }
+                if(bichos_muertos==cantidad_bichos)
+                {
+                    siguiente_oleada=true;
+                    vida_aumentada+=100;
+                    aldeano.setVida(vida_aumentada);
+                    for(int p=0; p<cantidad_bichos; p++)
+                    {
+                        vidas_texto[p].setVariable(vida_aumentada);
+                    }
                     bichos_muertos=0;
                 }
             }
-        }
-        ///Pruebas iniciales con circulos
-        /*
-        window.draw(circulo1);
-        if (circulo1.getPosition().x<600&&circulo1.getPosition().y<=0) {
-        x=circulo1.getPosition().x+.1;
-        circulo1.setPosition(x,circulo1.getPosition().y);
-        }
-        if (circulo1.getPosition().x>600&&circulo1.getPosition().y<400) {
-        y=circulo1.getPosition().y+.1;
-        circulo1.setPosition(circulo1.getPosition().x,y);
-        }
-        if (circulo1.getPosition().x>0&&circulo1.getPosition().y>400) {
-        x=circulo1.getPosition().x-.1;
-        circulo1.setPosition(x,circulo1.getPosition().y);
-        }
-        if (circulo1.getPosition().x<0&&circulo1.getPosition().y>0) {
-        y=circulo1.getPosition().y-.1;
-        circulo1.setPosition(circulo1.getPosition().x,y);
-        }
-        */
-        /// FIN DEL ELSE
+            if(siguiente_oleada==true)
+            {
+                objetos=1;
+                tiempo=1;
+                cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                siguiente_oleada=false;
+            }
+            else
+            {
+                bichos_muertos=0;
+            }
+///Pruebas iniciales con circulos
+            /*
+            window.draw(circulo1);
+            if (circulo1.getPosition().x<600&&circulo1.getPosition().y<=0) {
+            x=circulo1.getPosition().x+.1;
+            circulo1.setPosition(x,circulo1.getPosition().y);
+            }
+            if (circulo1.getPosition().x>600&&circulo1.getPosition().y<400) {
+            y=circulo1.getPosition().y+.1;
+            circulo1.setPosition(circulo1.getPosition().x,y);
+            }
+            if (circulo1.getPosition().x>0&&circulo1.getPosition().y>400) {
+            x=circulo1.getPosition().x-.1;
+            circulo1.setPosition(x,circulo1.getPosition().y);
+            }
+            if (circulo1.getPosition().x<0&&circulo1.getPosition().y>0) {
+            y=circulo1.getPosition().y-.1;
+            circulo1.setPosition(circulo1.getPosition().x,y);
+            }
+            */
+            break;  ///fin del estado juego
+
+        default:
+            break;
+
+        }   ///fin del switch(estado_juego)
+
         window.display();
-    }
+
+    }   ///fin del while(window.IsOpen())
+
     return 0;
-}
+
+}  ///Fin de la funcion juego()
 
 
 #endif // JUEGO_H_INCLUDED

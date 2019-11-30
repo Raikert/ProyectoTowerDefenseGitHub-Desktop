@@ -653,8 +653,8 @@ public:
     {
         oleada=x;
     }
-    bool leerendisco(int pos) {}
-    bool grabarendiso () {}
+    bool leerendisco (int);
+    bool grabarendiso ();
 
 };
 
