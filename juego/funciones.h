@@ -64,4 +64,16 @@ void inicializar_vector_bool (bool *v,int tamanio,bool valor)
     }
 }
 
+void inicializar_matriz_encolado(bool v[9][3],bool valor=false)
+{
+    int f,c;
+    for (f=0; f<9; f++)
+    {
+        for (c=0; c<3; c++)
+        {
+            v[9][3]=valor;
+        }
+    }
+}
+
 #endif // FUNCIONES_H_INCLUDED

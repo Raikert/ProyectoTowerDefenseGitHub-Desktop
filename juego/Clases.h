@@ -229,7 +229,7 @@ private:
     bool textura_cargada;
     Sprite zombie_sprite_propiedad;
     float x,y;
-    bool muerto,encolado;
+    bool muerto,encolado[9][3];
     Animacion animacion_propiedad;
     IntRect porcion_de_imagen_propiedad;
     int opacidad;
@@ -260,7 +260,7 @@ public:
             velocidad=ve;
             estado=0;
             muerto=false;
-            encolado=false;
+            inicializar_matriz_encolado(encolado);
         }
     }
     Zombie () {}
@@ -272,9 +272,9 @@ public:
     {
         return muerto;
     }
-    bool getEncolado()
+    bool getEncolado(int torre,int tipo)
     {
-        return encolado;
+        return encolado[torre][tipo];
     }
     int getIntervalo_danio ()
     {
@@ -316,9 +316,9 @@ public:
     {
         muerto=m;
     }
-    void setEncolado (bool e)
+    void setEncolado (int torre,int tipo,bool valor)
     {
-        encolado=e;
+        encolado[torre][tipo]=valor;
     }
     void setIntervalo_danio (int i)
     {

@@ -1261,11 +1261,11 @@ int juego()
                         /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
                         if (PixelPerfectTest(enemigo[i-1].getZombie(),Sprite_rango_torre_tipo[f][x]))
                         {
-                            if (!enemigo[i-1].getEncolado()&&colas_torres_3d[x][f][10]<10&&!enemigo[i-1].getMuerto())
+                            if (!enemigo[i-1].getEncolado(x,f)&&colas_torres_3d[x][f][10]<10&&!enemigo[i-1].getMuerto())
                             {
                                 colas_torres_3d[x][f][colas_torres_3d[x][f][10]]=i-1;
                                 colas_torres_3d[x][f][10]++;
-                                enemigo[i-1].setEncolado(true);
+                                enemigo[i-1].setEncolado(x,f,true);
                                 enemigo[i-1].setIntervalo_danio(intervalo_danio[f]);
                                 enemigo[i-1].setDanio_torre(danio_torre[f]);
                             }
@@ -1274,7 +1274,7 @@ int juego()
                         {
                             if (colas_torres_3d[x][f][10]>0&&detectar_enemigo_cola3d(colas_torres_3d,x,f,i-1,cantidad_bichos))
                             {
-                                enemigo[i-1].setEncolado(false);
+                                enemigo[i-1].setEncolado(x,f,false);
                                 colas_torres_3d[x][f][10]--;
                                 ordenar_cola_3d(colas_torres_3d,x,f,i-1,cantidad_bichos);
                             }
@@ -1296,7 +1296,7 @@ int juego()
 
                                     if (enemigo[i-1].getVida()<=0&&!enemigo[i-1].getMuerto())
                                     {
-                                        enemigo[i-1].setEncolado(false);
+                                        enemigo[i-1].setEncolado(x,f,false);
                                         colas_torres_3d[x][f][10]--;
                                         ordenar_cola_3d(colas_torres_3d,x,f,i-1,cantidad_bichos);
                                         dinero+=100;
