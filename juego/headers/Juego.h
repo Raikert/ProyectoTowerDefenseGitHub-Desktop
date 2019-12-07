@@ -1249,11 +1249,14 @@ int juego()
                     }
                 }
 
+                ///Spot para detener el debug por tiempo,sin importancia------------
                 if (tiempo%400==0)
                 {
                     debug=0;
                 }
+                ///--------------------------------------
 
+                ///COLAS DE LAS TORRES----matriz tridimensional---------
                 for (x=0; x<tam_torres; x++)
                 {
                     for(f=0; f<cantidad_torres; f++)
@@ -1312,6 +1315,7 @@ int juego()
                         }
                     }
                 }
+                ///FIN COLAS TORRES-------------------------------------
 
                 if (!enemigo[i-1].getMuerto())
                 {
