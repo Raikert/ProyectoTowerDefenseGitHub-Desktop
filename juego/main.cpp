@@ -11,6 +11,7 @@ using namespace Collision; ///para no poner Collision::
 #include "headers/Movimientos.h"
 #include "headers/Colision_Danio.h"
 #include "headers/Sprites.h"
+#include "funciones.h"
 #include "headers/Juego.h"
 
 int main()

@@ -29,6 +29,10 @@ Cola::Cola(int t)
 {
     tamanio=t;
     cola_dinamica=new int[tamanio];
+    for (int i=0; i<tamanio; i++)
+    {
+        cola_dinamica[i]=10000;
+    }
     if (cola_dinamica==NULL)
     {
         exit(1);
@@ -225,13 +229,13 @@ private:
     bool textura_cargada;
     Sprite zombie_sprite_propiedad;
     float x,y;
-    bool muerto;
+    bool muerto,encolado;
     Animacion animacion_propiedad;
     IntRect porcion_de_imagen_propiedad;
     int opacidad;
     int vida,dinero_que_devuelve;
     float velocidad;
-    int estado;
+    int estado,intervalo_danio,danio_torre;
 public:
     Zombie (const string& nombre_imagen,float posx,float posy,IntRect porcion_de_imagen,float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
@@ -256,6 +260,7 @@ public:
             velocidad=ve;
             estado=0;
             muerto=false;
+            encolado=false;
         }
     }
     Zombie () {}
@@ -266,6 +271,18 @@ public:
     bool getMuerto()
     {
         return muerto;
+    }
+    bool getEncolado()
+    {
+        return encolado;
+    }
+    int getIntervalo_danio ()
+    {
+        return intervalo_danio;
+    }
+    int getDanio_torre ()
+    {
+        return danio_torre;
     }
     int getEstado ()
     {
@@ -298,6 +315,18 @@ public:
     void setMuerto (bool m=true)
     {
         muerto=m;
+    }
+    void setEncolado (bool e)
+    {
+        encolado=e;
+    }
+    void setIntervalo_danio (int i)
+    {
+        intervalo_danio=i;
+    }
+    void setDanio_torre (int d)
+    {
+        danio_torre=d;
     }
     void setColor (int rojo,int verde,int azul,int opacida=255)
     {
@@ -341,9 +370,9 @@ public:
         return textura_cargada;
     }
     void cambiar_frame_sprite(Clock&);
-    void  reducir_vida(int reduccion)
+    void  reducir_vida()
     {
-        vida-=reduccion;
+        vida-=danio_torre;
     }
     void incrementar_opacidad (int incremento)
     {
@@ -688,7 +717,7 @@ public:
         oleada=x;
     }
     bool leerendisco (int);
-    bool grabarendiso ();
+    void grabarendiso ();
 
 };
 

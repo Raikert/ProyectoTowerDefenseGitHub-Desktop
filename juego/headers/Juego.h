@@ -8,7 +8,7 @@ using namespace Collision;
 int juego()
 {
     ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d,o;
+    int i,x,te,d,o,l,f,debug;
 
     ///variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
@@ -17,9 +17,9 @@ int juego()
 
     ///Constantes practicas
     const int const_vida_juego=1000;
-    const int tiempo_spawn=10;
+    const int tiempo_spawn=200;
     const int cantidad_bichos=10;
-    const int velocidad_bichos=1;
+    const float velocidad_bichos=1;
     ///-------------
 
     ///Objetos Archivo-----------
@@ -27,7 +27,11 @@ int juego()
     bool primer_carga=false;
     ///--------------------------
 
-    Zombie enemigo[cantidad_bichos];
+    ///Vector dinamico de zombies--------
+    Zombie *enemigo;
+    enemigo = new Zombie[cantidad_bichos];
+    ///----------------------------------
+
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
     Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,velocidad_bichos);
@@ -44,6 +48,7 @@ int juego()
         vidas_texto[i]=vidas_texto_variable;
     }
     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+
 
     ///Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
 
@@ -196,14 +201,15 @@ int juego()
     if (!musica_derrota.openFromFile("musica/derrota.ogg"))
         return -113;
     ///volumen de la musica del menu
-    musica_menu.setVolume(3.f);
+    musica_menu.setVolume(30.f);
     // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.setLoop(true);
-    musica_juego.setVolume(3.f);
+    musica_juego.setVolume(30.f);
     musica_juego.setLoop(true);
     musica_derrota.setLoop(true);
-    musica_derrota.setVolume(3.f);
-    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false;
+    musica_derrota.setVolume(30.f);
+    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false,habilitaciondanio[cantidad_bichos];
+    inicializar_vector_bool (habilitaciondanio,cantidad_bichos,true);
 
     ///con esta variable se cambia la cantidad de monstruos en el mundo
 
@@ -233,7 +239,7 @@ int juego()
     intervalo_danio[1]=50;
 
     ///-----Daño de las torres-----
-    int danio_torre[cantidad_torres];
+    float danio_torre[cantidad_torres];
     danio_torre[2]=30; /// Primer torre
     danio_torre[0]=1;  /// Segunda torre
     danio_torre[1]=70; /// Tercer torre
@@ -694,6 +700,12 @@ int juego()
         return -1;
     ///-------------------------
 
+    ///Sistema de colas para las torres
+    int colas_torres_3d[tam_torres][cantidad_torres][cantidad_bichos+1];
+    inicializar_colas_torres_3d(colas_torres_3d,-10000);
+    int prioridad;
+    ///-------------------------------------------
+
     ///definicion de la ventana del juego
     RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
 
@@ -884,9 +896,10 @@ int juego()
             ///ZOMBIES Y SUS VIDAS
             for (d=1; d<=objetos; d++)
             {
-                if (enemigo[d-1].getVida()>0) {
-                window.draw(enemigo[d-1].getZombie());
-                window.draw(vidas_texto[d-1].getTexto());
+                if (enemigo[d-1].getVida()>0)
+                {
+                    window.draw(enemigo[d-1].getZombie());
+                    window.draw(vidas_texto[d-1].getTexto());
                 }
             }
 
@@ -1010,7 +1023,7 @@ int juego()
                             else
                             {
                                 reg_config.setSonido_menu(true);
-                                musica_menu.setVolume(3.f);
+                                musica_menu.setVolume(30.f);
                             }
 
                         }
@@ -1069,7 +1082,7 @@ int juego()
                         }
                         else
                         {
-                            musica_juego.setVolume(3.f);
+                            musica_juego.setVolume(30.f);
                             boolmusicajuego=true;
                         }
                     }
@@ -1158,12 +1171,6 @@ int juego()
                 /// OLEADA
                 window.draw(oleada_texto.getTexto());
 
-                /// REPRODUCTOR DE MUSICA
-                if (!boolmusica)
-                {
-                    musica_juego.play();
-                    boolmusica=true;
-                }
 ///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
                 for (x=0; x<tam_torres; x++)
                 {
@@ -1233,25 +1240,60 @@ int juego()
 
                 for (x=0; x<tam_torres; x++)
                 {
-                    for(int f=0; f<cantidad_torres; f++)
+                    for(f=0; f<cantidad_torres; f++)
                     {
                         /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
                         if (PixelPerfectTest(enemigo[i-1].getZombie(),Sprite_rango_torre_tipo[f][x]))
                         {
-                            if (tiempo%intervalo_danio[f]==0)
+                            if (!enemigo[i-1].getEncolado()&&colas_torres_3d[x][f][10]<10&&!enemigo[i-1].getMuerto())
                             {
-                                enemigo[i-1].reducir_vida(danio_torre[f]);
-                                vidas_texto[i-1].setVariable(enemigo[i-1].getVida());
-                                enemigo[i-1].setColor(50,50,77);
+                                colas_torres_3d[x][f][colas_torres_3d[x][f][10]]=i-1;
+                                colas_torres_3d[x][f][10]++;
+                                enemigo[i-1].setEncolado(true);
+                                enemigo[i-1].setIntervalo_danio(intervalo_danio[f]);
+                                enemigo[i-1].setDanio_torre(danio_torre[f]);
+                            }
+                            if (enemigo[i-1].getMuerto()&&enemigo[i-1].getEncolado())
+                            {
+                                enemigo[i-1].setEncolado(false);
+                                colas_torres_3d[x][f][10]--;
+                                ordenar_cola_3d(colas_torres_3d,x,f,i-1);
+                            }
+                        }
+                        else
+                        {
+                            if (colas_torres_3d[x][f][10]>0&&detectar_enemigo_cola3d(colas_torres_3d,x,f,i-1,cantidad_bichos))
+                            {
+                                enemigo[i-1].setEncolado(false);
+                                colas_torres_3d[x][f][10]--;
+                                ordenar_cola_3d(colas_torres_3d,x,f,i-1);
+                            }
+                        }
+
+
+                        prioridad=colas_torres_3d[x][f][0];
+
+                        if (prioridad != -10000)
+                        {
+                            if (tiempo%enemigo[prioridad].getIntervalo_danio()==0&&habilitaciondanio[prioridad])
+                            {
+                                if (detectar_enemigo_cola3d(colas_torres_3d,x,f,i-1,cantidad_bichos))
+                                {
+                                    enemigo[prioridad].reducir_vida();
+                                    vidas_texto[prioridad].setVariable(enemigo[prioridad].getVida());
+                                    enemigo[prioridad].setColor(50,50,77);
+                                    habilitaciondanio[i-1]=false;
+                                }
                             }
                             else
                             {
-                                enemigo[i-1].setColor(255,255,255);
+                                enemigo[prioridad].setColor(255,255,255);
                             }
                         }
                     }
                 }
-                if (enemigo[i-1].getVida()>0)
+
+                if (!enemigo[i-1].getMuerto())
                 {
                     vidas_texto[i-1].setPosicion(enemigo[i-1].getX()+13,enemigo[i-1].getY()+48);
                 }
@@ -1433,7 +1475,7 @@ int juego()
 
 
                 */
-                if (enemigo[i-1].getVida()>0)
+                if (!enemigo[i-1].getMuerto())
                 {
 
                     enemigo[i-1].cambiar_frame_sprite(tiempo_zombies[i-1]);
@@ -1620,6 +1662,8 @@ int juego()
 
                 */
             }
+            inicializar_vector_bool(habilitaciondanio,cantidad_bichos,true);
+
             if (tiempo%tiempo_spawn==0)
             {
                 if (objetos<cantidad_bichos)
