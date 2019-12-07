@@ -17,7 +17,7 @@ int juego()
 
     ///Constantes practicas
     const int const_vida_juego=1000;
-    const int tiempo_spawn=200;
+    int tiempo_spawn=50;
     const int cantidad_bichos=10;
     const float velocidad_bichos=1;
     ///-------------
@@ -788,6 +788,8 @@ int juego()
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
                     objetos=1;
+                    oleada=1;
+                    oleada_texto.setVariable(oleada);
                     musica_juego.stop();
                     primer_carga=false;
                     opacidad_menu=0;
@@ -827,6 +829,14 @@ int juego()
         */
 
         window.clear();
+
+        ///testeos con los bichos--Descomentar para usar--cantidad de bichos especifica por pantalla para realizar tests.
+        /*
+        if (tiempo%150==0)   ///cantidad de bichos hasta que el tiempo_spawn es cambiado,acorde al tiempo_spawn inicial.
+        {
+            tiempo_spawn=500;  ///poner un absurdo o un numero grande, para que asi solo entren la cantidad de zombies deseada
+        }                       ///para el testeo
+        */
 
 ///Estados del Juego
         switch (estado_juego)
@@ -941,6 +951,8 @@ int juego()
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
                     objetos=1;
+                    oleada=1;
+                    oleada_texto.setVariable(oleada);
                     musica_derrota.stop();
                     primer_carga=false;
                     opacidad_menu=0;
@@ -1212,11 +1224,10 @@ int juego()
                         window.draw(enemigo[d-1].getZombie());
                         window.draw(vidas_texto[d-1].getTexto());
                     }
-                    else if (!enemigo[d-1].getMuerto()&& enemigo[d-1].getEstado()!=7)
+                    else
                     {
-                        dinero+=100;
-                        dinero_texto.setVariable(dinero);
-                        enemigo[d-1].setMuerto();
+                        if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
+                            enemigo[d-1].setMuerto();
                     }
                     ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
                     /*
@@ -1238,6 +1249,11 @@ int juego()
                     }
                 }
 
+                if (tiempo%400==0)
+                {
+                    debug=0;
+                }
+
                 for (x=0; x<tam_torres; x++)
                 {
                     for(f=0; f<cantidad_torres; f++)
@@ -1253,12 +1269,6 @@ int juego()
                                 enemigo[i-1].setIntervalo_danio(intervalo_danio[f]);
                                 enemigo[i-1].setDanio_torre(danio_torre[f]);
                             }
-                            if (enemigo[i-1].getMuerto()&&enemigo[i-1].getEncolado())
-                            {
-                                enemigo[i-1].setEncolado(false);
-                                colas_torres_3d[x][f][10]--;
-                                ordenar_cola_3d(colas_torres_3d,x,f,i-1);
-                            }
                         }
                         else
                         {
@@ -1266,7 +1276,7 @@ int juego()
                             {
                                 enemigo[i-1].setEncolado(false);
                                 colas_torres_3d[x][f][10]--;
-                                ordenar_cola_3d(colas_torres_3d,x,f,i-1);
+                                ordenar_cola_3d(colas_torres_3d,x,f,i-1,cantidad_bichos);
                             }
                         }
 
@@ -1283,6 +1293,16 @@ int juego()
                                     vidas_texto[prioridad].setVariable(enemigo[prioridad].getVida());
                                     enemigo[prioridad].setColor(50,50,77);
                                     habilitaciondanio[i-1]=false;
+
+                                    if (enemigo[i-1].getVida()<=0&&!enemigo[i-1].getMuerto())
+                                    {
+                                        enemigo[i-1].setEncolado(false);
+                                        colas_torres_3d[x][f][10]--;
+                                        ordenar_cola_3d(colas_torres_3d,x,f,i-1,cantidad_bichos);
+                                        dinero+=100;
+                                        dinero_texto.setVariable(dinero);
+                                    }
+
                                 }
                             }
                             else

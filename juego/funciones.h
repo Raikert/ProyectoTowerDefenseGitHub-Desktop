@@ -28,13 +28,19 @@ void inicializar_colas_torres_3d(int m[9][3][11],int valor)
     }
 }
 
-void ordenar_cola_3d(int m[9][3][11],int torre,int tipo,int enemigo_sacar)
+void ordenar_cola_3d(int m[9][3][11],int torre,int tipo,int enemigo_sacar,int cantidad_bichos)
 {
-    int enemigo_referencia=enemigo_sacar+1;
-    for (int i=enemigo_sacar ; i<10; i++)
+    int pos_enemigo_siguiente,pos_enemigo_sacar;
+    for (int i=0; i<cantidad_bichos; i++)
     {
-        m[torre][tipo][i]=m[torre][tipo][enemigo_referencia];
-        enemigo_referencia++;
+        if (m[torre][tipo][i]==enemigo_sacar)
+            pos_enemigo_sacar=i;
+    }
+    pos_enemigo_siguiente=pos_enemigo_sacar+1;
+    for (int i=pos_enemigo_sacar ; i<cantidad_bichos; i++)
+    {
+        m[torre][tipo][i]=m[torre][tipo][pos_enemigo_siguiente];
+        pos_enemigo_siguiente++;
     }
     m[torre][tipo][9]=-10000;
 }
