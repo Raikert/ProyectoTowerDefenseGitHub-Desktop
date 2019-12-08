@@ -56,6 +56,14 @@ bool detectar_enemigo_cola3d (int m[9][3][11],int torre,int tipo,int enemigo_det
     return detector;
 }
 
+void inicializar_vector_entero (int *v,int tamanio,int valor)
+{
+    for (int i=0; i<tamanio; i++)
+    {
+        v[i]=valor;
+    }
+}
+
 void inicializar_vector_bool (bool *v,int tamanio,bool valor)
 {
     for (int i=0; i<tamanio; i++)

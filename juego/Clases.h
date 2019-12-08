@@ -9,6 +9,7 @@ setlocale(LC_ALL,"spanish");
 */
 
 /// CLASE COLA --------------------------------------------------------------
+
 class Cola
 {
 private:
@@ -68,8 +69,9 @@ private:
     Text texto;
     bool formato_cargado;
     bool Borde;
+    float x,y;
 public:
-    Texto (const string& letra,int variable,int tamanio,float x,float y,const Color& color=Color::Black,bool borde=false)
+    Texto (const string& letra,int variable,int tamanio,float posx,float posy,const Color& color=Color::Black,bool borde=false)
     {
         if (!formato_de_letra.loadFromFile(letra))
             formato_cargado=false;
@@ -80,6 +82,8 @@ public:
         {
             texto.setFont(formato_de_letra);
             texto.setCharacterSize(tamanio);
+            x=posx;
+            y=posy;
             texto.setPosition(x,y);
             char variable_char[10];
             itoa(variable, variable_char, 10);
@@ -111,7 +115,14 @@ public:
     {
         return texto;
     }
-
+    float getX ()
+    {
+        return x;
+    }
+    float getY ()
+    {
+        return y;
+    }
     void setVariable (int variable)
     {
         char variable_char[10];
@@ -123,8 +134,20 @@ public:
     {
         texto.setFillColor(color);
     }
-    void setPosicion (float x,float y)
+    void setPosicion (float posx,float posy)
     {
+        x=posx;
+        y=posy;
+        texto.setPosition(x,y);
+    }
+    void setX(int posx)
+    {
+        x=posx;
+        texto.setPosition(x,y);
+    }
+    void setY(int posy)
+    {
+        y=posy;
         texto.setPosition(x,y);
     }
     void setTransparencia(float t)
@@ -235,7 +258,7 @@ private:
     int opacidad;
     int vida,dinero_que_devuelve;
     float velocidad;
-    int estado,intervalo_danio,danio_torre;
+    int estado,intervalo_danio[3],danio_torre[3];
 public:
     Zombie (const string& nombre_imagen,float posx,float posy,IntRect porcion_de_imagen,float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
@@ -260,6 +283,7 @@ public:
             velocidad=ve;
             estado=0;
             muerto=false;
+            inicializar_vector_entero(intervalo_danio,3,10000);
             inicializar_matriz_encolado(encolado);
         }
     }
@@ -276,13 +300,9 @@ public:
     {
         return encolado[torre][tipo];
     }
-    int getIntervalo_danio ()
+    int getIntervalo_danio (int pos)
     {
-        return intervalo_danio;
-    }
-    int getDanio_torre ()
-    {
-        return danio_torre;
+        return intervalo_danio[pos];
     }
     int getEstado ()
     {
@@ -320,13 +340,13 @@ public:
     {
         encolado[torre][tipo]=valor;
     }
-    void setIntervalo_danio (int i)
+    void setIntervalo_danio (int i,int pos)
     {
-        intervalo_danio=i;
+        intervalo_danio[pos]=i;
     }
-    void setDanio_torre (int d)
+    void setDanio_torre (int d,int pos)
     {
-        danio_torre=d;
+        danio_torre[pos]=d;
     }
     void setColor (int rojo,int verde,int azul,int opacida=255)
     {
@@ -370,9 +390,9 @@ public:
         return textura_cargada;
     }
     void cambiar_frame_sprite(Clock&);
-    void  reducir_vida()
+    void  reducir_vida(int pos_danio)
     {
-        vida-=danio_torre;
+        vida-=danio_torre[pos_danio];
     }
     void incrementar_opacidad (int incremento)
     {

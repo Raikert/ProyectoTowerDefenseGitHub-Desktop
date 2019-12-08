@@ -16,7 +16,7 @@ using namespace Collision; ///para no poner Collision::
 
 int main()
 {
-    ///puede devolver tanto un 0 si el programa termino bien, como otro valor
-    ///xq sino nunca sabriamos si un archivo se cargo correctamente, que main mas chiquito ajajaj
+    //puede devolver tanto un 0 si el programa termino bien, como otro valor,
+    //sino nunca sabriamos si un archivo se cargo correctamente, matamos todos los pajaros con un solo return jeje.
     return juego();
 }

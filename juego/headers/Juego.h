@@ -7,30 +7,26 @@ using namespace Collision;
 
 int juego()
 {
-    ///variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
+    //variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
     int i,x,te,d,o,l,f,debug;
 
-    ///variables de la ventana del juego
+    //variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
     Vector2f pixeles_convertidos;
-    ///---------------------------------
 
-    ///Constantes practicas
+    //Constantes practicas
     const int const_vida_juego=1000;
     int tiempo_spawn=50;
     const int cantidad_bichos=10;
     const float velocidad_bichos=1;
-    ///-------------
 
-    ///Objetos Archivo-----------
+    //Objetos Archivo-----------
     Configuracion reg_config;
     bool primer_carga=false;
-    ///--------------------------
 
-    ///Vector dinamico de zombies--------
+    //Vector dinamico de zombies--------
     Zombie *enemigo;
     enemigo = new Zombie[cantidad_bichos];
-    ///----------------------------------
 
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
@@ -50,61 +46,62 @@ int juego()
     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
 
 
-    ///Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
+    //Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
 
-    /** /// VARIABLES DE MONSTRUOS
-    int monstruos_lvl_1=2;
-    int monstruos_lvl_2=2;
-    int monstruos_lvl_3=2;
+    // VARIABLES DE MONSTRUOS
+    //int monstruos_lvl_1=2;
+    //int monstruos_lvl_2=2;
+    //int monstruos_lvl_3=2;
 
-    /// VARIABLE QUE CUENTA LOS MONSTRUOS
-    int monstruos_en_juego=0;
-    */
+    // VARIABLE QUE CUENTA LOS MONSTRUOS
+    //int monstruos_en_juego=0;
 
-    /// PRUEBA CON LA CLASE COLA
-    Cola Cola_Torre[9];
-    for (o=0; o<9; o++)
-    {
-        Cola_Torre[o]=Cola(10);
-    }
+
+    // PRUEBA CON LA CLASE COLA
+    //Cola Cola_Torre[9];
+    //for (o=0; o<9; o++)
+    //{
+    //   Cola_Torre[o]=Cola(10);
+    //}
 
     ///------Animaciones de los zombies-------
-    ///Explicacion del IntRect o rectangulo de una imagen.
 
-    ///Imaginen que tienen un cuadro vacio, y a su vez tienen
-    ///la pintura en un paño de lana al que quieren poner en ese
-    ///cuadro, pero q tambien ustedes pretenden mostrar solo una
-    ///parte de ese paño. Si lo asociamos con esto seria asi:
-    ///El Sprite es el cuadro.
-    ///La textura es el paño o imagen.
-    ///lo que quieren mostrar es la variable de tipo IntRect.
+    //Explicacion del IntRect o rectangulo de una imagen.
 
-    ///ahora, una vez q montaron todo, lo que quieren hacer es
-    ///recortar el paño al cual montaron al cuadro, entonces como
-    ///se hace?
-    ///Primero crean una variable de tipó IntRect, que significa
-    ///rectangulo interior o zona de recorte. Ahora bien, que
-    ///significan todas esas coordenadas?.
-    ///Las primeras 2: tanto el 15 y el 34 es la posicion en donde
-    ///va a empezar ese rectangulo, igual q la posicion de los sprites
-    ///en la esquina izquierda superior, y los otros 2 son el ancho y
-    ///el alto de su rectangulo o recorte, el orden para las primeras
-    ///dos es igual a la q veniamos usando, primero en X, despues en Y
-    ///las otras 2 es primero el ancho, despues el alto.
+    //Imaginen que tienen un cuadro vacio, y a su vez tienen
+    //la pintura en un paño de lana al que quieren poner en ese
+    //cuadro, pero q tambien ustedes pretenden mostrar solo una
+    //parte de ese paño. Si lo asociamos con esto seria asi:
+    //El Sprite es el cuadro.
+    //La textura es el paño o imagen.
+    //lo que quieren mostrar es la variable de tipo IntRect.
 
-    ///Hasta ahora todo bien no?, eso espero xddd
+    //Ahora, una vez q montaron todo, lo que quieren hacer es
+    //recortar el paño al cual montaron al cuadro, entonces como se hace?
 
-    ///Si se fijan mas abajo van a ver una variable nueva que se llama
-    ///Clock o tiempo, es una variable q desde q es declarada
-    ///cuenta tiempo, ya sea en segundos, minutos, lo q sea.
-    ///pero lo q usariamos nosotros seria mas q nada los segundos
-    ///asi q para obtener la cantidad de seg q tiene el CLock
-    ///hay q usar el metodo GetElapsedTime() pero q a su vez
-    ///nos entregue el tiempo en segundos entonces le agregamos
-    ///AsSeconds(), y asi obtendriamos el tiempo en seg q tiene
-    ///actualmente nuestro juego, sin contar los minutos obvio.
-    ///pero q me imagino q tambien se podra almacenar en otra variable
-    ///de tipo int y podriamos armar un relojito para el juego.
+    //Primero crean una variable de tipó IntRect, que significa
+    //rectangulo interior o zona de recorte. Ahora bien, que significan todas esas coordenadas?.
+
+    //Las primeras 2: tanto el 15 y el 34 es la posicion en donde
+    //va a empezar ese rectangulo, igual q la posicion de los sprites
+    //en la esquina izquierda superior, y los otros 2 son el ancho y
+    //el alto de su rectangulo o recorte, el orden para las primeras
+    //dos es igual a la q veniamos usando, primero en X, despues en Y
+    //las otras 2 es primero el ancho, despues el alto.
+
+    //Hasta ahora todo bien no?, eso espero xddd
+
+    //Si se fijan mas abajo van a ver una variable nueva que se llama
+    //Clock o tiempo, es una variable q desde q es declarada
+    //cuenta tiempo, ya sea en segundos, minutos, lo q sea.
+    //pero lo q usariamos nosotros seria mas q nada los segundos
+    //asi q para obtener la cantidad de seg q tiene el CLOCK
+    //hay q usar el metodo GetElapsedTime() pero q a su vez
+    //nos entregue el tiempo en segundos entonces le agregamos
+    //AsSeconds(), y asi obtendriamos el tiempo en seg q tiene
+    //actualmente nuestro juego, sin contar los minutos obvio.
+    //pero q me imagino q tambien se podra almacenar en otra variable
+    //de tipo int y podriamos armar un relojito para el juego.
 
     /*
 
@@ -131,10 +128,8 @@ int juego()
 
     */
 
+    //Sector de Incializacion y generacion de Sprites y vectores de Sprites
 
-    ///---------------------------------------
-
-    ///Sector de Incializacion y generacion de Sprites y vectores de Sprites
     /*
     Sprites bicho("img/bicho_reside_circulo.png",opacidad_bichos,285,0);
 
@@ -142,7 +137,7 @@ int juego()
         return -10;
         */
 
-    ///Camino lvl1 para modificaciones de colision por error de colisiones con los bichos - comentado
+    //Camino lvl1 para modificaciones de colision por error de colisiones con los bichos - comentado
 
     /*
     Sprites camino1("img/caminolvl1.png")
@@ -164,17 +159,20 @@ int juego()
     textura_menu.setSmooth(true);
     textura_mapa.setSmooth(true);
     textura_derrota.setSmooth(true);
-    ///Zona de texto
+
+    //Zona de texto---------------------------
+
     Font tipo_de_texto;
 
-    /// ------------------------------------------------------------------
-    /** if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
-        return -1;
-    Text texto_prueba;
-    texto_prueba.setFont(tipo_de_texto);
-    texto_prueba.setString("GENTESSS EDITION");
-    texto_prueba.setCharacterSize(24);   */
-    ///-------------------------------------------------------------------
+    // ------------------------------------------------------------------
+    // if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
+    //    return -1;
+    //Text texto_prueba;
+    //texto_prueba.setFont(tipo_de_texto);
+    //texto_prueba.setString("GENTESSS EDITION");
+    //texto_prueba.setCharacterSize(24);   */
+    //-------------------------------------------------------------------
+
     Sprite mapa,menu,derrota;
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
@@ -192,7 +190,8 @@ int juego()
     if (!mousey.getConfirmacion())
         return -1;
 
-    ///Si gente, le puse MUSICA WEEEEE
+    //Si gente, le puse MUSICA WEEEEE
+
     Music musica_menu,musica_juego,musica_derrota;
     if (!musica_menu.openFromFile("musica/menu_song.ogg"))
         return -1;
@@ -200,7 +199,9 @@ int juego()
         return -1;
     if (!musica_derrota.openFromFile("musica/derrota.ogg"))
         return -113;
-    ///volumen de la musica del menu
+
+    //volumen de la musica del menu
+
     musica_menu.setVolume(30.f);
     // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.setLoop(true);
@@ -211,78 +212,90 @@ int juego()
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false,habilitaciondanio[cantidad_bichos];
     inicializar_vector_bool (habilitaciondanio,cantidad_bichos,true);
 
-    ///con esta variable se cambia la cantidad de monstruos en el mundo
-
-    ///Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
+    //Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
 
     /*
     Sprite enemigo[cantidad_objetos][3];
     */
 
-    ///objeto boton de la nueva clase de botones_rectangulo, 5 Parametros:
-    ///Tamaño en Float X, Tamaño en Float Y, Posicion de la pantalla en Float X, Posicion de la pantalla en Float Y
-    ///el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
-    ///Util para ver en q posicion de la pantalla se ubica el boton.
+    ///CLASE BOTON
+
+    //objeto boton de la nueva clase de botones_rectangulo, 5 Parametros:
+    //Tamaño en Float X, Tamaño en Float Y, Posicion de la pantalla en Float X, Posicion de la pantalla en Float Y
+    //el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
+    //Util para ver en q posicion de la pantalla se ubica el boton.
 
     Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(55,50,872,487);
     Boton nueva_oleada(49,45,823,433,255), derrota_boton(1000,600,0,0), guardar_partida(152,44,824,545,255), pausa(49,45,875,433);
     Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
-    ///-----Cantidad de torres-----
+
+    //-----Cantidad de torres-----
     const int cantidad_torres=3;
 
-    ///-----Intervalo de daño de las torres-----
+    //-----Intervalo de daño de las torres-----
+
     int intervalo_danio[cantidad_torres];
     intervalo_danio[2]=50;
     intervalo_danio[0]=50;
     intervalo_danio[1]=50;
 
-    ///-----Daño de las torres-----
-    float danio_torre[cantidad_torres];
-    danio_torre[2]=30; /// Primer torre
-    danio_torre[0]=1;  /// Segunda torre
-    danio_torre[1]=70; /// Tercer torre
+    //-----Daño de las torres-----
 
-    ///-----Valor de las torres-----
+    float danio_torre[cantidad_torres];
+    danio_torre[2]=30; // Primer torre
+    danio_torre[0]=1;  // Segunda torre
+    danio_torre[1]=70; // Tercer torre
+
+    //-----Valor de las torres-----
+
     int compra[3];
     compra[2]=100;
     compra[0]=150;
     compra[1]=200;
 
-    ///-----Dinero de juego-----
+    //-----Dinero de juego-----
+
     int dinero;
     dinero=1000;
     Texto dinero_texto("tipos_de_texto/letra_increible_con_borde.ttf",dinero,25,937,147,Color(4,174,21,255),true);
     if (!dinero_texto.getConfirmacion())
         return -11;
-    ///-----Vida de juego-----
+
+    //-----Vida de juego-----
+
     int vida_juego;
     vida_juego=const_vida_juego;
     Texto vida_juego_texto("tipos_de_texto/letra_increible_con_borde.ttf",vida_juego,25,874,110,Color(241,65,91,255),true);
     if (!dinero_texto.getConfirmacion())
         return -90;
-    /// Estados
+
+    // Estados
+
     bool menu_abierto=false;
     bool mouse_afuera=false;
 
-    /// Variables para la verificacion de clicks y demas
+    // Variables para la verificacion de clicks y demas
+
     int posicion_clickeada;
     int contador_de_clicks=0;
     int contador_de_clicks_fuera=0;
-    /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
+
+    // Definicion de los espacios para las torres ----------------------------------------------------------------------------
+
     const int tam_torres = 9;
-    int coordenadas_X_Y_torres[2]; /// X=0 Y=1
+    int coordenadas_X_Y_torres[2]; // X=0 Y=1
     int coordenadas_X_Y_torres_tipo[cantidad_torres][2];
     /*
     int coordenadas_X_Y_torres_t1[2]; /// X=0 Y=1
     int coordenadas_X_Y_torres_t2[2]; /// X=0 Y=1
     int coordenadas_X_Y_torres_t3[2]; /// X=0 Y=1
     */
-    int coordenadas_X_Y_equis[2]; /// X=0 Y=1
-    int coordenadas_X_Y_vender[2]; /// X=0 Y=1
-    int coordenadas_X_Y_subirlvl[2]; /// X=0 Y=1
-    int coordenadas_X_Y_mejorar[2]; /// X=0 Y=1
+    int coordenadas_X_Y_equis[2]; // X=0 Y=1
+    int coordenadas_X_Y_vender[2]; // X=0 Y=1
+    int coordenadas_X_Y_subirlvl[2]; // X=0 Y=1
+    int coordenadas_X_Y_mejorar[2]; // X=0 Y=1
     Boton torres[tam_torres];
     Boton torres_tipo[cantidad_torres][tam_torres];
     /*
@@ -294,246 +307,401 @@ int juego()
     Boton torres_vender[tam_torres];
     Boton torres_subirlvl[tam_torres];
     Boton torres_mejorar[tam_torres];
-    /// Posiciones de cada boton
+
+    // Posiciones de cada boton----------------------------------
+
     for (i=0; i<tam_torres; i++)
     {
         switch (i)
         {
         case 0:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=236;
             coordenadas_X_Y_torres[1]=114;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 1:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=98;
             coordenadas_X_Y_torres[1]=245;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 2:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=98;
             coordenadas_X_Y_torres[1]=420;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 3:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=194;
             coordenadas_X_Y_torres[1]=331;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 4:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=242;
             coordenadas_X_Y_torres[1]=419;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 5:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=339;
             coordenadas_X_Y_torres[1]=419;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 6:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=434;
             coordenadas_X_Y_torres[1]=419;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 7:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=482;
             coordenadas_X_Y_torres[1]=90;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
+
         case 8:
-            /// Espacio para la torre
+
+            // Espacio para la torre
+
             coordenadas_X_Y_torres[0]=535;
             coordenadas_X_Y_torres[1]=224;
-            /// Torre 1 del menu
+
+            // Torre 1 del menu
+
             coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
             coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 2 del menu
+
+            // Torre 2 del menu
+
             coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
             coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
-            /// Torre 3 del menu
+
+            // Torre 3 del menu
+
             coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
             coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
-            /// Cruz para cerrar el menu
+
+            // Cruz para cerrar el menu
+
             coordenadas_X_Y_equis[0]=339;
             coordenadas_X_Y_equis[1]=74;
-            /// Boton para vender del menu
+
+            // Boton para vender del menu
+
             coordenadas_X_Y_vender[0]=339;
             coordenadas_X_Y_vender[1]=92;
-            /// Boton para cambiar el menu por el menu de nivel+1
+
+            // Boton para cambiar el menu por el menu de nivel+1
+
             coordenadas_X_Y_subirlvl[0]=339;
             coordenadas_X_Y_subirlvl[1]=110;
-            /// Boton para mejorar la torre
+
+            // Boton para mejorar la torre
+
             coordenadas_X_Y_mejorar[0]=339;
             coordenadas_X_Y_mejorar[1]=129;
             break;
         }
+
         torres[i]=Boton(49,90,coordenadas_X_Y_torres[0],coordenadas_X_Y_torres[1]);
         torres_tipo[0][i]=Boton(58,71,coordenadas_X_Y_torres_tipo[1][0],coordenadas_X_Y_torres_tipo[1][1]);
         torres_tipo[1][i]=Boton(58,71,coordenadas_X_Y_torres_tipo[2][0],coordenadas_X_Y_torres_tipo[2][1]);
@@ -546,7 +714,8 @@ int juego()
         torres_equis[i]=Boton(19,18,coordenadas_X_Y_equis[0],coordenadas_X_Y_equis[1]);
     }
 
-    /// Declaracion del vector de menues de torres
+    // Declaracion del vector de menues de torres------------------------------
+
     bool menu_torre[tam_torres], spawn_torre[tam_torres][3], spawnear[tam_torres], Ocupado[tam_torres];
     for (i=0; i<tam_torres; i++)
     {
@@ -559,36 +728,49 @@ int juego()
     ponerEnFalso(spawnear, tam_torres);
     ponerEnFalso(Ocupado, tam_torres);
 
-    /// Texturas
+    // Texturas----------------------------------
+
     Texture textura_menu_torre, textura_torre_tipo[cantidad_torres], /*textura_torre_1, textura_torre_2, textura_torre_3,*/ rango_torre;
-    /// MENU DE TORRES
+
+    // MENU DE TORRES
+
     if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
         return -1;
     textura_menu_torre.setSmooth(true);
-    /// TORRE 1
+
+    // TORRE 1
+
     if (!textura_torre_tipo[0].loadFromFile("img/T1-1.png"))
         return -1;
     textura_torre_tipo[0].setSmooth(true);
-    /// TORRE 2
+
+    // TORRE 2
+
     if (!textura_torre_tipo[1].loadFromFile("img/T2-1.png"))
         return -1;
     textura_torre_tipo[1].setSmooth(true);
-    /// TORRE 3
+
+    // TORRE 3
+
     if (!textura_torre_tipo[2].loadFromFile("img/T3-1.png"))
         return -1;
     textura_torre_tipo[2].setSmooth(true);
-    /// RANGO TORRE
+
+    // RANGO TORRE
+
     if (!rango_torre.loadFromFile("img/rango.png"))
         return -1;
     rango_torre.setSmooth(true);
 
-    /// Sprites
+    // Sprites-------------
+
     Sprite Sprite_menu_torre[tam_torres], Sprite_torre_tipo[cantidad_torres][tam_torres] /*Sprite_torre_1[tam_torres], Sprite_torre_2[tam_torres], Sprite_torre_3[tam_torres]*/;
     Sprite Sprite_rango_torre_tipo[cantidad_torres][tam_torres];
     /*Sprite_rango_torre_t1[tam_torres], Sprite_rango_torre_t2[tam_torres], Sprite_rango_torre_t3[tam_torres]*/;
     for (x=0; x<tam_torres; x++)
     {
-        ///menu
+        //menu------------
+
         Sprite_menu_torre[x].setTexture(textura_menu_torre);
         Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
 
@@ -630,10 +812,12 @@ int juego()
         */
     }
     int a = 0;
-    /// ----------------------------------------------------------------------------------------------------------------------
-    ///*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /// VARIABLES PARA LA SIGUIENTE OLEADA
+    // ----------------------------------------------------------------------------------------------------------------------
+    //*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // VARIABLES PARA LA SIGUIENTE OLEADA
+
     int bichos_muertos=0;
     int vida_aumentada=100;
     int oleada=1;
@@ -646,12 +830,12 @@ int juego()
     Rect<jojo>::Rect(200,200,50,50);
     */
 //vidas
-    float opacidad_menu=0; ///transparencia del objeto 255=100% porciento
+    float opacidad_menu=0; //transparencia del objeto 255=100% porciento
 
     for (i=0; i<=cantidad_bichos-1; i++)
     {
-        ///Seria un corte de control donde por cada vuelta de J se cargara un frame de un tipo de bicho, faltaria la forma
-        ///dinamica de indicar a cual tipo de monstruo cargar en cada fila de la matriz
+        //Seria un corte de control donde por cada vuelta de J se cargara un frame de un tipo de bicho, faltaria la forma
+        //dinamica de indicar a cual tipo de monstruo cargar en cada fila de la matriz
         /*
         for (int j=0;j++<=2;j++) {*/
         /*
@@ -675,62 +859,65 @@ int juego()
     int objetos=1;
     int tiempo=1;
     int estado_juego=2;
-    ///Todo lo que se necesita para crear un texto son 2 lineas de codigo, Nueva Clase Texto, Parametros:
 
-    ///1)Formato de texto: ruta donde esta alojado el tipo de texto.
-    ///2)variable a convertir, debe ser int, proximamente constructor para texto plano.
-    ///3)Tamaño del texto, similar al word cuando pones el tamaño de la letra.
-    ///4)Posicion de la pantalla en coordenadas de pixeles en X.
-    ///5)Posicion de la pantalla en coordenadas de pixeles en Y.
-    ///6)Color: Se debe anteponer Color:: y despues el color dentro de los contenidos por Sfml,
+    //Todo lo que se necesita para crear un texto son 2 lineas de codigo, Nueva Clase Texto, Parametros:
 
-    ///Podriamos agregar using namespace Color, pero seria demasiado exagerado, posiblemente agrege
-    ///un constructor para colores en RGB y transparencia, pero mas adelante.
+    //1)Formato de texto: ruta donde esta alojado el tipo de texto.
+    //2)variable a convertir, debe ser int, proximamente constructor para texto plano.
+    //3)Tamaño del texto, similar al word cuando pones el tamaño de la letra.
+    //4)Posicion de la pantalla en coordenadas de pixeles en X.
+    //5)Posicion de la pantalla en coordenadas de pixeles en Y.
+    //6)Color: Se debe anteponer Color:: y despues el color dentro de los contenidos por Sfml,
 
-    ///El objeto texto junto con el pasaje de variable a string se hacen simultaneamente.
-    ///para cambiar el string, se usa el metodo setVariable(variable), que explico mas abajo con la variable tiempo.
+    //Podriamos agregar using namespace Color, pero seria demasiado exagerado, posiblemente agrege
+    //un constructor para colores en RGB y transparencia, pero mas adelante.
 
-    ///Para todo tipo de carga de archivos se debe verificar la carga con un metodo de confirmacion, que devuelve un verdadero
-    ///o falso, en caso de una carga incorrecta el programa se detendra para la visibilidad del error, el constructor no puede
-    ///hacerlo por si mismo, dado que no puede devolver ningun valor, es cosa nuestra asegurarlo.
+    //El objeto texto junto con el pasaje de variable a string se hacen simultaneamente.
+    //para cambiar el string, se usa el metodo setVariable(variable), que explico mas abajo con la variable tiempo.
 
-    ///-------------------------
+    //Para todo tipo de carga de archivos se debe verificar la carga con un metodo de confirmacion, que devuelve un verdadero
+    //o falso, en caso de una carga incorrecta el programa se detendra para la visibilidad del error, el constructor no puede
+    //hacerlo por si mismo, dado que no puede devolver ningun valor, es cosa nuestra asegurarlo.
+
+    //-------------------------
+
     Texto tiempo_texto("tipos_de_texto/letra_increible_con_borde.ttf",tiempo,25,667,500);
     if (!tiempo_texto.getConfirmacion())
         return -1;
-    ///-------------------------
+    //-------------------------
 
-    ///Sistema de colas para las torres
+    //Sistema de colas para las torres
     int colas_torres_3d[tam_torres][cantidad_torres][cantidad_bichos+1];
     inicializar_colas_torres_3d(colas_torres_3d,-10000);
     int prioridad;
-    ///-------------------------------------------
+    //-------------------------------------------
 
-    ///definicion de la ventana del juego
+    //definicion de la ventana del juego---------------------
     RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
 
-    ///Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
-    ///bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
+    //Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
+    //bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
-    ///metodo para que no se tome en cuenta las repeticiones al presionar una tecla, similar a la booleana habilitacion_mouse
+    //metodo para que no se tome en cuenta las repeticiones al presionar una tecla, similar a la booleana habilitacion_mouse
     window.setKeyRepeatEnabled(false);
 
     while (window.isOpen())
     {
-        ///Zona de estados del juego-------------------------------------------
+        //Zona de estados del juego-------------------------------------------
         Event event;
         while (window.pollEvent(event))
         {
 
-            ///si la ventana se cierra-------------
+            //si la ventana se cierra-------------
             if (event.type == Event::Closed)
             {
                 window.close();
+                delete enemigo;
             }
-            ///------------------------------------
+            //------------------------------------
 
 
-            ///La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados------------
+            //La magia de las resoluciones y conversion de los pixeles por defecto a pixeles customizados------------
 
             if (event.type != Event::LostFocus)
             {
@@ -750,15 +937,16 @@ int juego()
                 }
                 mousex.setVariable(mousexy[0]);
                 mousey.setVariable(mousexy[1]);
-                ///fin resoluciones---------------------------------------------------------------------------------------
+                //fin resoluciones---------------------------------------------------------------------------------------
             }
-            ///-------------------------------------------
+            //-------------------------------------------
 
-            ///EVENTO SI UNA TECLA ES PRESIONADA
+            //EVENTO SI UNA TECLA ES PRESIONADA
 
             if (event.type == Event::KeyPressed)
             {
-                ///debug del juego------------tecla d---------
+                //debug del juego------------tecla d---------
+
                 if (Keyboard::isKeyPressed(Keyboard::D))
                 {
 
@@ -769,9 +957,10 @@ int juego()
                         teclado=false;
                     }
                 }
-                ///--------------------------------------------
+                //--------------------------------------------
 
-                ///Salir del juego al menu principal------tecla escape-------------
+                //Salir del juego al menu principal------tecla escape-------------
+
                 if (Keyboard::isKeyPressed(Keyboard::Escape))
                 {
                     estado_juego=2;
@@ -796,25 +985,27 @@ int juego()
                     boolmusicajuego=false;
                     for(int l=0; l<tam_torres; l++)
                     {
-                        /// TORRES -------------------------------------
+                        // TORRES -------------------------------------
+
                         spawn_torre[l][0]=false;
                         spawn_torre[l][1]=false;
                         spawn_torre[l][2]=false;
                         Ocupado[l]=false;
 
-                        /// RANGOS -------------------------------------
+                        // RANGOS -------------------------------------
+
                         for(int f=0; f<cantidad_torres; f++)
                         {
                             Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
                         }
                     }
                 }
-                ///--------------------------------------------------------------
+                //--------------------------------------------------------------
             }
         }
-        ///fin de la zona de estados del juego------------------------------------
+        //fin de la zona de estados del juego------------------------------------
 
-///Animaciones de los zombies ----
+        //Animaciones de los zombies ----
 
         /*
         for(i=1; i<cantidad_bichos; i++)
@@ -831,6 +1022,7 @@ int juego()
         window.clear();
 
         ///testeos con los bichos--Descomentar para usar--cantidad de bichos especifica por pantalla para realizar tests.
+
         /*
         if (tiempo%150==0)   ///cantidad de bichos hasta que el tiempo_spawn es cambiado,acorde al tiempo_spawn inicial.
         {
@@ -838,10 +1030,11 @@ int juego()
         }                       ///para el testeo
         */
 
-///Estados del Juego
+        // Estados del Juego-----------------------------------
+
         switch (estado_juego)
         {
-        case 0:  ///Cuando el juego esta en pausa, solo se dibuja, no se modifican las variables.
+        case 0:  // Cuando el juego esta en pausa, solo se dibuja, no se modifican las variables.
 
             if (Mouse::isButtonPressed(Mouse::Left))
             {
@@ -852,27 +1045,34 @@ int juego()
                 }
             }
 
-            /// MAPA DEL JUEGO
+            // MAPA DEL JUEGO
+
             window.draw(mapa);
 
-            ///DEBUG
+            // DEBUG
+
             if (teclado)
             {
-                /// COORDENADAS DEL MOUSE
+                // COORDENADAS DEL MOUSE
+
                 window.draw(mousex.getTexto());
                 window.draw(mousey.getTexto());
-                /// VARIABLE TIEMPO
+                // VARIABLE TIEMPO
+
                 window.draw(tiempo_texto.getTexto());
             }
 
-            /// VIDA DEL JUEGO
+            // VIDA DEL JUEGO
             window.draw(vida_juego_texto.getTexto());
-            /// DINERO DEL JUEGO
+            // DINERO DEL JUEGO
+
             window.draw(dinero_texto.getTexto());
-            /// OLEADA
+            // OLEADA
+
             window.draw(oleada_texto.getTexto());
 
-            ///TORRES Y SUS AREAS
+            // TORRES Y SUS AREAS
+
             for (x=0; x<tam_torres; x++)
             {
                 for(int y=0; y<3; y++)
@@ -903,7 +1103,8 @@ int juego()
                 }
             }
 
-            ///ZOMBIES Y SUS VIDAS
+            // ZOMBIES Y SUS VIDAS
+
             for (d=1; d<=objetos; d++)
             {
                 if (enemigo[d-1].getVida()>0)
@@ -913,7 +1114,8 @@ int juego()
                 }
             }
 
-            ///MENU DE LAS TORRES
+            // MENU DE LAS TORRES
+
             for (x=0; x<tam_torres; x++)
             {
                 if (menu_torre[x]==true)
@@ -922,9 +1124,9 @@ int juego()
                 }
             }
 
-            break;  ///fin de estado pausa del juego
+            break;  // fin de estado pausa del juego
 
-        case 1:  ///ESTADO DERROTADO
+        case 1:  // ESTADO DERROTADO---------------------------
 
             window.draw(derrota);
             if (!boolmusicaderrota)
@@ -959,13 +1161,13 @@ int juego()
                     boolmusicaderrota=false;
                     for(int l=0; l<tam_torres; l++)
                     {
-                        /// TORRES -------------------------------------
+                        // TORRES -------------------------------------
                         spawn_torre[l][0]=false;
                         spawn_torre[l][1]=false;
                         spawn_torre[l][2]=false;
                         Ocupado[l]=false;
 
-                        /// RANGOS -------------------------------------
+                        // RANGOS -------------------------------------
                         for(int f=0; f<cantidad_torres; f++)
                         {
                             Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
@@ -973,9 +1175,9 @@ int juego()
                     }
                 }
             }
-            break; ///fin del estado derrotado
+            break; // fin del estado derrotado
 
-        case 2:  ///ESTADO MENU PRINCIPAL
+        case 2:  // ESTADO MENU PRINCIPAL-----------------------------------
 
             if (reg_config.getSonido_menu()&&!primer_carga)
             {
@@ -985,20 +1187,22 @@ int juego()
 
             menu.setColor(Color(255,255,255,opacidad_menu));
             window.draw(menu);
-            /// window.draw(texto_prueba);
+            // window.draw(texto_prueba);
             if (opacidad_menu<255)
             {
                 opacidad_menu+=5;
             }
             else
             {
-                ///Configuracion de los botones en el menu principal
+                //Configuracion de los botones en el menu principal-----------
+
                 if (Mouse::isButtonPressed(Mouse::Left))
                 {
                     if (habilitacionmouse)
                     {
 
-                        ///Nueva partida
+                        // Nueva partida
+
                         if (nueva_partida.click(mousexy))
                         {
                             /*
@@ -1009,22 +1213,28 @@ int juego()
                             musica_juego.play();
                             estado_juego=3;
                         }
-                        ///Cargar Partida
+
+                        // Cargar Partida
+
                         if (cargar_partida_boton.click(mousexy))
                         {
                             musica_menu.stop();
                             musica_juego.play();
 
                         }
-                        ///Salir
+
+                        //Salir
+
                         if (salir.click(mousexy))
                         {
                             musica_menu.stop();
                             window.close();
+                            delete enemigo;
 
                         }
 
-                        ///Sonido
+                        //Sonido
+
                         if (sonido_menu.click(mousexy))
                         {
                             if (reg_config.getSonido_menu())
@@ -1046,29 +1256,33 @@ int juego()
                 else
                     habilitacionmouse=true;
             }
-            break;  ///fin estado menu principal
+            break;  // fin estado menu principal
 
-        case 3:   ///ESTADO JUEGO
+        case 3:   // ESTADO JUEGO------------------------------------
 
-            ///Cuando se pierde se cambia a estado derrota------
+            // Cuando se pierde se cambia a estado derrota------
             if (vida_juego<=0)
             {
                 estado_juego=1;
             }
-            ///------------------------------------------------
+            // ------------------------------------------------
 
-            ///  COMIENZA EL JUEGO
+            //  COMIENZA EL JUEGO
+
             if (Mouse::isButtonPressed(Mouse::Left))
             {
                 if (habilitacionmouse)
                 {
-                    ///PAUSA DEL JUEGO
+                    // PAUSA DEL JUEGO
+
                     if (pausa.click(mousexy))
                     {
                         musica_juego.pause();
                         estado_juego=0;
                     }
-                    ///nueva oleada
+
+                    // nueva oleada
+
                     if (nueva_oleada.click(mousexy)&&bichos_muertos==10)
                     {
                         vida_aumentada+=100;
@@ -1084,7 +1298,9 @@ int juego()
                         tiempo=1;
                         cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                     }
-                    ///sonido
+
+                    // sonido
+
                     if (sonido.click(mousexy))
                     {
                         if (boolmusicajuego)
@@ -1098,12 +1314,15 @@ int juego()
                             boolmusicajuego=true;
                         }
                     }
-                    /// Torres
+
+                    // Torres
+
                     for (i=0; i<tam_torres; i++)
                     {
                         if (torres[i].click(mousexy))
                         {
-                            ///SE ABRE EL MENU DE TORRES
+                            //SE ABRE EL MENU DE TORRES
+
                             menu_torre[i]=true;
                             spawnear[i]=true;
                             habilitacionmouse=false;
@@ -1112,7 +1331,8 @@ int juego()
                         }
                         else
                         {
-                            ///SE CIERRA EL MENU DE TORRES
+                            //SE CIERRA EL MENU DE TORRES
+
                             menu_torre[i]=false;
                             if (contador_de_clicks>1)
                             {
@@ -1120,8 +1340,9 @@ int juego()
                             }
                             contador_de_clicks++;
 
-                            /// Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
-                            /// no sea el que se clickeo anteriormente
+                            // Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
+                            // no sea el que se clickeo anteriormente
+
                             for(int k=0; k<tam_torres; k++)
                             {
                                 if (k != posicion_clickeada)
@@ -1152,38 +1373,40 @@ int juego()
                             }
                         }
                     }
-                    ///mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
+                    // mientras el mouse este presionado no repetira ninguna accion en bucle hasta q se suelte el click izquierdo
                     habilitacionmouse=false;
                 }
             }
             else
             {
-                ///una vez que se solto el mouse, recien se habilita para una nueva accion
+                // una vez que se solto el mouse, recien se habilita para una nueva accion
                 habilitacionmouse=true;
             }
 
             for (i=1; i<=objetos; i++)
             {
-                /// MAPA DEL JUEGO
+                // MAPA DEL JUEGO
+
                 window.draw(mapa);
 
                 if (teclado)
                 {
-                    /// COORDENADAS DEL MOUSE
+                    // COORDENADAS DEL MOUSE
                     window.draw(mousex.getTexto());
                     window.draw(mousey.getTexto());
-                    /// VARIABLE TIEMPO
+                    // VARIABLE TIEMPO
                     window.draw(tiempo_texto.getTexto());
                 }
 
-                /// VIDA DEL JUEGO
+                // VIDA DEL JUEGO
                 window.draw(vida_juego_texto.getTexto());
-                /// DINERO DEL JUEGO
+                // DINERO DEL JUEGO
                 window.draw(dinero_texto.getTexto());
-                /// OLEADA
+                // OLEADA
                 window.draw(oleada_texto.getTexto());
 
 ///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
+
                 for (x=0; x<tam_torres; x++)
                 {
                     for(int y=0; y<3; y++)
@@ -1217,6 +1440,7 @@ int juego()
                     }
                 }
 ///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
+
                 for (d=1; d<=objetos; d++)
                 {
                     if (enemigo[d-1].getVida()>0)
@@ -1224,12 +1448,15 @@ int juego()
                         window.draw(enemigo[d-1].getZombie());
                         window.draw(vidas_texto[d-1].getTexto());
                     }
-                    else
+                    else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
                     {
-                        if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
-                            enemigo[d-1].setMuerto();
+                        enemigo[d-1].setMuerto();
+                        enemigo[d-1].setPosicion(0,0);
+                        vidas_texto[d-1].setPosicion(0,0);
                     }
-                    ///esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
+
+                    // esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
+
                     /*
                     switch(mini_estados) {
                     case 1:
@@ -1249,28 +1476,35 @@ int juego()
                     }
                 }
 
-                ///Spot para detener el debug por tiempo,sin importancia------------
-                if (tiempo%400==0)
+                // Spot para detener el debug por tiempo,sin importancia------------
+
+                if (tiempo%300==0)
                 {
                     debug=0;
                 }
-                ///--------------------------------------
+                // --------------------------------------
 
-                ///COLAS DE LAS TORRES----matriz tridimensional---------
+                // COLAS DE LAS TORRES-----matriz tridimensional---------
+
                 for (x=0; x<tam_torres; x++)
                 {
                     for(f=0; f<cantidad_torres; f++)
                     {
-                        /// Si el enemigo colisiona con el sprite (invisible o no) hace daño
+                        //// Si el enemigo colisiona con el rango de una torre, este le hace daño segun sus caracteristicas,
+                        ////si se muere, su posicion se mueve a (0,0), para que su sprite no estorbe en la caja de colisiones.
+
                         if (PixelPerfectTest(enemigo[i-1].getZombie(),Sprite_rango_torre_tipo[f][x]))
                         {
+                            ////el enemigo es encolado, si solo si, nunca fue encolado en la cola de una torre, por su tipo,
+                            ////si esa cola no esta llena y por ultimo si este no esta muerto.
+
                             if (!enemigo[i-1].getEncolado(x,f)&&colas_torres_3d[x][f][10]<10&&!enemigo[i-1].getMuerto())
                             {
-                                colas_torres_3d[x][f][colas_torres_3d[x][f][10]]=i-1;
+                                colas_torres_3d[x][f][colas_torres_3d[x][f][10]]=i-1;   ////
                                 colas_torres_3d[x][f][10]++;
                                 enemigo[i-1].setEncolado(x,f,true);
-                                enemigo[i-1].setIntervalo_danio(intervalo_danio[f]);
-                                enemigo[i-1].setDanio_torre(danio_torre[f]);
+                                enemigo[i-1].setIntervalo_danio(intervalo_danio[f],f);
+                                enemigo[i-1].setDanio_torre(danio_torre[f],f);
                             }
                         }
                         else
@@ -1283,21 +1517,19 @@ int juego()
                             }
                         }
 
-
                         prioridad=colas_torres_3d[x][f][0];
 
-                        if (prioridad != -10000)
+                        if (prioridad==i-1&&prioridad!=-10000)
                         {
-                            if (tiempo%enemigo[prioridad].getIntervalo_danio()==0&&habilitaciondanio[prioridad])
+                            if (enemigo[prioridad].getIntervalo_danio(f)!=10000)
                             {
-                                if (detectar_enemigo_cola3d(colas_torres_3d,x,f,i-1,cantidad_bichos))
+                                if (tiempo%enemigo[prioridad].getIntervalo_danio(f)==0)
                                 {
-                                    enemigo[prioridad].reducir_vida();
+                                    enemigo[prioridad].reducir_vida(f);
                                     vidas_texto[prioridad].setVariable(enemigo[prioridad].getVida());
                                     enemigo[prioridad].setColor(50,50,77);
-                                    habilitaciondanio[i-1]=false;
 
-                                    if (enemigo[i-1].getVida()<=0&&!enemigo[i-1].getMuerto())
+                                    if (enemigo[i-1].getVida()<=0)
                                     {
                                         enemigo[i-1].setEncolado(x,f,false);
                                         colas_torres_3d[x][f][10]--;
@@ -1305,17 +1537,18 @@ int juego()
                                         dinero+=100;
                                         dinero_texto.setVariable(dinero);
                                     }
-
                                 }
-                            }
-                            else
-                            {
-                                enemigo[prioridad].setColor(255,255,255);
+                                else
+                                {
+                                    enemigo[prioridad].setColor(255,255,255);
+                                }
+
                             }
                         }
                     }
                 }
-                ///FIN COLAS TORRES-------------------------------------
+
+                // FIN COLAS TORRES-------------------------------------
 
                 if (!enemigo[i-1].getMuerto())
                 {
@@ -1504,13 +1737,15 @@ int juego()
 
                     enemigo[i-1].cambiar_frame_sprite(tiempo_zombies[i-1]);
 
-                    ///Pequeña maquina de estados
+                    // Pequeña maquina de estados
                     switch (enemigo[i-1].getEstado())
                     {
                     case 0:
-                        ///el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
-                        ///mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
-                        if (/*PixelPerfectTest(enemigo[i-1],camino1.getSprite())*/enemigo[i-1].getY()<199&&enemigo[i-1].getX()==285)
+
+                        // el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
+                        // mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
+
+                        if (enemigo[i-1].getY()<199&&enemigo[i-1].getX()==285 /*PixelPerfectTest(enemigo[i-1],camino1.getSprite()) */ )
                         {
                             if(enemigo[i-1].getOpacidad()<255)
                             {
@@ -1585,7 +1820,8 @@ int juego()
                     case 7:
                         break;
 
-                        ///movimientos en diagonal
+                        //movimientos en diagonal
+
                         /*
                         case 1:
                             if (circulo1.getPosition().y>171&&circulo1.getPosition().x>35)
@@ -1696,13 +1932,15 @@ int juego()
                 }
             }
             tiempo++;
-            ///Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
 
-            ///--------
+            //Metodo de clase Texto, para modificar el string porque la variable cambio de valor.
+
+            //--------
             tiempo_texto.setVariable(tiempo);
-            ///--------
+            //--------
 
-            /// SIGUIENTE OLEADA
+            // SIGUIENTE OLEADA
+
             for(int h=0; h<cantidad_bichos; h++)
             {
                 if(enemigo[h].getVida()<=0&&bichos_muertos<10)
@@ -1712,7 +1950,9 @@ int juego()
             }
             if (bichos_muertos!=cantidad_bichos)
                 bichos_muertos=0;
-///Pruebas iniciales con circulos
+
+            //Pruebas iniciales con circulos
+
             /*
             window.draw(circulo1);
             if (circulo1.getPosition().x<600&&circulo1.getPosition().y<=0) {
@@ -1732,20 +1972,21 @@ int juego()
             circulo1.setPosition(circulo1.getPosition().x,y);
             }
             */
-            break;  ///fin del estado juego
+
+            break;  // fin del estado juego
 
         default:
             break;
 
-        }   ///fin del switch(estado_juego)
+        }   // fin del switch(estado_juego)
 
         window.display();
 
-    }   ///fin del while(window.IsOpen())
+    }   // fin del while(window.IsOpen())
 
     return 0;
 
-}  ///Fin de la funcion juego()
+}  // Fin de la funcion juego();
 
 
 #endif // JUEGO_H_INCLUDED
