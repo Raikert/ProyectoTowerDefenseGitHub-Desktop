@@ -16,9 +16,9 @@ int juego()
 
     //Constantes practicas
     const int const_vida_juego=1000;
-    int tiempo_spawn=50;
+    int tiempo_spawn=100;
     const int cantidad_bichos=10;
-    const float velocidad_bichos=1;
+    const float velocidad_bichos=0.8;
 
     //Objetos Archivo-----------
     Configuracion reg_config;
