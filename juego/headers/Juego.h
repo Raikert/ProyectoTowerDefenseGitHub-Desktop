@@ -195,7 +195,7 @@ int juego()
     Music musica_menu,musica_juego,musica_derrota;
     if (!musica_menu.openFromFile("musica/menu_song.ogg"))
         return -1;
-    if (!musica_juego.openFromFile("musica/lvl1_song.ogg"))
+    if (!musica_juego.openFromFile("musica/musica2_juego.ogg"))
         return -1;
     if (!musica_derrota.openFromFile("musica/derrota.ogg"))
         return -113;

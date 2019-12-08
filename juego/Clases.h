@@ -426,6 +426,16 @@ public:
     }
 };
 
+/*
+void reestablecer_color_zombies(Zombie *enemigo,int cantidad_bichos)
+{
+    for (int i=0; i<cantidad_bichos; i++)
+    {
+        enemigo[i].setColor(255,255,255);
+    }
+}
+*/
+
 void Zombie::cambiar_frame_sprite(Clock &tiempo)
 {
     switch (estado)
