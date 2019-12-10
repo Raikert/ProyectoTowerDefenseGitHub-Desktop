@@ -207,11 +207,8 @@ public:
 class Cinematica
 {
     ///A raiz de que SFML no soporta video, y la extension SfeMovie para codeblocks
-    ///es como querer enchufar un Iphone x en el toma ingles de tu tia petunia, llego
+    ///es como querer enchufar un Iphone x en el toma inglesa de tu tia petunia, llego
     ///la clase Cinematica.
-
-    ///Para ver esta clase en accion,en cualquier momento del juego, presiona la tecla A, y si aun esta
-    ///activo el ejemplo que hice deberia verse un fragmento de video de age of empires.
 
 private:
 
@@ -220,11 +217,11 @@ private:
 
     Texture textura_cinematica;
     IntRect porcion_de_textura_cinematica;
-    int frame_x,frame_y,limite_frames_x,limite_frames_y,tam_tex_cine_x,tam_tex_cine_y;
+    int frame_x,frame_y,limite_frames_x,limite_frames_y,tam_x,tam_y,tam_porcionx,tam_porciony;
     Sprite sprite_cinematica;
     Clock tiempo_cinematica;
     float fps,x,y;
-
+    bool repeticion,estado;
 public:
 
     ///Bien, para empezar , una cinematica es basicamente un pedazo de video, acompañado de audio, que anuncia
@@ -232,30 +229,112 @@ public:
     ///tan corto, es suficiente como para mostrar una seccion de videojuego de manera que tenga un trasfondo
     ///audiovisual.
 
-    Cinematica (const string& nombre_textura,IntRect por_tex_cin_par,int tam_par_x,int tam_par_y,float posx=0,float posy=0,float fps_par=24 )
+    ///Aclaro que la clase no maneja sonido, pero aun asi, intentare acoplarlo en ella.
+
+    ///Segun Wikipedia :
+
+    ///La cinemática (del griego kinéin 'mover, desplazar') es la rama de la mecánica que describe el
+    ///movimiento de los objetos sólidos sin considerar las causas que lo originan (las fuerzas) y se limita,
+    ///principalmente, al estudio de la trayectoria en función del tiempo. Para ello utiliza velocidades y
+    ///aceleraciones, que describen cómo cambia la posición en función del tiempo. La velocidad se determina
+    ///como el cociente entre el desplazamiento y el tiempo utilizado, mientras que la aceleración es el cociente
+    ///entre el cambio de velocidad y el tiempo utilizado.
+
+    ///Es decir, que el video ilusionado, depende de la cinematica de los frames contenidos en el Spritesheet, eso
+    ///seria el desplazamiento, y que a su vez, tiene una velocidad, que lo marca el Clock, y asi poder reproducir video.
+    ///Ese cociente que menciona es segundo/cantidad de frames = fps o fotogramas por segundo, que da como resultado el cociente
+    ///de desplazamiento que marcan algunos de los condicionales de los if en el metodo de la clase actualizar_frame().
+    ///La aceleracion quedara como algo extra que no supone mucha importancia realmente, tampoco somos Youtube viste.
+
+    Cinematica (const string& nombre_textura,int tam_p_x,int tam_p_y,int tam_porcionx_p,int tam_porciony_p)
     {
-        porcion_de_textura_cinematica=por_tex_cin_par;
-        frame_x=frame_y=0;
-        x=posx;
-        y=posy;
+        tam_porcionx=tam_porcionx_p;
+        tam_porciony=tam_porciony_p;
+        tam_x=tam_p_x;
+        tam_y=tam_p_y;
+        porcion_de_textura_cinematica=IntRect(0,0,tam_porcionx,tam_porciony);
+        frame_x=frame_y=1;
         if (!textura_cinematica.loadFromFile(nombre_textura))
         {
             exit(-9999);
         }
         sprite_cinematica.setTexture(textura_cinematica);
         sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
-        sprite_cinematica.setPosition(x,y);
-        tam_tex_cine_x=tam_par_x;
-        tam_tex_cine_y=tam_par_y;
-        limite_frames_x=(tam_tex_cine_x/porcion_de_textura_cinematica.width)-1;
-        limite_frames_y=(tam_tex_cine_y/porcion_de_textura_cinematica.height)-1;
-        fps=1/fps_par;
+        limite_frames_x=(tam_x/porcion_de_textura_cinematica.width);
+        limite_frames_y=(tam_y/porcion_de_textura_cinematica.height);
+        float fps_default=24;
+        fps=1/fps_default;
+        repeticion=true;
+        estado=false;
     }
-    void actualizar_frame();
+
+    void Actualizar_frame();
+
+    ///nombre_objeto.Actualizar_frame();  -----> actualiza el frame del Spritesheet.
+
+    void Reicicio()
+    ///nombre_objeto.Reinicio(); -------> se reproduce desde el principio.
+    {
+        porcion_de_textura_cinematica.left=0;
+        porcion_de_textura_cinematica.top=0;
+        frame_x=1;
+        frame_y=1;
+        tiempo_cinematica.restart();
+        sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+    }
+
     Sprite getFrame()
+    ///A modo de ejemplo, no significa que solo sirva para esto,pero es el uso mas general.
+    ///window.draw(nombre_objeto_getFrame); -------> le envia al metodo window.draw, el frame actual a ser dibujado en pantalla.
     {
         return sprite_cinematica;
     }
+
+    bool getEstado ()
+    ///nombre_objeto.getEstado() -------> retorna el estado de reproduccion.
+    {
+        return estado;
+    }
+    bool getRepeticion()
+    ///nombre_objeto.getEstado() --------> retorno booleano si el video es en bucle o no.
+    {
+        return repeticion;
+    }
+    void setEstado(bool e)
+    ///nombre_objeto.setEstado() -------> setea el estado de reproduccion a true o false;
+    {
+        estado=e;
+    }
+    void setPosicion (float posx,float posy)
+    ///nombre_objeto.setPosicion (float x, float y) ------> cambia la posicion de los frames, tanto x como y.
+    {
+        x=posx;
+        y=posy;
+        sprite_cinematica.setPosition(x,y);
+    }
+    void setX (float posx)
+    ///nombre_objeto.setX (float x) ------> cambia solo la posicion en x de los frames.
+    {
+        x=posx;
+        sprite_cinematica.setPosition(x,y);
+    }
+    void setY (float posy)
+    ///nombre_objeto.setY (float y) ------> cambia solo la posicion en y de los frames.
+    {
+        y=posy;
+        sprite_cinematica.setPosition(x,y);
+    }
+    void setFps (float fps_par)
+    ///nombre_objeto.setFps (float fps_par) --------> cambia la velocidad de reproduccion en frames por segundo.
+    {
+        fps=1/fps_par;
+    }
+    void setRepeticion(bool rep)
+    ///nombre_objeto.setReproduccion(bool rep) -----> se cambia la opcion del video en bucle o no. Pd: viene en bucle por default.
+    {
+        repeticion=rep;
+    }
+
 
     ///Ahora bien, que vendria a ser un Spritesheet?. Un Spritesheet es el lugar a donde se van a alojar todos
     ///los estados o frames que, en este caso la cinematica, va a tener, digo este caso, porque podria ser una
@@ -271,8 +350,7 @@ public:
 ///fps, que por defecto viene a 24 fps, que es valor estandar y minimo para tener fluidez en un video, se puede
 ///cambiar la velocidad a la que este es reproducido, puesto que a mas frames por segundo, mas rapido se vera todo.
 
-
-void Cinematica::actualizar_frame()
+void Cinematica::Actualizar_frame()
 {
     ///La idea del funcionamiento es simple, a traves del tamaño del video en pixeles, y del tamaño de las particiones
     ///de video, tambien en pixeles, se puede saber que cantidad de frames posee la imagen de izquierda a derecha, de arriba
@@ -280,29 +358,41 @@ void Cinematica::actualizar_frame()
     ///de la imagen en el orden mencionado antes. Una vez que termina la reproduccion, esta vuelve a reproducirse desde el
     ///principio, salvo que agregue la booleana repeat, que daria la orden de si uno quisiera repetecion o no, ya lo implemento
     ///no se preocupen jajjaj, que se me acaba de ocurrir recien.
-
-    if (frame_x<limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+    if (estado)
     {
-        porcion_de_textura_cinematica.left+=386;
-        frame_x++;
-        tiempo_cinematica.restart();
+        if (frame_x<limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+        {
+            porcion_de_textura_cinematica.left+=386;
+            frame_x++;
+            tiempo_cinematica.restart();
+        }
+        else
+        {
+            if (frame_x==limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
+            {
+                porcion_de_textura_cinematica.left=0;
+                porcion_de_textura_cinematica.top+=251;
+                frame_x=1;
+                frame_y++;
+                tiempo_cinematica.restart();
+            }
+            else if (frame_y==limite_frames_y&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+            {
+                if (repeticion)
+                {
+                    porcion_de_textura_cinematica.left=0;
+                    porcion_de_textura_cinematica.top=0;
+                    frame_x=1;
+                    frame_y=1;
+                    tiempo_cinematica.restart();
+                }
+                else
+                    estado=false;
+            }
+        }
+        if (estado)
+            sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
     }
-    if (frame_x==4&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
-    {
-        porcion_de_textura_cinematica.left=0;
-        porcion_de_textura_cinematica.top+=251;
-        frame_x=0;
-        frame_y++;
-        tiempo_cinematica.restart();
-    }
-    if (frame_y==5&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
-    {
-        porcion_de_textura_cinematica.top=0;
-        frame_y=0;
-        tiempo_cinematica.restart();
-    }
-    sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
-
     ///Por ultimo y no menos importante, algo que me habia olvidado de mencionar, el Clock es usado para el cambio de frames,
     ///por velocidad de fotogramas o fps, una vez que este supera el tiempo de espera para reproducir el siguiente, se reinicia
     ///y asi sucesivamente. Las Porciones de Sprite, por pixeles en x e y, van cambiando en cada actualizacion, en un sentido de
@@ -312,6 +402,7 @@ void Cinematica::actualizar_frame()
     ///aprendiedo como hacerlo, ahhhh siii, lo olvidaba.
 
     /// ¿COMO SE HACE UNA SPRITESHEET?
+
     ///buena pregunta, joven padawan ,  la respuesta a esta pregunta del universo observable es un convertidor de video a gif y de
     ///gif a spritesheet, pero aun asi, creo q esta pagina que consegui tambien puede de video a spritesheet, tendria que probar.
     ///basicamente convierte lo que tengamos en un formato que SFML no puede leer que es formato de video, a una imagen de varias

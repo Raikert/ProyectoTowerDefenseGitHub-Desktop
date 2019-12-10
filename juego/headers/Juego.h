@@ -172,27 +172,50 @@ int juego()
     //texto_prueba.setCharacterSize(24);   */
     //-------------------------------------------------------------------
 
-    ///Nueva clase : Cinematica.
+    ///Nueva clase : Cinematica------------------------------------
 
     ///Constructor - parametros :
+
     ///1) Ruta del Spritesheet.
-    ///2) Primer frame del video en coordenadas y tamaño::IntRect
-    ///3) Tamaño del Spritesheet en x.
-    ///4) Tamaño del Spritesheet en y.
 
-    ///Parametros por omision:
-    ///5) Posicion en x = 0.
-    ///6) Posicion en y = 0.
-    ///7) frames por segundo, fps deseado = 24.
-    ///Si solo se necesitara un parametro enviar a la funcion los valores
-    ///detras del =
+    ///estos datos estan en las propiedades del Spritesheet.
 
-    ///La explicacion de que es un Spritesheet, La implementacion de IntRect y
-    ///el uso de objetos de tipo Cinematica se detallan en la clase.
+    ///2) Ancho del Spritesheet.
+    ///3) Alto del Spritesheet.
+
+    ///estos datos estan en las propiedades del gif.
+
+    ///3) Ancho de los frames.
+    ///4) Alto de los frames.
+
+    ///La explicacion de que es un Spritesheet, el uso de IntRect y
+    ///el uso de los metodos se encuentran donde esta declarada la clase Cinematica.
+
+    ///Es la clase a la que mas explicacion le he dedicado, dado que es todo una ciencia
+    ///es uso y reproduccion de video, que llega a sorprender de la manera en la que todo
+    ///termina funcionando para ser solo una ilusion optica, y como todo puede llegar a
+    ///ser Programable.
 
     ///Y si, es una sola linea.
 
-    Cinematica test1("img/gif_prueba.jpg",IntRect(0,0,386,251),1930,1506);
+    Cinematica test1("img/gif_prueba.jpg",1930,1506,386,251);
+
+    ///pero no para los metodos, jeje.
+
+    test1.setRepeticion(false);
+
+    ///El draw de esta cinematica esta debajo de todo solo por esta vez, dado que sino los demas
+    ///draws lo superponen y no se lo puede ver. Para ver esta clase en accion ,con la Tecla A
+    ///y en cualquier estado del juego se lo puede activar, si es que aun esta activo este ejemplo
+    ///que hice, deberia verse un fragmento de video de Age of Empires.
+
+    ///------------------------------------------------------------------------------------
+
+    ///Animaciones con mecanismo de Cinematicas - dada su alta simplicidad - aun en proceso.
+
+    ///Cinematica fuego("img/fuego.jpg",IntRect(0,0,820,858),4100,2574);
+
+    ///-------------------------------------------------------------------------------------
 
     Sprite mapa,menu,derrota;
     mapa.setTexture(textura_mapa);
@@ -1014,6 +1037,23 @@ int juego()
                         }
                     }
                 }
+
+                ///Primer cinematica del juego - testeos
+                if (Keyboard::isKeyPressed(Keyboard::A))
+                {
+                    if (!test1.getRepeticion())
+                        test1.setEstado(true);
+
+                    else
+                    {
+                        if (!test1.getEstado())
+                            test1.setEstado(true);
+                        else
+                            test1.setEstado(false);
+                    }
+                    test1.Reicicio();
+                }
+
                 //--------------------------------------------------------------
             }
         }
@@ -1994,15 +2034,28 @@ int juego()
 
         }   // fin del switch(estado_juego)
 
-        ///Primer cinematica del juego - testeos
-        if (Keyboard::isKeyPressed(Keyboard::A))
+        ///cinematica,draw, test-----------------
+        if (test1.getEstado())
         {
             window.draw(test1.getFrame());
 
-            test1.actualizar_frame();
+            test1.Actualizar_frame();
+        }
+        ///-------------------------------------
+
+        ///Intentando acoplar el mecanismo de cinematica a las animaciones
+        ///dada su simplicidad para reproducir frames.----------------------
+        /*
+        if (Keyboard::isKeyPressed(Keyboard::F))
+        {
+            window.draw(fuego.getFrame());
+
+            fuego.actualizar_frame();
 
         }
         ///--------------------------------
+        */
+        ///-----------------------------------------------
 
         window.display();
 
