@@ -30,13 +30,12 @@ int juego()
 
     Clock tiempo_zombies[cantidad_bichos];
     IntRect porcion_de_sprite(0,0,36,50);
+
     Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,velocidad_bichos);
-    if (!aldeano.getConfirmacion())
-        return -10;
+
     Texto vidas_texto[cantidad_bichos];
     Texto vidas_texto_variable("tipos_de_texto/letra_pintura.ttf",aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
-    if (!vidas_texto_variable.getConfirmacion())
-        return -10;
+
     vidas_texto_variable.setBorde_Color(Color(255,0,255,0));
     vidas_texto_variable.setBorde_tamanio(0.5);
     for (i=0; i<cantidad_bichos; i++)
@@ -173,6 +172,28 @@ int juego()
     //texto_prueba.setCharacterSize(24);   */
     //-------------------------------------------------------------------
 
+    ///Nueva clase : Cinematica.
+
+    ///Constructor - parametros :
+    ///1) Ruta del Spritesheet.
+    ///2) Primer frame del video en coordenadas y tamaño::IntRect
+    ///3) Tamaño del Spritesheet en x.
+    ///4) Tamaño del Spritesheet en y.
+
+    ///Parametros por omision:
+    ///5) Posicion en x = 0.
+    ///6) Posicion en y = 0.
+    ///7) frames por segundo, fps deseado = 24.
+    ///Si solo se necesitara un parametro enviar a la funcion los valores
+    ///detras del =
+
+    ///La explicacion de que es un Spritesheet, La implementacion de IntRect y
+    ///el uso de objetos de tipo Cinematica se detallan en la clase.
+
+    ///Y si, es una sola linea.
+
+    Cinematica test1("img/gif_prueba.jpg",IntRect(0,0,386,251),1930,1506);
+
     Sprite mapa,menu,derrota;
     mapa.setTexture(textura_mapa);
     menu.setTexture(textura_menu);
@@ -181,14 +202,12 @@ int juego()
     bool teclado=false;
     for (i=0; i<2; i++)
     {
-        mousexy[i]=0;
+        mousexy[i]
+            =0;
     }
     Texto mousex("tipos_de_texto/letra_increible_con_borde.ttf",mousexy[0],18,628,540);
-    if (!mousex.getConfirmacion())
-        return -1;
+
     Texto mousey("tipos_de_texto/letra_increible_con_borde.ttf",mousexy[1],18,700,540);
-    if (!mousey.getConfirmacion())
-        return -1;
 
     //Si gente, le puse MUSICA WEEEEE
 
@@ -260,16 +279,12 @@ int juego()
     int dinero;
     dinero=1000;
     Texto dinero_texto("tipos_de_texto/letra_increible_con_borde.ttf",dinero,25,937,147,Color(4,174,21,255),true);
-    if (!dinero_texto.getConfirmacion())
-        return -11;
 
     //-----Vida de juego-----
 
     int vida_juego;
     vida_juego=const_vida_juego;
     Texto vida_juego_texto("tipos_de_texto/letra_increible_con_borde.ttf",vida_juego,25,874,110,Color(241,65,91,255),true);
-    if (!dinero_texto.getConfirmacion())
-        return -90;
 
     // Estados
 
@@ -771,7 +786,8 @@ int juego()
     {
         //menu------------
 
-        Sprite_menu_torre[x].setTexture(textura_menu_torre);
+        Sprite_menu_torre[x]
+        .setTexture(textura_menu_torre);
         Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
 
         for(int f=0; f<cantidad_torres; f++)
@@ -822,8 +838,7 @@ int juego()
     int vida_aumentada=100;
     int oleada=1;
     Texto oleada_texto("tipos_de_texto/letra_increible_con_borde.ttf",oleada,17,843,202,Color::Yellow,true);
-    if (!oleada_texto.getConfirmacion())
-        return -90;
+
 
 
     /*
@@ -882,8 +897,7 @@ int juego()
     //-------------------------
 
     Texto tiempo_texto("tipos_de_texto/letra_increible_con_borde.ttf",tiempo,25,667,500);
-    if (!tiempo_texto.getConfirmacion())
-        return -1;
+
     //-------------------------
 
     //Sistema de colas para las torres
@@ -1979,6 +1993,16 @@ int juego()
             break;
 
         }   // fin del switch(estado_juego)
+
+        ///Primer cinematica del juego - testeos
+        if (Keyboard::isKeyPressed(Keyboard::A))
+        {
+            window.draw(test1.getFrame());
+
+            test1.actualizar_frame();
+
+        }
+        ///--------------------------------
 
         window.display();
 

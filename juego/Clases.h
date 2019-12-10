@@ -67,49 +67,37 @@ class Texto
 private:
     Font formato_de_letra;
     Text texto;
-    bool formato_cargado;
     bool Borde;
     float x,y;
 public:
     Texto (const string& letra,int variable,int tamanio,float posx,float posy,const Color& color=Color::Black,bool borde=false)
     {
         if (!formato_de_letra.loadFromFile(letra))
-            formato_cargado=false;
-        else
-            formato_cargado=true;
+            exit(-5555);
 
-        if (formato_cargado)
+        texto.setFont(formato_de_letra);
+        texto.setCharacterSize(tamanio);
+        x=posx;
+        y=posy;
+        texto.setPosition(x,y);
+        char variable_char[10];
+        itoa(variable, variable_char, 10);
+        string variable_string = string(variable_char);
+        texto.setString(variable_string);
+        texto.setFillColor(color);
+        if (borde)
         {
-            texto.setFont(formato_de_letra);
-            texto.setCharacterSize(tamanio);
-            x=posx;
-            y=posy;
-            texto.setPosition(x,y);
-            char variable_char[10];
-            itoa(variable, variable_char, 10);
-            string variable_string = string(variable_char);
-            texto.setString(variable_string);
-            texto.setFillColor(color);
-            if (borde)
-            {
-                texto.setOutlineThickness(2.f);
-                Borde=true;
-            }
-            else
-                Borde=false;
+            texto.setOutlineThickness(2.f);
+            Borde=true;
         }
+        else
+            Borde=false;
     }
     Texto () {}
     void setFormato_de_letra (const string& letra)
     {
         if (!formato_de_letra.loadFromFile(letra))
-            formato_cargado=false;
-        else
-            formato_cargado=true;
-    }
-    bool getConfirmacion()
-    {
-        return formato_cargado;
+            exit(-2222);
     }
     Text getTexto()
     {
@@ -216,6 +204,123 @@ public:
     }
 };
 
+class Cinematica
+{
+    ///A raiz de que SFML no soporta video, y la extension SfeMovie para codeblocks
+    ///es como querer enchufar un Iphone x en el toma ingles de tu tia petunia, llego
+    ///la clase Cinematica.
+
+    ///Para ver esta clase en accion,en cualquier momento del juego, presiona la tecla A, y si aun esta
+    ///activo el ejemplo que hice deberia verse un fragmento de video de age of empires.
+
+private:
+
+    ///Ahora bien, como funciona esta clase? , ¿Que es un Spritesheet? , ¿Que utilidad tendria IntRect en esto?
+    /// ¿Que es una Cinematica? ¿Como hace la clase para calcular todo lo relacionado a ello?
+
+    Texture textura_cinematica;
+    IntRect porcion_de_textura_cinematica;
+    int frame_x,frame_y,limite_frames_x,limite_frames_y,tam_tex_cine_x,tam_tex_cine_y;
+    Sprite sprite_cinematica;
+    Clock tiempo_cinematica;
+    float fps,x,y;
+
+public:
+
+    ///Bien, para empezar , una cinematica es basicamente un pedazo de video, acompañado de audio, que anuncia
+    ///algo del contenido en donde es mostrado de manera rapida y consisa, no es un video ni tan largo, ni
+    ///tan corto, es suficiente como para mostrar una seccion de videojuego de manera que tenga un trasfondo
+    ///audiovisual.
+
+    Cinematica (const string& nombre_textura,IntRect por_tex_cin_par,int tam_par_x,int tam_par_y,float posx=0,float posy=0,float fps_par=24 )
+    {
+        porcion_de_textura_cinematica=por_tex_cin_par;
+        frame_x=frame_y=0;
+        x=posx;
+        y=posy;
+        if (!textura_cinematica.loadFromFile(nombre_textura))
+        {
+            exit(-9999);
+        }
+        sprite_cinematica.setTexture(textura_cinematica);
+        sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+        sprite_cinematica.setPosition(x,y);
+        tam_tex_cine_x=tam_par_x;
+        tam_tex_cine_y=tam_par_y;
+        limite_frames_x=(tam_tex_cine_x/porcion_de_textura_cinematica.width)-1;
+        limite_frames_y=(tam_tex_cine_y/porcion_de_textura_cinematica.height)-1;
+        fps=1/fps_par;
+    }
+    void actualizar_frame();
+    Sprite getFrame()
+    {
+        return sprite_cinematica;
+    }
+
+    ///Ahora bien, que vendria a ser un Spritesheet?. Un Spritesheet es el lugar a donde se van a alojar todos
+    ///los estados o frames que, en este caso la cinematica, va a tener, digo este caso, porque podria ser una
+    ///animacion, que es distinto, dado que esta en si es un video, pero es tan corto, que se lo suele llamar
+    ///Animacion,el Spritesheet se usa para todo aquello que requiera guardar mas de un estado sobre una imagen
+    ///a la que se la quiere mostrar de forma continua. El formato del Spritesheet puede ser cualquiera de los
+    ///mas conocidos, pero es recomendable usar los de mayor compresion, dado que a mas frames, mas grande sera
+    ///la imagen, y por lo tanto , mayor sera su peso, sin contar la calidad con la que se quiere obtener el video.
+};
+
+///El IntRect juega el rol mas importante en nuestra clase, puesto que es nuestro filtro de frames para luego
+///ser reproducidos de forma continua, y asi generar la ilusion de un video, y que ademas, a traves del parametro
+///fps, que por defecto viene a 24 fps, que es valor estandar y minimo para tener fluidez en un video, se puede
+///cambiar la velocidad a la que este es reproducido, puesto que a mas frames por segundo, mas rapido se vera todo.
+
+
+void Cinematica::actualizar_frame()
+{
+    ///La idea del funcionamiento es simple, a traves del tamaño del video en pixeles, y del tamaño de las particiones
+    ///de video, tambien en pixeles, se puede saber que cantidad de frames posee la imagen de izquierda a derecha, de arriba
+    ///hacia abajo. Una vez que la clase conoce sus limites, se hace un tira y afloje de frames desde el inicio hasta el fin
+    ///de la imagen en el orden mencionado antes. Una vez que termina la reproduccion, esta vuelve a reproducirse desde el
+    ///principio, salvo que agregue la booleana repeat, que daria la orden de si uno quisiera repetecion o no, ya lo implemento
+    ///no se preocupen jajjaj, que se me acaba de ocurrir recien.
+
+    if (frame_x<limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+    {
+        porcion_de_textura_cinematica.left+=386;
+        frame_x++;
+        tiempo_cinematica.restart();
+    }
+    if (frame_x==4&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
+    {
+        porcion_de_textura_cinematica.left=0;
+        porcion_de_textura_cinematica.top+=251;
+        frame_x=0;
+        frame_y++;
+        tiempo_cinematica.restart();
+    }
+    if (frame_y==5&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+    {
+        porcion_de_textura_cinematica.top=0;
+        frame_y=0;
+        tiempo_cinematica.restart();
+    }
+    sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+
+    ///Por ultimo y no menos importante, algo que me habia olvidado de mencionar, el Clock es usado para el cambio de frames,
+    ///por velocidad de fotogramas o fps, una vez que este supera el tiempo de espera para reproducir el siguiente, se reinicia
+    ///y asi sucesivamente. Las Porciones de Sprite, por pixeles en x e y, van cambiando en cada actualizacion, en un sentido de
+    ///acumuladores, que marcan la posicion superior izquierda de cada frame para luego ser mostrado.
+
+    ///Y bueno ese seria el fin de la clase, me diverti mucho haciendolo, y espero que ustedes tambien usandola, o en su defecto,
+    ///aprendiedo como hacerlo, ahhhh siii, lo olvidaba.
+
+    /// ¿COMO SE HACE UNA SPRITESHEET?
+    ///buena pregunta, joven padawan ,  la respuesta a esta pregunta del universo observable es un convertidor de video a gif y de
+    ///gif a spritesheet, pero aun asi, creo q esta pagina que consegui tambien puede de video a spritesheet, tendria que probar.
+    ///basicamente convierte lo que tengamos en un formato que SFML no puede leer que es formato de video, a una imagen de varias
+    ///imagenes dentro de si misma, de modo que sea el mismo video, pero separado en frames, y asi, poder correrlo en Sfml.
+
+    ///El link de la pagina es esta, si aun funciona - con la ruta al convertidor gif-spritesheet.
+    ///Link: https://ezgif.com/gif-to-sprite
+}
+
 class Animacion
 {
 private:
@@ -249,7 +354,6 @@ class Zombie
 {
 private:
     Texture zombie_textura_propiedad;
-    bool textura_cargada;
     Sprite zombie_sprite_propiedad;
     float x,y;
     bool muerto,encolado[9][3];
@@ -263,29 +367,26 @@ public:
     Zombie (const string& nombre_imagen,float posx,float posy,IntRect porcion_de_imagen,float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
 
+
         if(!CreateTextureAndBitmask(zombie_textura_propiedad,nombre_imagen))
-            textura_cargada=false;
-        else
-            textura_cargada=true;
-        if (textura_cargada)
-        {
-            zombie_textura_propiedad.setSmooth(true);
-            porcion_de_imagen_propiedad=porcion_de_imagen;
-            zombie_sprite_propiedad.setTexture(zombie_textura_propiedad);
-            zombie_sprite_propiedad.setTextureRect(porcion_de_imagen_propiedad);
-            opacidad=opacida;
-            zombie_sprite_propiedad.setColor(Color(255,255,255,opacidad));
-            zombie_sprite_propiedad.setPosition(posx,posy);
-            x=posx;
-            y=posy;
-            dinero_que_devuelve=dinero;
-            vida=vi;
-            velocidad=ve;
-            estado=0;
-            muerto=false;
-            inicializar_vector_entero(intervalo_danio,3,10000);
-            inicializar_matriz_encolado(encolado);
-        }
+            exit(-7777);
+
+        zombie_textura_propiedad.setSmooth(true);
+        porcion_de_imagen_propiedad=porcion_de_imagen;
+        zombie_sprite_propiedad.setTexture(zombie_textura_propiedad);
+        zombie_sprite_propiedad.setTextureRect(porcion_de_imagen_propiedad);
+        opacidad=opacida;
+        zombie_sprite_propiedad.setColor(Color(255,255,255,opacidad));
+        zombie_sprite_propiedad.setPosition(posx,posy);
+        x=posx;
+        y=posy;
+        dinero_que_devuelve=dinero;
+        vida=vi;
+        velocidad=ve;
+        estado=0;
+        muerto=false;
+        inicializar_vector_entero(intervalo_danio,3,10000);
+        inicializar_matriz_encolado(encolado);
     }
     Zombie () {}
     Sprite getZombie()
@@ -385,10 +486,7 @@ public:
     {
         zombie_sprite_propiedad=zombie_sprite_propiedad_asignar;
     }
-    bool getConfirmacion()
-    {
-        return textura_cargada;
-    }
+
     void cambiar_frame_sprite(Clock&);
     void  reducir_vida(int pos_danio)
     {

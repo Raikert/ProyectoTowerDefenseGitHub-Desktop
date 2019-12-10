@@ -4,7 +4,7 @@
 	<ActiveTarget name="Debug" />
 	<File name="Clases.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="10220" topLine="412" />
+			<Cursor1 position="2184" topLine="81" />
 		</Cursor>
 	</File>
 	<File name="Collision.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -19,7 +19,7 @@
 	</File>
 	<File name="funciones.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="187" topLine="0" />
+			<Cursor1 position="418" topLine="8" />
 		</Cursor>
 	</File>
 	<File name="headers\Colision_Danio.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -29,7 +29,7 @@
 	</File>
 	<File name="headers\Juego.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7053" topLine="180" />
+			<Cursor1 position="30962" topLine="1074" />
 		</Cursor>
 	</File>
 	<File name="headers\Movimientos.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
