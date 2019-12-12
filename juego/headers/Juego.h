@@ -177,16 +177,12 @@ int juego()
     ///Constructor - parametros :
 
     ///1) Ruta del Spritesheet.
+    ///2) Ancho del gif - X
+    ///3) Alto del gif - Y
 
-    ///estos datos estan en las propiedades del Spritesheet.
-
-    ///2) Ancho del Spritesheet.
-    ///3) Alto del Spritesheet.
-
-    ///estos datos estan en las propiedades del gif.
-
-    ///3) Ancho de los frames.
-    ///4) Alto de los frames.
+    ///Si el tamaño de los frames en el Spritesheet se modifico del tamaño del gif
+    ///2) Ancho de los frames - X
+    ///3) Alto de los frames - Y
 
     ///La explicacion de que es un Spritesheet, el uso de IntRect y
     ///el uso de los metodos se encuentran donde esta declarada la clase Cinematica.
@@ -198,11 +194,22 @@ int juego()
 
     ///Y si, es una sola linea.
 
-    Cinematica test1("img/gif_prueba.jpg",1930,1506,386,251);
+    Cinematica test1("img/cinematicas/gif_prueba.jpg",386,251);  ///tamaño del gif
+
+    /*
+    Cinematica viejo("img/cinematicas/viejo_riendo.jpg",245,139);  ///tamaño de frames diferente al gif
+    */
 
     ///pero no para los metodos, jeje.
 
     test1.setRepeticion(false);
+    test1.setEstado(false);
+
+    /*
+    viejo.setRepeticion(false);
+    viejo.setPosicion(567,345);
+    */
+
 
     ///El draw de esta cinematica esta debajo de todo solo por esta vez, dado que sino los demas
     ///draws lo superponen y no se lo puede ver. Para ver esta clase en accion ,con la Tecla A
@@ -924,7 +931,15 @@ int juego()
     //-------------------------
 
     //Sistema de colas para las torres
-    int colas_torres_3d[tam_torres][cantidad_torres][cantidad_bichos+1];
+
+    ///y si gente, es un new de una tridimensional, sorprendidos no?
+
+    int (*colas_torres_3d) [cantidad_torres][cantidad_bichos+1] = new int[tam_torres][cantidad_torres][cantidad_bichos+1];
+
+    ///para entender esto, o al menos saber con se declaran, porque ni yo entendi un cuerno, les dejo el link donde lo
+    ///lo explican con el titulo §5  Asignar el valor devuelto, con la linea : int (* mptr3)[10][2] = new int[3][10][2];
+    ///Link: https://www.zator.com/Cpp/E4_9_20c.htm
+
     inicializar_colas_torres_3d(colas_torres_3d,-10000);
     int prioridad;
     //-------------------------------------------
@@ -950,6 +965,7 @@ int juego()
             {
                 window.close();
                 delete enemigo;
+                delete colas_torres_3d;
             }
             //------------------------------------
 
@@ -1284,7 +1300,7 @@ int juego()
                             musica_menu.stop();
                             window.close();
                             delete enemigo;
-
+                            delete colas_torres_3d;
                         }
 
                         //Sonido
@@ -2041,6 +2057,15 @@ int juego()
 
             test1.Actualizar_frame();
         }
+
+        /*
+        if (viejo.getEstado())
+        {
+            window.draw(viejo.getFrame());
+
+            viejo.Actualizar_frame();
+        }
+        */
         ///-------------------------------------
 
         ///Intentando acoplar el mecanismo de cinematica a las animaciones

@@ -222,6 +222,7 @@ private:
     Clock tiempo_cinematica;
     float fps,x,y;
     bool repeticion,estado;
+
 public:
 
     ///Bien, para empezar , una cinematica es basicamente un pedazo de video, acompañado de audio, que anuncia
@@ -246,18 +247,19 @@ public:
     ///de desplazamiento que marcan algunos de los condicionales de los if en el metodo de la clase actualizar_frame().
     ///La aceleracion quedara como algo extra que no supone mucha importancia realmente, tampoco somos Youtube viste.
 
-    Cinematica (const string& nombre_textura,int tam_p_x,int tam_p_y,int tam_porcionx_p,int tam_porciony_p)
+    Cinematica (const string& nombre_textura,int tam_porcionx_p,int tam_porciony_p)
     {
-        tam_porcionx=tam_porcionx_p;
-        tam_porciony=tam_porciony_p;
-        tam_x=tam_p_x;
-        tam_y=tam_p_y;
-        porcion_de_textura_cinematica=IntRect(0,0,tam_porcionx,tam_porciony);
-        frame_x=frame_y=1;
         if (!textura_cinematica.loadFromFile(nombre_textura))
         {
             exit(-9999);
         }
+        textura_cinematica.setSmooth(true);
+        tam_porcionx=tam_porcionx_p;
+        tam_porciony=tam_porciony_p;
+        tam_x=textura_cinematica.getSize().x;
+        tam_y=textura_cinematica.getSize().y;
+        porcion_de_textura_cinematica=IntRect(0,0,tam_porcionx,tam_porciony);
+        frame_x=frame_y=1;
         sprite_cinematica.setTexture(textura_cinematica);
         sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
         limite_frames_x=(tam_x/porcion_de_textura_cinematica.width);
@@ -265,11 +267,10 @@ public:
         float fps_default=24;
         fps=1/fps_default;
         repeticion=true;
-        estado=false;
+        estado=true;
     }
 
     void Actualizar_frame();
-
     ///nombre_objeto.Actualizar_frame();  -----> actualiza el frame del Spritesheet.
 
     void Reicicio()
@@ -362,7 +363,7 @@ void Cinematica::Actualizar_frame()
     {
         if (frame_x<limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
         {
-            porcion_de_textura_cinematica.left+=386;
+            porcion_de_textura_cinematica.left+=tam_porcionx;
             frame_x++;
             tiempo_cinematica.restart();
         }
@@ -371,7 +372,7 @@ void Cinematica::Actualizar_frame()
             if (frame_x==limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
             {
                 porcion_de_textura_cinematica.left=0;
-                porcion_de_textura_cinematica.top+=251;
+                porcion_de_textura_cinematica.top+=tam_porciony;
                 frame_x=1;
                 frame_y++;
                 tiempo_cinematica.restart();
