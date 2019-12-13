@@ -609,8 +609,9 @@ private:
     float velocidad;
     int estado,intervalo_danio[3],danio_torre[3];
 public:
-    Zombie (int tipo,float posx,float posy,float ve=0.5,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (int tipo,float ve=0.5,float posx=295,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
+
         animacion_propiedad.crear_Animacion_zombie("img/Zombies.png",tipo,posx,posy,escalax,escalay);
         vida=100;
         velocidad=ve;

@@ -39,9 +39,11 @@ int juego()
     ///5) Por omision --> escala en x.
     ///6) Por omision --> escala en y.
 
-    Zombie aldeano(5,285,0,velocidad_bichos);
+    Zombie aldeano(1,velocidad_bichos);
 
     ///------------------------------------------------------
+
+    ///Bloque de colision----------
 
     Texto vidas_texto[cantidad_bichos];
     Texto vidas_texto_variable("tipos_de_texto/letra_pintura.ttf",aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
@@ -811,8 +813,9 @@ int juego()
 
     // RANGO TORRE
 
-    if (!rango_torre.loadFromFile("img/rango.png"))
+    if (!CreateTextureAndBitmask(rango_torre,"img/rango.png"))
         return -1;
+
     rango_torre.setSmooth(true);
 
     // Sprites-------------
@@ -832,6 +835,7 @@ int juego()
         {
             Sprite_torre_tipo[f][x].setTexture(textura_torre_tipo[f]);
             Sprite_torre_tipo[f][x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
+
 
             Sprite_rango_torre_tipo[f][x].setTexture(rango_torre);
             Sprite_rango_torre_tipo[f][x].scale(1,1.22);
@@ -1821,7 +1825,7 @@ int juego()
                         // el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
                         // mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
 
-                        if (enemigo[i-1].getY()<199&&enemigo[i-1].getX()==285 /*PixelPerfectTest(enemigo[i-1],camino1.getSprite()) */ )
+                        if (enemigo[i-1].getY()<199/*PixelPerfectTest(enemigo[i-1],camino1.getSprite()) */ )
                         {
                             if(enemigo[i-1].getOpacidad()<255)
                             {
@@ -1835,7 +1839,7 @@ int juego()
                             enemigo[i-1].setTira_mov();
                         break;
                     case 1:
-                        if (enemigo[i-1].getX()>47)
+                        if (enemigo[i-1].getX()>55)
                         {
                             enemigo[i-1].mover_izq();
                         }
@@ -1853,7 +1857,7 @@ int juego()
                             enemigo[i-1].setTira_mov();
                         break;
                     case 3:
-                        if (enemigo[i-1].getX()<485)
+                        if (enemigo[i-1].getX()<495)
                         {
                             enemigo[i-1].mover_derecha();
                         }
