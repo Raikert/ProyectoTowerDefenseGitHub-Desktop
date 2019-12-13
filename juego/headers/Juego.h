@@ -114,7 +114,6 @@ int juego()
     //de tipo int y podriamos armar un relojito para el juego.
 
     /*
-
         Texture sprites;
         if (!sprites.loadFromFile("img/zombie2.png"))
             return -1;
@@ -197,6 +196,7 @@ int juego()
 
     ///Y si, es una sola linea.
 
+    /*
     Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
 
     Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
@@ -211,6 +211,8 @@ int juego()
 
     viejo_test.setEstado(false);
     viejo_test.setFps(10);
+    */
+
 
     ///El draw de esta cinematica esta debajo de todo solo por esta vez, dado que sino los demas
     ///draws lo superponen y no se lo puede ver. Para ver esta clase en accion ,con la Tecla A
@@ -1058,6 +1060,7 @@ int juego()
                     }
                 }
 
+                /*
                 ///Primer cinematica del juego - testeos
                 if (Keyboard::isKeyPressed(Keyboard::A))
                 {
@@ -1088,6 +1091,7 @@ int juego()
                     }
                     viejo_test.Reicicio();
                 }
+                */
 
                 //--------------------------------------------------------------
             }
@@ -2122,6 +2126,7 @@ int juego()
 
         }   // fin del switch(estado_juego)
 
+        /*
         ///cinematica,draw, test-----------------
         if (test1.getEstado())
         {
@@ -2137,6 +2142,7 @@ int juego()
             viejo_test.Actualizar_frame();
         }
         ///-------------------------------------
+        */
 
         ///Intentando acoplar el mecanismo de cinematica a las animaciones
         ///dada su simplicidad para reproducir frames.----------------------
