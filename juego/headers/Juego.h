@@ -36,7 +36,7 @@ int juego()
     ///2) Tipo de Zombie (1 al 8).
     ///3) Velocidad del zombie.
 
-    Textura textura_zombies ("img/Zombies.png",1);
+    Textura textura_zombies ("img/Zombies.png",6);
 
     Zombie aldeano(textura_zombies.getTextura(),1,velocidad_bichos);
 
@@ -198,8 +198,10 @@ int juego()
     ///Y si, es una sola linea.
 
     Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
+    Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
 
     Cinematica test1(gif_prueba.getTextura(),386,251);  ///tamaño del gif
+    Cinematica viejo_test(viejo.getTextura(),400,226);
     /*a
     Cinematica viejo("img/cinematicas/viejo_riendo.jpg",245,139);  ///tamaño de frames diferente al gif
     */
@@ -208,6 +210,8 @@ int juego()
 
     test1.setRepeticion(false);
     test1.setEstado(false);
+    viejo_test.setEstado(false);
+    viejo_test.setFps(10);
     /*
     viejo.setRepeticion(false);
     viejo.setPosicion(567,345);
@@ -1062,6 +1066,21 @@ int juego()
                             test1.setEstado(false);
                     }
                     test1.Reicicio();
+                }
+
+                if (Keyboard::isKeyPressed(Keyboard::F))
+                {
+                    if (!viejo_test.getRepeticion())
+                        viejo_test.setEstado(true);
+
+                    else
+                    {
+                        if (!viejo_test.getEstado())
+                            viejo_test.setEstado(true);
+                        else
+                            viejo_test.setEstado(false);
+                    }
+                    viejo_test.Reicicio();
                 }
 
                 //--------------------------------------------------------------
@@ -2055,14 +2074,13 @@ int juego()
 
             test1.Actualizar_frame();
         }
-        /*
-        if (viejo.getEstado())
-        {
-            window.draw(viejo.getFrame());
 
-            viejo.Actualizar_frame();
+        if (viejo_test.getEstado())
+        {
+            window.draw(viejo_test.getFrame());
+
+            viejo_test.Actualizar_frame();
         }
-        */
         ///-------------------------------------
 
         ///Intentando acoplar el mecanismo de cinematica a las animaciones

@@ -329,7 +329,7 @@ public:
     ///de desplazamiento que marcan algunos de los condicionales de los if en el metodo de la clase actualizar_frame().
     ///La aceleracion quedara como algo extra que no supone mucha importancia realmente, tampoco somos Youtube viste.
 
-    Cinematica (Texture &textura_cinematica,int tam_porcionx_p,int tam_porciony_p,bool fullscreen=true)
+    Cinematica (Texture &textura_cinematica,int tam_porcionx_p,int tam_porciony_p,bool fullscreen=false)
     {
         tam_porcionx=tam_porcionx_p;
         tam_porciony=tam_porciony_p;
