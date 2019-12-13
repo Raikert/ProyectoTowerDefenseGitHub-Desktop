@@ -114,9 +114,9 @@ public:
         if (!letra.loadFromFile(ruta))
             exit(-5555);
     }
-    Font *getFont ()
+    Font &getFont ()
     {
-        return &letra;
+        return letra;
     }
 
 };
@@ -159,9 +159,9 @@ private:
     bool Borde;
     float x,y;
 public:
-    Texto (Font *letra,int variable,int tamanio,float posx,float posy,const Color& color=Color::Black,bool borde=false)
+    Texto (Font &letra,int variable,int tamanio,float posx,float posy,const Color& color=Color::Black,bool borde=false)
     {
-        texto.setFont(*letra);
+        texto.setFont(letra);
         texto.setCharacterSize(tamanio);
         x=posx;
         y=posy;
@@ -180,9 +180,9 @@ public:
             Borde=false;
     }
     Texto () {}
-    void setFormato_de_letra (Font *letra)
+    void setFormato_de_letra (Font &letra)
     {
-        texto.setFont(*letra);
+        texto.setFont(letra);
     }
     Text getTexto()
     {

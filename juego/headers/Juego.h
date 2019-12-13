@@ -36,9 +36,9 @@ int juego()
     ///2) Tipo de Zombie (1 al 8).
     ///3) Velocidad del zombie.
 
-    Textura textura_zombies ("img/Zombies.png",6);
+    Textura textura_zombies ("img/Zombies.png");
 
-    Zombie aldeano(textura_zombies.getTextura(),1,velocidad_bichos);
+    Zombie aldeano(textura_zombies.getTextura(),6,velocidad_bichos);
 
     ///------------------------------------------------------
 
@@ -162,9 +162,9 @@ int juego()
     textura_derrota.setSuavizado(true);
 
     //Zona de texto---------------------------
-
+    /*
     Font tipo_de_texto;
-
+    */
     // ------------------------------------------------------------------
     // if (!tipo_de_texto.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
     //    return -1;
@@ -233,8 +233,7 @@ int juego()
     bool teclado=false;
     for (i=0; i<2; i++)
     {
-        mousexy[i]
-            =0;
+        mousexy[i]=0;
     }
     Letra font_texto2("tipos_de_texto/letra_increible_con_borde.ttf");
 
@@ -256,8 +255,7 @@ int juego()
     musica_juego.repeticion(true);
     musica_derrota.repeticion(true);
     musica_derrota.volumen(30);
-    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false,habilitaciondanio[cantidad_bichos];
-    inicializar_vector_bool (habilitaciondanio,cantidad_bichos,true);
+    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false;
 
     //Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
 
@@ -773,7 +771,7 @@ int juego()
 
     // Texturas----------------------------------
 
-    Textura textura_menu_torre("img/Menu_Torres.png",0),textura_torre_tipo[cantidad_torres],rango_torre("img/rango.png",1) /*textura_torre_1, textura_torre_2, textura_torre_3,*/;
+    Textura textura_menu_torre("img/Menu_Torres.png",0),textura_torre_tipo[cantidad_torres],rango_torre("img/rango.png") /*textura_torre_1, textura_torre_2, textura_torre_3,*/;
 
     // MENU DE TORRES
 
@@ -959,11 +957,10 @@ int juego()
     window.setFramerateLimit(60);
     //metodo para que no se tome en cuenta las repeticiones al presionar una tecla, similar a la booleana habilitacion_mouse
     window.setKeyRepeatEnabled(false);
-
+    Event event;
     while (window.isOpen())
     {
         //Zona de estados del juego-------------------------------------------
-        Event event;
         while (window.pollEvent(event))
         {
 
@@ -1475,71 +1472,70 @@ int juego()
                 habilitacionmouse=true;
             }
 
-            for (i=1; i<=objetos; i++)
+///--------------------------Sector de Dibujado-------------------------------------------------------------------
+
+            // MAPA DEL JUEGO
+
+            window.draw(mapa);
+
+            // VIDA DEL JUEGO
+            window.draw(vida_juego_texto.getTexto());
+            // DINERO DEL JUEGO
+            window.draw(dinero_texto.getTexto());
+            // OLEADA
+            window.draw(oleada_texto.getTexto());
+
+            if (teclado)
             {
-                // MAPA DEL JUEGO
-
-                window.draw(mapa);
-
-                if (teclado)
-                {
-                    // COORDENADAS DEL MOUSE
-                    window.draw(mousex.getTexto());
-                    window.draw(mousey.getTexto());
-                    // VARIABLE TIEMPO
-                    window.draw(tiempo_texto.getTexto());
-                }
-
-                // VIDA DEL JUEGO
-                window.draw(vida_juego_texto.getTexto());
-                // DINERO DEL JUEGO
-                window.draw(dinero_texto.getTexto());
-                // OLEADA
-                window.draw(oleada_texto.getTexto());
+                // COORDENADAS DEL MOUSE
+                window.draw(mousex.getTexto());
+                window.draw(mousey.getTexto());
+                // VARIABLE TIEMPO
+                window.draw(tiempo_texto.getTexto());
+            }
 
 ///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
 
-                for (x=0; x<tam_torres; x++)
+            for (x=0; x<tam_torres; x++)
+            {
+                for(int y=0; y<3; y++)
                 {
-                    for(int y=0; y<3; y++)
+                    if (spawn_torre[x][y]==true)
                     {
-                        if (spawn_torre[x][y]==true)
+                        Sprite_rango_torre_tipo[y][x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                        window.draw(Sprite_rango_torre_tipo[y][x]);
+                        window.draw(Sprite_torre_tipo[y][x]);
+                        /*
+                        switch (y)
                         {
-                            Sprite_rango_torre_tipo[y][x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                            window.draw(Sprite_rango_torre_tipo[y][x]);
-                            window.draw(Sprite_torre_tipo[y][x]);
-                            /*
-                            switch (y)
-                            {
-                            case 0:
-                                Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                window.draw(Sprite_rango_torre_t1[x]);
-                                window.draw(Sprite_torre_1[x]);
-                                break;
-                            case 1:
-                                Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                window.draw(Sprite_rango_torre_t2[x]);
-                                window.draw(Sprite_torre_2[x]);
-                                break;
-                            case 2:
-                                Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                                window.draw(Sprite_rango_torre_t3[x]);
-                                window.draw(Sprite_torre_3[x]);
-                                break;
-                            }
-                            */
+                        case 0:
+                            Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                            window.draw(Sprite_rango_torre_t1[x]);
+                            window.draw(Sprite_torre_1[x]);
+                            break;
+                        case 1:
+                            Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                            window.draw(Sprite_rango_torre_t2[x]);
+                            window.draw(Sprite_torre_2[x]);
+                            break;
+                        case 2:
+                            Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
+                            window.draw(Sprite_rango_torre_t3[x]);
+                            window.draw(Sprite_torre_3[x]);
+                            break;
                         }
+                        */
                     }
                 }
+            }
 ///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
 
-                for (d=1; d<=objetos; d++)
+            for (d=1; d<=objetos; d++)
                 {
                     if (enemigo[d-1].getVida()>0)
                     {
                         window.draw(enemigo[d-1].getZombie());
                         window.draw(vidas_texto[d-1].getTexto());
-                        enemigo[i-1].cambiar_frame_sprite();
                     }
                     else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
                     {
@@ -1561,6 +1557,7 @@ int juego()
                     }
                     */
                 }
+
                 for (x=0; x<tam_torres; x++)
                 {
                     if (menu_torre[x]==true)
@@ -1568,6 +1565,12 @@ int juego()
                         window.draw(Sprite_menu_torre[x]);
                     }
                 }
+
+///----------------------Fin Sector Dibujado-------------------------------------------------
+
+            for (i=1; i<=objetos; i++)
+            {
+                enemigo[i-1].cambiar_frame_sprite();
 
                 // Spot para detener el debug por tiempo,sin importancia------------
 
@@ -2062,7 +2065,6 @@ int juego()
 
                 */
             }
-            inicializar_vector_bool(habilitaciondanio,cantidad_bichos,true);
 
             if (tiempo%tiempo_spawn==0)
             {
@@ -2083,7 +2085,7 @@ int juego()
 
             for(int h=0; h<cantidad_bichos; h++)
             {
-                if(enemigo[h].getVida()<=0&&bichos_muertos<10)
+                if(enemigo[h].getVida()<=0&&bichos_muertos<cantidad_bichos)
                 {
                     bichos_muertos++;
                 }
