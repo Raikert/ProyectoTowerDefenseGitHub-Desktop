@@ -8,6 +8,7 @@ using namespace Collision;
 setlocale(LC_ALL,"spanish");
 */
 
+/*
 /// CLASE COLA --------------------------------------------------------------
 
 class Cola
@@ -59,6 +60,7 @@ bool Cola::sacar(int &x)
     return true;
 }
 /// ------------------------------------------------------------------------------------
+*/
 
 class Textura
 {

@@ -11,6 +11,10 @@ using namespace std;
 setlocale(LC_ALL,"spanish");
 */
 
+///Antiguas funciones de la cola tridimensional, fuera de uso,
+///dada su incapacidad para recibir dinamicamente la cola.
+
+/*
 void inicializar_colas_torres_3d(int m[9][3][11],int valor)
 {
     int f,c,x;
@@ -27,7 +31,9 @@ void inicializar_colas_torres_3d(int m[9][3][11],int valor)
         }
     }
 }
+*/
 
+/*
 void ordenar_cola_3d(int m[9][3][11],int torre,int tipo,int enemigo_sacar,int cantidad_bichos)
 {
     int pos_enemigo_siguiente,pos_enemigo_sacar;
@@ -44,7 +50,9 @@ void ordenar_cola_3d(int m[9][3][11],int torre,int tipo,int enemigo_sacar,int ca
     }
     m[torre][tipo][9]=-10000;
 }
+*/
 
+/*
 bool detectar_enemigo_cola3d (int m[9][3][11],int torre,int tipo,int enemigo_detectar,int cantidad_bichos)
 {
     bool detector=false;
@@ -55,6 +63,7 @@ bool detectar_enemigo_cola3d (int m[9][3][11],int torre,int tipo,int enemigo_det
     }
     return detector;
 }
+*/
 
 void inicializar_vector_entero (int *v,int tamanio,int valor)
 {

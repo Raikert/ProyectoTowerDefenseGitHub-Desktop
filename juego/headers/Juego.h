@@ -8,7 +8,7 @@ using namespace Collision;
 int juego()
 {
     //variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d,o,l,f,debug;
+    int i,x,te,d,o,l,f,c,debug,z;
 
     //variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
@@ -198,25 +198,19 @@ int juego()
     ///Y si, es una sola linea.
 
     Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
+
     Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
 
     Cinematica test1(gif_prueba.getTextura(),386,251);  ///tamaño del gif
     Cinematica viejo_test(viejo.getTextura(),400,226);
-    /*a
-    Cinematica viejo("img/cinematicas/viejo_riendo.jpg",245,139);  ///tamaño de frames diferente al gif
-    */
 
     ///pero no para los metodos, jeje.
 
     test1.setRepeticion(false);
     test1.setEstado(false);
+
     viejo_test.setEstado(false);
     viejo_test.setFps(10);
-    /*
-    viejo.setRepeticion(false);
-    viejo.setPosicion(567,345);
-    */
-
 
     ///El draw de esta cinematica esta debajo de todo solo por esta vez, dado que sino los demas
     ///draws lo superponen y no se lo puede ver. Para ver esta clase en accion ,con la Tecla A
@@ -938,8 +932,23 @@ int juego()
     ///explican con el titulo §5  Asignar el valor devuelto, con la linea : int (* mptr3)[10][2] = new int[3][10][2];
     ///Link: https://www.zator.com/Cpp/E4_9_20c.htm
 
-    inicializar_colas_torres_3d(colas_torres_3d,-10000);
-    int prioridad;
+    ///Inicializador dinamico de la cola-----------------
+    int valor=-10000;
+    for (f=0; f<tam_torres; f++)
+    {
+        for (c=0; c<cantidad_torres; c++)
+        {
+            colas_torres_3d[f][c][cantidad_bichos]=0;
+            for (x=0; x<cantidad_bichos; x++)
+            {
+                colas_torres_3d[f][c][x]=valor;
+            }
+        }
+    }
+    ///---------------------------------------------------
+
+    int prioridad,pos_enemigo_siguiente,pos_enemigo_sacar;
+    bool detector=false;
     //-------------------------------------------
 
     //definicion de la ventana del juego---------------------
@@ -1582,10 +1591,10 @@ int juego()
                             ////el enemigo es encolado, si solo si, nunca fue encolado en la cola de una torre, por su tipo,
                             ////si esa cola no esta llena y por ultimo si este no esta muerto.
 
-                            if (!enemigo[i-1].getEncolado(x,f)&&colas_torres_3d[x][f][10]<10&&!enemigo[i-1].getMuerto())
+                            if (!enemigo[i-1].getEncolado(x,f)&&colas_torres_3d[x][f][cantidad_bichos]<10&&!enemigo[i-1].getMuerto())
                             {
-                                colas_torres_3d[x][f][colas_torres_3d[x][f][10]]=i-1;   ////
-                                colas_torres_3d[x][f][10]++;
+                                colas_torres_3d[x][f][colas_torres_3d[x][f][cantidad_bichos]]=i-1;
+                                colas_torres_3d[x][f][cantidad_bichos]++;
                                 enemigo[i-1].setEncolado(x,f,true);
                                 enemigo[i-1].setIntervalo_danio(intervalo_danio[f],f);
                                 enemigo[i-1].setDanio_torre(danio_torre[f],f);
@@ -1593,12 +1602,37 @@ int juego()
                         }
                         else
                         {
-                            if (colas_torres_3d[x][f][10]>0&&detectar_enemigo_cola3d(colas_torres_3d,x,f,i-1,cantidad_bichos))
+                            for (z=0; z<cantidad_bichos; z++)
+                            {
+                                if (colas_torres_3d[x][f][z]==i-1)
+                                    detector=true;
+                            }
+
+                            if (colas_torres_3d[x][f][cantidad_bichos]>0&&detector)
                             {
                                 enemigo[i-1].setEncolado(x,f,false);
-                                colas_torres_3d[x][f][10]--;
-                                ordenar_cola_3d(colas_torres_3d,x,f,i-1,cantidad_bichos);
+                                colas_torres_3d[x][f][cantidad_bichos]--;
+
+                                ///Ordenador de la cola de manera dinamica---------------
+
+                                for (int z=0; z<cantidad_bichos; z++)
+                                {
+                                    if (colas_torres_3d[x][f][z]==i-1)
+                                        pos_enemigo_sacar=z;
+                                }
+
+                                pos_enemigo_siguiente=pos_enemigo_sacar+1;
+
+                                for (int z=pos_enemigo_sacar ; z<cantidad_bichos; z++)
+                                {
+                                    colas_torres_3d[x][f][z]=colas_torres_3d[x][f][pos_enemigo_siguiente];
+                                    pos_enemigo_siguiente++;
+                                }
+                                colas_torres_3d[x][f][cantidad_bichos-1]=-10000;
+
+                                ///------------------------------------------------------
                             }
+                            detector=false;
                         }
 
                         prioridad=colas_torres_3d[x][f][0];
@@ -1616,8 +1650,27 @@ int juego()
                                     if (enemigo[i-1].getVida()<=0)
                                     {
                                         enemigo[i-1].setEncolado(x,f,false);
-                                        colas_torres_3d[x][f][10]--;
-                                        ordenar_cola_3d(colas_torres_3d,x,f,i-1,cantidad_bichos);
+                                        colas_torres_3d[x][f][cantidad_bichos]--;
+
+                                        ///Ordenador de la cola de manera dinamica---------------
+
+                                        for (int z=0; z<cantidad_bichos; z++)
+                                        {
+                                            if (colas_torres_3d[x][f][z]==i-1)
+                                                pos_enemigo_sacar=z;
+                                        }
+
+                                        pos_enemigo_siguiente=pos_enemigo_sacar+1;
+
+                                        for (int z=pos_enemigo_sacar ; z<cantidad_bichos; z++)
+                                        {
+                                            colas_torres_3d[x][f][z]=colas_torres_3d[x][f][pos_enemigo_siguiente];
+                                            pos_enemigo_siguiente++;
+                                        }
+                                        colas_torres_3d[x][f][cantidad_bichos-1]=-10000;
+
+                                        ///------------------------------------------------------
+
                                         dinero+=100;
                                         dinero_texto.setVariable(dinero);
                                     }
