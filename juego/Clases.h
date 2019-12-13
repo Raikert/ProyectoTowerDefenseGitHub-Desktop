@@ -60,22 +60,106 @@ bool Cola::sacar(int &x)
 }
 /// ------------------------------------------------------------------------------------
 
+class Textura
+{
+private:
+    Texture textura;
+public:
+    Textura(const string& ruta, int tipo_carga=1)
+    {
+        if (tipo_carga==1)
+        {
+            if (!CreateTextureAndBitmask(textura,ruta))
+                exit(-11111);
+        }
+        else
+        {
+            if (!textura.loadFromFile(ruta))
+                exit(-11111);
+        }
+    }
+    Textura () {}
+    void cargar(const string& ruta, int tipo_carga=1)
+    {
+        if (tipo_carga==1)
+        {
+            if (!CreateTextureAndBitmask(textura,ruta))
+                exit(-11111);
+        }
+        else
+        {
+            if (!textura.loadFromFile(ruta))
+                exit(-11111);
+        }
+    }
+    Texture &getTextura()
+    {
+        return textura;
+    }
+    void setSuavizado(bool eleccion)
+    {
+        textura.setSmooth(eleccion);
+    }
+};
+
+class Letra
+{
+private:
+    Font letra;
+public:
+    Letra (const string & ruta)
+    {
+        if (!letra.loadFromFile(ruta))
+            exit(-5555);
+    }
+    Font *getFont ()
+    {
+        return &letra;
+    }
+
+};
+
+class Musica
+{
+private:
+    Music musica;
+public:
+    Musica(const string & ruta)
+    {
+        if (!musica.openFromFile(ruta))
+            exit(689);
+    }
+    Music & getMusica() {
+    return musica;
+    }
+    void volumen (float v) {
+    musica.setVolume(v);
+    }
+    void repeticion(bool eleccion) {
+    musica.setLoop(eleccion);
+    }
+    void reproducir () {
+    musica.play();
+    }
+    void pausar () {
+    musica.pause();
+    }
+    void parar() {
+    musica.stop();
+    }
+};
 
 /// CLASE TEXTO
 class Texto
 {
 private:
-    Font formato_de_letra;
     Text texto;
     bool Borde;
     float x,y;
 public:
-    Texto (const string& letra,int variable,int tamanio,float posx,float posy,const Color& color=Color::Black,bool borde=false)
+    Texto (Font *letra,int variable,int tamanio,float posx,float posy,const Color& color=Color::Black,bool borde=false)
     {
-        if (!formato_de_letra.loadFromFile(letra))
-            exit(-5555);
-
-        texto.setFont(formato_de_letra);
+        texto.setFont(*letra);
         texto.setCharacterSize(tamanio);
         x=posx;
         y=posy;
@@ -94,10 +178,9 @@ public:
             Borde=false;
     }
     Texto () {}
-    void setFormato_de_letra (const string& letra)
+    void setFormato_de_letra (Font *letra)
     {
-        if (!formato_de_letra.loadFromFile(letra))
-            exit(-2222);
+        texto.setFont(*letra);
     }
     Text getTexto()
     {
@@ -215,7 +298,6 @@ protected:
     ///Ahora bien, como funciona esta clase? , ¿Que es un Spritesheet? , ¿Que utilidad tendria IntRect en esto?
     /// ¿Que es una Cinematica? ¿Como hace la clase para calcular todo lo relacionado a ello?
 
-    Texture textura_cinematica;
     IntRect porcion_de_textura_cinematica;
     int frame_x,frame_y,limite_frames_x,limite_frames_y,tam_x,tam_y,tam_porcionx,tam_porciony;
     Sprite sprite_cinematica;
@@ -247,12 +329,8 @@ public:
     ///de desplazamiento que marcan algunos de los condicionales de los if en el metodo de la clase actualizar_frame().
     ///La aceleracion quedara como algo extra que no supone mucha importancia realmente, tampoco somos Youtube viste.
 
-    Cinematica (const string& nombre_textura,int tam_porcionx_p,int tam_porciony_p)
+    Cinematica (Texture &textura_cinematica,int tam_porcionx_p,int tam_porciony_p,bool fullscreen=true)
     {
-        if (!textura_cinematica.loadFromFile(nombre_textura))
-        {
-            exit(-9999);
-        }
         tam_porcionx=tam_porcionx_p;
         tam_porciony=tam_porciony_p;
         tam_x=textura_cinematica.getSize().x;
@@ -261,6 +339,9 @@ public:
         frame_x=frame_y=1;
         sprite_cinematica.setTexture(textura_cinematica);
         sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+        if (fullscreen)
+            sprite_cinematica.scale(2.588,2.388);
+
         limite_frames_x=(tam_x/porcion_de_textura_cinematica.width);
         limite_frames_y=(tam_y/porcion_de_textura_cinematica.height);
         float fps_default=24;
@@ -316,6 +397,10 @@ public:
     {
         return y;
     }
+    void escalar(float escalax,float escalay)
+    {
+        sprite_cinematica.scale(escalax,escalay);
+    }
     void setEstado(bool e)
     ///nombre_objeto.setEstado() -------> setea el estado de reproduccion a true o false;
     {
@@ -349,10 +434,6 @@ public:
     ///nombre_objeto.setReproduccion(bool rep) -----> se cambia la opcion del video en bucle o no. Pd: viene en bucle por default.
     {
         repeticion=rep;
-    }
-    void escalar(float escalax,float escalay)
-    {
-        sprite_cinematica.scale(escalax,escalay);
     }
 
     ///Ahora bien, que vendria a ser un Spritesheet?. Un Spritesheet es el lugar a donde se van a alojar todos
@@ -412,6 +493,7 @@ void Cinematica::Actualizar_frame(int iniciox=0,int inicioy=0)
         if (estado)
             sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
     }
+
     ///Por ultimo y no menos importante, algo que me habia olvidado de mencionar, el Clock es usado para el cambio de frames,
     ///por velocidad de fotogramas o fps, una vez que este supera el tiempo de espera para reproducir el siguiente, se reinicia
     ///y asi sucesivamente. Las Porciones de Sprite, por pixeles en x e y, van cambiando en cada actualizacion, en un sentido de
@@ -439,11 +521,8 @@ private:
 public:
     void cambiar_tipo(int);
     void cambiar_tira(int);
-    void crear_Animacion_zombie(const string& nombre_imagen,int tipo_zombie,int posx,int posy,float escalax,float escalay)
+    void crear_Animacion_zombie(Texture &textura_cinematica,int tipo_zombie,int posx,int posy,float escalax,float escalay)
     {
-        if(!CreateTextureAndBitmask(textura_cinematica,nombre_imagen))
-            exit(-7777);
-
         sprite_cinematica.setTexture(textura_cinematica);
         tam_porcionx=90;
         tam_porciony=90;
@@ -609,10 +688,10 @@ private:
     float velocidad;
     int estado,intervalo_danio[3],danio_torre[3];
 public:
-    Zombie (int tipo,float ve=0.5,float posx=295,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (Texture &textura_zombies,int tipo,float ve=0.5,float posx=295,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
 
-        animacion_propiedad.crear_Animacion_zombie("img/Zombies.png",tipo,posx,posy,escalax,escalay);
+        animacion_propiedad.crear_Animacion_zombie(textura_zombies,tipo,posx,posy,escalax,escalay);
         vida=100;
         velocidad=ve;
         estado=0;

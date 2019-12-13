@@ -32,21 +32,20 @@ int juego()
 
     ///Contructor :
 
-    ///1) Tipo de Zombie (1 al 8) .
-    ///2) Posicion del zombie en x.
-    ///3) Posicion del zombie en y.
-    ///4) Velocidad del zombie.
-    ///5) Por omision --> escala en x.
-    ///6) Por omision --> escala en y.
+    ///1) Textura por puntero, hacer un getTextura() del objeto Textura creado.
+    ///2) Tipo de Zombie (1 al 8).
+    ///3) Velocidad del zombie.
 
-    Zombie aldeano(1,velocidad_bichos);
+    Textura textura_zombies ("img/Zombies.png",1);
+
+    Zombie aldeano(textura_zombies.getTextura(),1,velocidad_bichos);
 
     ///------------------------------------------------------
 
-    ///Bloque de colision----------
+    Letra font_texto1("tipos_de_texto/letra_pintura.ttf");
 
     Texto vidas_texto[cantidad_bichos];
-    Texto vidas_texto_variable("tipos_de_texto/letra_pintura.ttf",aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
+    Texto vidas_texto_variable(font_texto1.getFont(),aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
 
     vidas_texto_variable.setBorde_Color(Color(255,0,255,0));
     vidas_texto_variable.setBorde_tamanio(0.5);
@@ -156,20 +155,11 @@ int juego()
         return -10;
     */
 
-    Texture textura_mapa,textura_menu,textura_rango,textura_derrota;
+    Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
 
-    if (!textura_mapa.loadFromFile("img/008.png"))
-        return -1;
-    if (!textura_menu.loadFromFile("img/fondo_menu_nuevo.jpg"))
-        return -1;
-    if (!textura_rango.loadFromFile("img/rango.png"))
-        return -1;
-    if (!textura_derrota.loadFromFile("img/derrota.jpg"))
-        return -11;
-    textura_rango.setSmooth(true);
-    textura_menu.setSmooth(true);
-    textura_mapa.setSmooth(true);
-    textura_derrota.setSmooth(true);
+    textura_menu.setSuavizado(true);
+    textura_mapa.setSuavizado(true);
+    textura_derrota.setSuavizado(true);
 
     //Zona de texto---------------------------
 
@@ -188,9 +178,10 @@ int juego()
 
     ///Constructor - parametros :
 
-    ///1) Ruta del Spritesheet.
+    ///1) Textura del Spritesheet cargado como objeto, mandarlo con el metodo getTextura().
     ///2) Ancho del gif - X
     ///3) Alto del gif - Y
+    ///4) Por omision True, Modo Fullscreen True/False.
 
     ///Si el tamaño de los frames en el Spritesheet se modifico del tamaño del gif
     ///2) Ancho de los frames - X
@@ -206,8 +197,10 @@ int juego()
 
     ///Y si, es una sola linea.
 
-    Cinematica test1("img/cinematicas/gif_prueba.jpg",386,251);  ///tamaño del gif
-    /*
+    Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
+
+    Cinematica test1(gif_prueba.getTextura(),386,251);  ///tamaño del gif
+    /*a
     Cinematica viejo("img/cinematicas/viejo_riendo.jpg",245,139);  ///tamaño de frames diferente al gif
     */
 
@@ -235,9 +228,9 @@ int juego()
     ///-------------------------------------------------------------------------------------
 
     Sprite mapa,menu,derrota;
-    mapa.setTexture(textura_mapa);
-    menu.setTexture(textura_menu);
-    derrota.setTexture(textura_derrota);
+    mapa.setTexture(textura_mapa.getTextura());
+    menu.setTexture(textura_menu.getTextura());
+    derrota.setTexture(textura_derrota.getTextura());
     int mousexy[2];
     bool teclado=false;
     for (i=0; i<2; i++)
@@ -245,29 +238,26 @@ int juego()
         mousexy[i]
             =0;
     }
-    Texto mousex("tipos_de_texto/letra_increible_con_borde.ttf",mousexy[0],18,628,540);
+    Letra font_texto2("tipos_de_texto/letra_increible_con_borde.ttf");
 
-    Texto mousey("tipos_de_texto/letra_increible_con_borde.ttf",mousexy[1],18,700,540);
+    Texto mousex (font_texto2.getFont(),mousexy[0],18,628,540);
+
+    Texto mousey (font_texto2.getFont(),mousexy[1],18,700,540);
 
     //Si gente, le puse MUSICA WEEEEE
 
-    Music musica_menu,musica_juego,musica_derrota;
-    if (!musica_menu.openFromFile("musica/menu_song.ogg"))
-        return -1;
-    if (!musica_juego.openFromFile("musica/musica2_juego.ogg"))
-        return -1;
-    if (!musica_derrota.openFromFile("musica/derrota.ogg"))
-        return -113;
+
+    Musica musica_menu("musica/menu_song.ogg"),musica_juego("musica/musica2_juego.ogg"),musica_derrota("musica/derrota.ogg");
 
     //volumen de la musica del menu
 
-    musica_menu.setVolume(30.f);
+    musica_menu.volumen(30);
     // musica_menu.setPlayingOffset(seconds(62.5f));
-    musica_menu.setLoop(true);
-    musica_juego.setVolume(30.f);
-    musica_juego.setLoop(true);
-    musica_derrota.setLoop(true);
-    musica_derrota.setVolume(30.f);
+    musica_menu.repeticion(true);
+    musica_juego.volumen(30);
+    musica_juego.repeticion(true);
+    musica_derrota.repeticion(true);
+    musica_derrota.volumen(30);
     bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false,habilitaciondanio[cantidad_bichos];
     inicializar_vector_bool (habilitaciondanio,cantidad_bichos,true);
 
@@ -318,13 +308,13 @@ int juego()
 
     int dinero;
     dinero=1000;
-    Texto dinero_texto("tipos_de_texto/letra_increible_con_borde.ttf",dinero,25,937,147,Color(4,174,21,255),true);
+    Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     //-----Vida de juego-----
 
     int vida_juego;
     vida_juego=const_vida_juego;
-    Texto vida_juego_texto("tipos_de_texto/letra_increible_con_borde.ttf",vida_juego,25,874,110,Color(241,65,91,255),true);
+    Texto vida_juego_texto(font_texto2.getFont(),vida_juego,25,874,110,Color(241,65,91,255),true);
 
     // Estados
 
@@ -785,38 +775,31 @@ int juego()
 
     // Texturas----------------------------------
 
-    Texture textura_menu_torre, textura_torre_tipo[cantidad_torres], /*textura_torre_1, textura_torre_2, textura_torre_3,*/ rango_torre;
+    Textura textura_menu_torre("img/Menu_Torres.png",0),textura_torre_tipo[cantidad_torres],rango_torre("img/rango.png",1) /*textura_torre_1, textura_torre_2, textura_torre_3,*/;
 
     // MENU DE TORRES
 
-    if (!textura_menu_torre.loadFromFile("img/Menu_Torres.png"))
-        return -1;
-    textura_menu_torre.setSmooth(true);
-
+    textura_menu_torre.setSuavizado(true);
     // TORRE 1
 
-    if (!textura_torre_tipo[0].loadFromFile("img/T1-1.png"))
-        return -1;
-    textura_torre_tipo[0].setSmooth(true);
+    textura_torre_tipo[0].cargar("img/T1-1.png",0);
 
+    textura_torre_tipo[0].setSuavizado(true);
     // TORRE 2
 
-    if (!textura_torre_tipo[1].loadFromFile("img/T2-1.png"))
-        return -1;
-    textura_torre_tipo[1].setSmooth(true);
+    textura_torre_tipo[1].cargar("img/T2-1.png",0);
+
+    textura_torre_tipo[1].setSuavizado(true);
 
     // TORRE 3
 
-    if (!textura_torre_tipo[2].loadFromFile("img/T3-1.png"))
-        return -1;
-    textura_torre_tipo[2].setSmooth(true);
+    textura_torre_tipo[2].cargar("img/T3-1.png",0);
+
+    textura_torre_tipo[2].setSuavizado(true);
 
     // RANGO TORRE
 
-    if (!CreateTextureAndBitmask(rango_torre,"img/rango.png"))
-        return -1;
-
-    rango_torre.setSmooth(true);
+    rango_torre.setSuavizado(true);
 
     // Sprites-------------
 
@@ -827,17 +810,16 @@ int juego()
     {
         //menu------------
 
-        Sprite_menu_torre[x]
-        .setTexture(textura_menu_torre);
+        Sprite_menu_torre[x].setTexture(textura_menu_torre.getTextura());
         Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
 
         for(int f=0; f<cantidad_torres; f++)
         {
-            Sprite_torre_tipo[f][x].setTexture(textura_torre_tipo[f]);
+            Sprite_torre_tipo[f][x].setTexture(textura_torre_tipo[f].getTextura());
             Sprite_torre_tipo[f][x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
 
 
-            Sprite_rango_torre_tipo[f][x].setTexture(rango_torre);
+            Sprite_rango_torre_tipo[f][x].setTexture(rango_torre.getTextura());
             Sprite_rango_torre_tipo[f][x].scale(1,1.22);
             Sprite_rango_torre_tipo[f][x].setPosition(1000,600);
             Sprite_rango_torre_tipo[f][x].setColor(Color(255,255,255,100));
@@ -879,7 +861,7 @@ int juego()
     int bichos_muertos=0;
     int vida_aumentada=100;
     int oleada=1;
-    Texto oleada_texto("tipos_de_texto/letra_increible_con_borde.ttf",oleada,17,843,202,Color::Yellow,true);
+    Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Yellow,true);
 
 
 
@@ -938,7 +920,7 @@ int juego()
 
     //-------------------------
 
-    Texto tiempo_texto("tipos_de_texto/letra_increible_con_borde.ttf",tiempo,25,667,500);
+    Texto tiempo_texto(font_texto2.getFont(),tiempo,25,667,500);
 
     //-------------------------
 
@@ -949,7 +931,7 @@ int juego()
     int (*colas_torres_3d) [cantidad_torres][cantidad_bichos+1] = new int[tam_torres][cantidad_torres][cantidad_bichos+1];
 
     ///para entender esto, o al menos saber con se declaran, porque ni yo entendi un cuerno, les dejo el link donde lo
-    ///lo explican con el titulo §5  Asignar el valor devuelto, con la linea : int (* mptr3)[10][2] = new int[3][10][2];
+    ///explican con el titulo §5  Asignar el valor devuelto, con la linea : int (* mptr3)[10][2] = new int[3][10][2];
     ///Link: https://www.zator.com/Cpp/E4_9_20c.htm
 
     inicializar_colas_torres_3d(colas_torres_3d,-10000);
@@ -1044,7 +1026,7 @@ int juego()
                     objetos=1;
                     oleada=1;
                     oleada_texto.setVariable(oleada);
-                    musica_juego.stop();
+                    musica_juego.parar();
                     primer_carga=false;
                     opacidad_menu=0;
                     boolmusicajuego=false;
@@ -1122,7 +1104,7 @@ int juego()
             {
                 if (reanudar.click(mousexy))
                 {
-                    musica_juego.play();
+                    musica_juego.reproducir();
                     estado_juego=3;
                 }
             }
@@ -1213,8 +1195,8 @@ int juego()
             window.draw(derrota);
             if (!boolmusicaderrota)
             {
-                musica_juego.stop();
-                musica_derrota.play();
+                musica_juego.parar();
+                musica_derrota.reproducir();
                 boolmusicaderrota=true;
             }
             if (Mouse::isButtonPressed(Mouse::Left))
@@ -1237,7 +1219,7 @@ int juego()
                     objetos=1;
                     oleada=1;
                     oleada_texto.setVariable(oleada);
-                    musica_derrota.stop();
+                    musica_derrota.parar();
                     primer_carga=false;
                     opacidad_menu=0;
                     boolmusicaderrota=false;
@@ -1263,7 +1245,7 @@ int juego()
 
             if (reg_config.getSonido_menu()&&!primer_carga)
             {
-                musica_menu.play();
+                musica_menu.reproducir();
                 primer_carga=true;
             }
 
@@ -1291,8 +1273,8 @@ int juego()
                             volumen_menu-=0.1;
                             musica_menu.setVolume(volumen_menu);
                                 */
-                            musica_menu.stop();
-                            musica_juego.play();
+                            musica_menu.parar();
+                            musica_juego.reproducir();
                             estado_juego=3;
                         }
 
@@ -1300,8 +1282,8 @@ int juego()
 
                         if (cargar_partida_boton.click(mousexy))
                         {
-                            musica_menu.stop();
-                            musica_juego.play();
+                            musica_menu.parar();
+                            musica_juego.reproducir();
 
                         }
 
@@ -1309,7 +1291,7 @@ int juego()
 
                         if (salir.click(mousexy))
                         {
-                            musica_menu.stop();
+                            musica_menu.parar();
                             window.close();
                             delete enemigo;
                             delete colas_torres_3d;
@@ -1322,12 +1304,12 @@ int juego()
                             if (reg_config.getSonido_menu())
                             {
                                 reg_config.setSonido_menu(false);
-                                musica_menu.setVolume(0.f);
+                                musica_menu.volumen(0);
                             }
                             else
                             {
                                 reg_config.setSonido_menu(true);
-                                musica_menu.setVolume(30.f);
+                                musica_menu.volumen(30);
                             }
 
                         }
@@ -1359,7 +1341,7 @@ int juego()
 
                     if (pausa.click(mousexy))
                     {
-                        musica_juego.pause();
+                        musica_juego.pausar();
                         estado_juego=0;
                     }
 
@@ -1387,12 +1369,12 @@ int juego()
                     {
                         if (boolmusicajuego)
                         {
-                            musica_juego.setVolume(0.f);
+                            musica_juego.volumen(0);
                             boolmusicajuego=false;
                         }
                         else
                         {
-                            musica_juego.setVolume(30.f);
+                            musica_juego.volumen(30);
                             boolmusicajuego=true;
                         }
                     }
@@ -1836,7 +1818,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(1);
-                            enemigo[i-1].setTira_mov();
+                        enemigo[i-1].setTira_mov();
                         break;
                     case 1:
                         if (enemigo[i-1].getX()>55)
@@ -1845,7 +1827,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(2);
-                            enemigo[i-1].setTira_mov();
+                        enemigo[i-1].setTira_mov();
                         break;
                     case 2:
                         if (enemigo[i-1].getY()<500)
@@ -1854,7 +1836,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(3);
-                            enemigo[i-1].setTira_mov();
+                        enemigo[i-1].setTira_mov();
                         break;
                     case 3:
                         if (enemigo[i-1].getX()<495)
@@ -1863,7 +1845,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(4);
-                            enemigo[i-1].setTira_mov();
+                        enemigo[i-1].setTira_mov();
                         break;
                     case 4:
                         if (enemigo[i-1].getY()>177)
@@ -1872,7 +1854,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(5);
-                            enemigo[i-1].setTira_mov();
+                        enemigo[i-1].setTira_mov();
                         break;
                     case 5:
                         if (enemigo[i-1].getX()<700)
@@ -1881,7 +1863,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(6);
-                            enemigo[i-1].setTira_mov();
+                        enemigo[i-1].setTira_mov();
                         break;
                     case 6:
                         if (enemigo[i-1].getOpacidad()!=0)
