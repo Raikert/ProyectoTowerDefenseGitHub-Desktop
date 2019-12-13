@@ -210,7 +210,7 @@ class Cinematica
     ///es como querer enchufar un Iphone x en el toma inglesa de tu tia petunia, llego
     ///la clase Cinematica.
 
-private:
+protected:
 
     ///Ahora bien, como funciona esta clase? , ¿Que es un Spritesheet? , ¿Que utilidad tendria IntRect en esto?
     /// ¿Que es una Cinematica? ¿Como hace la clase para calcular todo lo relacionado a ello?
@@ -253,7 +253,6 @@ public:
         {
             exit(-9999);
         }
-        textura_cinematica.setSmooth(true);
         tam_porcionx=tam_porcionx_p;
         tam_porciony=tam_porciony_p;
         tam_x=textura_cinematica.getSize().x;
@@ -269,8 +268,16 @@ public:
         repeticion=true;
         estado=true;
     }
+    Cinematica ()
+    {
+        frame_x=frame_y=1;
+        float fps_default=24;
+        fps=1/fps_default;
+        repeticion=true;
+        estado=true;
+    }
 
-    void Actualizar_frame();
+    void Actualizar_frame(int,int);
     ///nombre_objeto.Actualizar_frame();  -----> actualiza el frame del Spritesheet.
 
     void Reicicio()
@@ -300,6 +307,14 @@ public:
     ///nombre_objeto.getEstado() --------> retorno booleano si el video es en bucle o no.
     {
         return repeticion;
+    }
+    float getX ()
+    {
+        return x;
+    }
+    float getY ()
+    {
+        return y;
     }
     void setEstado(bool e)
     ///nombre_objeto.setEstado() -------> setea el estado de reproduccion a true o false;
@@ -335,7 +350,10 @@ public:
     {
         repeticion=rep;
     }
-
+    void escalar(float escalax,float escalay)
+    {
+        sprite_cinematica.scale(escalax,escalay);
+    }
 
     ///Ahora bien, que vendria a ser un Spritesheet?. Un Spritesheet es el lugar a donde se van a alojar todos
     ///los estados o frames que, en este caso la cinematica, va a tener, digo este caso, porque podria ser una
@@ -351,7 +369,7 @@ public:
 ///fps, que por defecto viene a 24 fps, que es valor estandar y minimo para tener fluidez en un video, se puede
 ///cambiar la velocidad a la que este es reproducido, puesto que a mas frames por segundo, mas rapido se vera todo.
 
-void Cinematica::Actualizar_frame()
+void Cinematica::Actualizar_frame(int iniciox=0,int inicioy=0)
 {
     ///La idea del funcionamiento es simple, a traves del tamaño del video en pixeles, y del tamaño de las particiones
     ///de video, tambien en pixeles, se puede saber que cantidad de frames posee la imagen de izquierda a derecha, de arriba
@@ -371,7 +389,7 @@ void Cinematica::Actualizar_frame()
         {
             if (frame_x==limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
             {
-                porcion_de_textura_cinematica.left=0;
+                porcion_de_textura_cinematica.left=iniciox;
                 porcion_de_textura_cinematica.top+=tam_porciony;
                 frame_x=1;
                 frame_y++;
@@ -381,8 +399,8 @@ void Cinematica::Actualizar_frame()
             {
                 if (repeticion)
                 {
-                    porcion_de_textura_cinematica.left=0;
-                    porcion_de_textura_cinematica.top=0;
+                    porcion_de_textura_cinematica.left=iniciox;
+                    porcion_de_textura_cinematica.top=inicioy;
                     frame_x=1;
                     frame_y=1;
                     tiempo_cinematica.restart();
@@ -413,28 +431,96 @@ void Cinematica::Actualizar_frame()
     ///Link: https://ezgif.com/gif-to-sprite
 }
 
-class Animacion
+class Animacion: protected Cinematica
 {
 private:
-    int num_frame;
     bool retorno;
+    int x,y;
 public:
-    Animacion()
+    void cambiar_tipo(int);
+    void cambiar_tira(int);
+    void crear_Animacion_zombie(const string& nombre_imagen,int tipo_zombie,int posx,int posy,float escalax,float escalay)
     {
-        num_frame=2;
-        retorno=false;
+        if(!CreateTextureAndBitmask(textura_cinematica,nombre_imagen))
+            exit(-7777);
+
+        sprite_cinematica.setTexture(textura_cinematica);
+        tam_porcionx=90;
+        tam_porciony=90;
+        frame_x=2;
+        cambiar_tipo(tipo_zombie);
+        sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+        sprite_cinematica.scale(escalax,escalay);
+        setPosicion(posx,posy);
+        setFps(5);
+        setOpacidad(0);
     }
-    int getNum_frame()
+    void cambiar_frame (int estado)
     {
-        return num_frame;
+        if (tiempo_cinematica.getElapsedTime().asSeconds()>fps&&!retorno)
+        {
+            porcion_de_textura_cinematica.left+=tam_porcionx;
+            frame_x++;
+            tiempo_cinematica.restart();
+            if (frame_x==3)
+                retorno=true;
+        }
+        else
+        {
+            if (tiempo_cinematica.getElapsedTime().asSeconds()>fps&&retorno)
+            {
+                porcion_de_textura_cinematica.left-=tam_porcionx;
+                frame_x--;
+                tiempo_cinematica.restart();
+                if (frame_x==1)
+                    retorno=false;
+            }
+        }
+        sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+    }
+    Sprite getAnimacion ()
+    {
+        return getFrame();
+    }
+    float getPosx ()
+    {
+        return getX();
+    }
+    float getPosy ()
+    {
+        return getY();
     }
     bool getRetorno()
     {
         return retorno;
     }
-    void setNum_frame(int f)
+    int getOpacidad()
     {
-        num_frame=f;
+        return sprite_cinematica.getColor().a;
+    }
+    void setPosxy (float posx,float posy)
+    {
+        setPosicion(posx,posy);
+    }
+    void setPosx (float posx)
+    {
+        setX(posx);
+    }
+    void setPosy(float posy)
+    {
+        setY(posy);
+    }
+    void setColor(int rojo,int verde,int azul)
+    {
+        sprite_cinematica.setColor(Color(rojo,verde,azul,255));
+    }
+    void setOpacidad (int o)
+    {
+        sprite_cinematica.setColor(Color(255,255,255,o));
+    }
+    void setSprite (Sprite Animacion)
+    {
+        sprite_cinematica=Animacion;
     }
     void setRetorno (bool r)
     {
@@ -442,38 +528,91 @@ public:
     }
 };
 
+void Animacion::cambiar_tipo(int tipo)
+{
+    switch (tipo)
+    {
+    case 1:
+        x=90;
+        y=90*2;
+        break;
+    case 2:
+        x=90;
+        y=90*6;
+        break;
+    case 3:
+        x=90*7;
+        y=90*6;
+        break;
+    case 4:
+        x=90*10;
+        y=90*6;
+        break;
+    case 5:
+        x=90*4;
+        y=90*2;
+        break;
+    case 6:
+        x=90*4;
+        y=90*6;
+        break;
+    case 7:
+        x=90*7;
+        y=90*2;
+        break;
+    case 8:
+        x=90*10;
+        y=90*2;
+        break;
+    default:
+        break;
+    }
+    porcion_de_textura_cinematica=IntRect(x,y,tam_porcionx,tam_porciony);
+}
+
+void Animacion::cambiar_tira (int estado)
+{
+    switch (estado)
+    {
+    case 4:
+        ///ANIMACION ARRIBA
+        y=0;
+        break;
+    case 3:
+    case 5:
+    case 6:
+        ///ANIMACION DERECHA
+        y=90;
+        break;
+    case 0:
+    case 2:
+        ///ANIMACION ABAJO
+        y=90*2;
+        break;
+    case 1:
+        /// ANIMACION IZQUIERDA
+        y=90*3;
+        break;
+    default:
+        break;
+    }
+    porcion_de_textura_cinematica.top=y;
+    sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
+}
+
 class Zombie
 {
 private:
-    Texture zombie_textura_propiedad;
-    Sprite zombie_sprite_propiedad;
-    float x,y;
     bool muerto,encolado[9][3];
     Animacion animacion_propiedad;
-    IntRect porcion_de_imagen_propiedad;
-    int opacidad;
-    int vida,dinero_que_devuelve;
+    int vida;
     float velocidad;
     int estado,intervalo_danio[3],danio_torre[3];
 public:
-    Zombie (const string& nombre_imagen,float posx,float posy,IntRect porcion_de_imagen,float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (const string& nombre_imagen,float posx,float posy,int tipo=1,float ve=0.5,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
-
-
-        if(!CreateTextureAndBitmask(zombie_textura_propiedad,nombre_imagen))
-            exit(-7777);
-
-        zombie_textura_propiedad.setSmooth(true);
-        porcion_de_imagen_propiedad=porcion_de_imagen;
-        zombie_sprite_propiedad.setTexture(zombie_textura_propiedad);
-        zombie_sprite_propiedad.setTextureRect(porcion_de_imagen_propiedad);
-        opacidad=opacida;
-        zombie_sprite_propiedad.setColor(Color(255,255,255,opacidad));
-        zombie_sprite_propiedad.setPosition(posx,posy);
-        x=posx;
-        y=posy;
-        dinero_que_devuelve=dinero;
-        vida=vi;
+        animacion_propiedad.crear_Animacion_zombie(nombre_imagen,tipo,posx,posy,escalax,escalay);
+        vida=100;
         velocidad=ve;
         estado=0;
         muerto=false;
@@ -483,7 +622,7 @@ public:
     Zombie () {}
     Sprite getZombie()
     {
-        return zombie_sprite_propiedad;
+        return animacion_propiedad.getAnimacion();
     }
     bool getMuerto()
     {
@@ -503,15 +642,15 @@ public:
     }
     float getX ()
     {
-        return x;
+        return animacion_propiedad.getPosx();
     }
     float getY ()
     {
-        return y;
+        return animacion_propiedad.getPosy();
     }
     int getOpacidad()
     {
-        return opacidad;
+        return animacion_propiedad.getOpacidad();
     }
     int getVida()
     {
@@ -541,30 +680,25 @@ public:
     {
         danio_torre[pos]=d;
     }
-    void setColor (int rojo,int verde,int azul,int opacida=255)
+    void setColor (int rojo,int verde,int azul)
     {
-        zombie_sprite_propiedad.setColor(Color(rojo,verde,azul,opacida));
+        animacion_propiedad.setColor(rojo,verde,azul);
     }
     void setX (float posx)
     {
-        x=posx;
-        zombie_sprite_propiedad.setPosition(x,y);
+        animacion_propiedad.setPosx(posx);
     }
     void setY (float posy)
     {
-        y=posy;
-        zombie_sprite_propiedad.setPosition(x,y);
+        animacion_propiedad.setPosy(posy);
     }
     void setPosicion(float posx,float posy)
     {
-        x=posx;
-        y=posy;
-        zombie_sprite_propiedad.setPosition(x,y);
+        animacion_propiedad.setPosxy(posx,posy);
     }
     void setOpacidad (int o)
     {
-        opacidad=o;
-        zombie_sprite_propiedad.setColor(Color(255,255,255,opacidad));
+        animacion_propiedad.setOpacidad(o);
     }
     void setVida (int vi)
     {
@@ -574,45 +708,45 @@ public:
     {
         velocidad=ve;
     }
-    void setZombie (Sprite zombie_sprite_propiedad_asignar)
+    void setZombie (Sprite &zombie_sprite_propiedad_asignar)
     {
-        zombie_sprite_propiedad=zombie_sprite_propiedad_asignar;
+        animacion_propiedad.setSprite(zombie_sprite_propiedad_asignar);
     }
-
-    void cambiar_frame_sprite(Clock&);
+    void setTira_mov()
+    {
+        animacion_propiedad.cambiar_tira(estado);
+    }
+    void cambiar_frame_sprite()
+    {
+        animacion_propiedad.cambiar_frame(estado);
+    }
     void  reducir_vida(int pos_danio)
     {
         vida-=danio_torre[pos_danio];
     }
     void incrementar_opacidad (int incremento)
     {
-        opacidad+=incremento;
-        zombie_sprite_propiedad.setColor(Color(255,255,255,opacidad));
+        animacion_propiedad.setOpacidad(animacion_propiedad.getOpacidad()+incremento);
     }
     void decrementar_opacidad (int decremento)
     {
-        opacidad-=decremento;
-        zombie_sprite_propiedad.setColor(Color(255,255,255,opacidad));
+        animacion_propiedad.setOpacidad(animacion_propiedad.getOpacidad()-decremento);
     }
     void mover_abajo()
     {
-        y+=velocidad;
-        setY(y);
+        animacion_propiedad.setPosy(animacion_propiedad.getPosy()+velocidad);
     }
     void mover_izq()
     {
-        x-=velocidad;
-        setX(x);
+        animacion_propiedad.setPosx(animacion_propiedad.getPosx()-velocidad);
     }
     void mover_derecha()
     {
-        x+=velocidad;
-        setX(x);
+        animacion_propiedad.setPosx(animacion_propiedad.getPosx()+velocidad);
     }
     void mover_arriba()
     {
-        y-=velocidad;
-        setY(y);
+        animacion_propiedad.setPosy(animacion_propiedad.getPosy()-velocidad);
     }
 };
 
@@ -626,8 +760,10 @@ void reestablecer_color_zombies(Zombie *enemigo,int cantidad_bichos)
 }
 */
 
-void Zombie::cambiar_frame_sprite(Clock &tiempo)
+/*
+void Zombie::cambiar_frame_sprite()
 {
+    animacion_propiedad.cambiar_frame();
     switch (estado)
     {
     case 4:
@@ -790,6 +926,7 @@ void Zombie::cambiar_frame_sprite(Clock &tiempo)
         break;
     }
 }
+*/
 
 class Boton
 {

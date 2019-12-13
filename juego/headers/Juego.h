@@ -28,10 +28,7 @@ int juego()
     Zombie *enemigo;
     enemigo = new Zombie[cantidad_bichos];
 
-    Clock tiempo_zombies[cantidad_bichos];
-    IntRect porcion_de_sprite(0,0,36,50);
-
-    Zombie aldeano("img/zombie.png",285,0,porcion_de_sprite,velocidad_bichos);
+    Zombie aldeano("img/Zombies.png",285,0,5,velocidad_bichos);
 
     Texto vidas_texto[cantidad_bichos];
     Texto vidas_texto_variable("tipos_de_texto/letra_pintura.ttf",aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
@@ -195,7 +192,6 @@ int juego()
     ///Y si, es una sola linea.
 
     Cinematica test1("img/cinematicas/gif_prueba.jpg",386,251);  ///tamaño del gif
-
     /*
     Cinematica viejo("img/cinematicas/viejo_riendo.jpg",245,139);  ///tamaño de frames diferente al gif
     */
@@ -204,7 +200,6 @@ int juego()
 
     test1.setRepeticion(false);
     test1.setEstado(false);
-
     /*
     viejo.setRepeticion(false);
     viejo.setPosicion(567,345);
@@ -1517,6 +1512,7 @@ int juego()
                     {
                         window.draw(enemigo[d-1].getZombie());
                         window.draw(vidas_texto[d-1].getTexto());
+                        enemigo[i-1].cambiar_frame_sprite();
                     }
                     else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
                     {
@@ -1804,9 +1800,6 @@ int juego()
                 */
                 if (!enemigo[i-1].getMuerto())
                 {
-
-                    enemigo[i-1].cambiar_frame_sprite(tiempo_zombies[i-1]);
-
                     // Pequeña maquina de estados
                     switch (enemigo[i-1].getEstado())
                     {
@@ -1826,6 +1819,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(1);
+                            enemigo[i-1].setTira_mov();
                         break;
                     case 1:
                         if (enemigo[i-1].getX()>47)
@@ -1834,6 +1828,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(2);
+                            enemigo[i-1].setTira_mov();
                         break;
                     case 2:
                         if (enemigo[i-1].getY()<500)
@@ -1842,6 +1837,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(3);
+                            enemigo[i-1].setTira_mov();
                         break;
                     case 3:
                         if (enemigo[i-1].getX()<485)
@@ -1850,6 +1846,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(4);
+                            enemigo[i-1].setTira_mov();
                         break;
                     case 4:
                         if (enemigo[i-1].getY()>177)
@@ -1858,6 +1855,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(5);
+                            enemigo[i-1].setTira_mov();
                         break;
                     case 5:
                         if (enemigo[i-1].getX()<700)
@@ -1866,6 +1864,7 @@ int juego()
                         }
                         else
                             enemigo[i-1].setEstado(6);
+                            enemigo[i-1].setTira_mov();
                         break;
                     case 6:
                         if (enemigo[i-1].getOpacidad()!=0)
@@ -2057,7 +2056,6 @@ int juego()
 
             test1.Actualizar_frame();
         }
-
         /*
         if (viejo.getEstado())
         {
