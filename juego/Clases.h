@@ -609,9 +609,9 @@ private:
     float velocidad;
     int estado,intervalo_danio[3],danio_torre[3];
 public:
-    Zombie (const string& nombre_imagen,float posx,float posy,int tipo=1,float ve=0.5,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (int tipo,float posx,float posy,float ve=0.5,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
-        animacion_propiedad.crear_Animacion_zombie(nombre_imagen,tipo,posx,posy,escalax,escalay);
+        animacion_propiedad.crear_Animacion_zombie("img/Zombies.png",tipo,posx,posy,escalax,escalay);
         vida=100;
         velocidad=ve;
         estado=0;

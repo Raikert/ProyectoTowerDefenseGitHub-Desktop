@@ -28,7 +28,20 @@ int juego()
     Zombie *enemigo;
     enemigo = new Zombie[cantidad_bichos];
 
-    Zombie aldeano("img/Zombies.png",285,0,5,velocidad_bichos);
+    ///Objeto de tipo Zombie, nuevo diseño.-----------
+
+    ///Contructor :
+
+    ///1) Tipo de Zombie (1 al 8) .
+    ///2) Posicion del zombie en x.
+    ///3) Posicion del zombie en y.
+    ///4) Velocidad del zombie.
+    ///5) Por omision --> escala en x.
+    ///6) Por omision --> escala en y.
+
+    Zombie aldeano(5,285,0,velocidad_bichos);
+
+    ///------------------------------------------------------
 
     Texto vidas_texto[cantidad_bichos];
     Texto vidas_texto_variable("tipos_de_texto/letra_pintura.ttf",aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
