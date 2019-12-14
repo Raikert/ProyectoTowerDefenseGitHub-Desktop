@@ -1579,7 +1579,7 @@
 	<map>
 	"Collision.hpp"
 
-1576271786 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
+1576283963 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
 
 1572557855 source:c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\collision.cpp
 	<SFML/Graphics.hpp>
@@ -2137,9 +2137,9 @@
 
 1572696816 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\colision_danio.h
 
-1576268483 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
+1576283963 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
 
-1576278418 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
+1576283963 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
 
 1572812904 source:c:\users\canoxor\documents\utn\github - desktop\proyectotowerdefense-githubdesktop\juego\collision.cpp
 	<SFML/Graphics.hpp>

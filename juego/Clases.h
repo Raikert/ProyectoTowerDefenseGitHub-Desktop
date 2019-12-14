@@ -67,9 +67,9 @@ class Textura
 private:
     Texture textura;
 public:
-    Textura(const string& ruta, int tipo_carga=1)
+    Textura(const string& ruta, int con_colision=1)
     {
-        if (tipo_carga==1)
+        if (con_colision==1)
         {
             if (!CreateTextureAndBitmask(textura,ruta))
                 exit(-11111);
@@ -360,7 +360,7 @@ public:
         estado=true;
     }
 
-    void Actualizar_frame(int,int);
+    void Actualizar_frame();
     ///nombre_objeto.Actualizar_frame();  -----> actualiza el frame del Spritesheet.
 
     void Reicicio()
@@ -452,7 +452,7 @@ public:
 ///fps, que por defecto viene a 24 fps, que es valor estandar y minimo para tener fluidez en un video, se puede
 ///cambiar la velocidad a la que este es reproducido, puesto que a mas frames por segundo, mas rapido se vera todo.
 
-void Cinematica::Actualizar_frame(int iniciox=0,int inicioy=0)
+void Cinematica::Actualizar_frame()
 {
     ///La idea del funcionamiento es simple, a traves del tamaño del video en pixeles, y del tamaño de las particiones
     ///de video, tambien en pixeles, se puede saber que cantidad de frames posee la imagen de izquierda a derecha, de arriba
@@ -472,7 +472,7 @@ void Cinematica::Actualizar_frame(int iniciox=0,int inicioy=0)
         {
             if (frame_x==limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
             {
-                porcion_de_textura_cinematica.left=iniciox;
+                porcion_de_textura_cinematica.left=0;
                 porcion_de_textura_cinematica.top+=tam_porciony;
                 frame_x=1;
                 frame_y++;
@@ -482,8 +482,8 @@ void Cinematica::Actualizar_frame(int iniciox=0,int inicioy=0)
             {
                 if (repeticion)
                 {
-                    porcion_de_textura_cinematica.left=iniciox;
-                    porcion_de_textura_cinematica.top=inicioy;
+                    porcion_de_textura_cinematica.left=0;
+                    porcion_de_textura_cinematica.top=0;
                     frame_x=1;
                     frame_y=1;
                     tiempo_cinematica.restart();
@@ -519,7 +519,7 @@ class Animacion: protected Cinematica
 {
 private:
     bool retorno;
-    int x,y;
+    int sectorx,sectory,iniciox,inicioy;
 public:
     void cambiar_tipo(int);
     void cambiar_tira(int);
@@ -614,41 +614,57 @@ void Animacion::cambiar_tipo(int tipo)
     switch (tipo)
     {
     case 1:
-        x=90;
-        y=90*2;
+        sectorx=90;
+        sectory=90*2;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 2:
-        x=90;
-        y=90*6;
+        sectorx=90;
+        sectory=90*6;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 3:
-        x=90*7;
-        y=90*6;
+        sectorx=90*7;
+        sectory=90*6;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 4:
-        x=90*10;
-        y=90*6;
+        sectorx=90*10;
+        sectory=90*6;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 5:
-        x=90*4;
-        y=90*2;
+        sectorx=90*4;
+        sectory=90*2;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 6:
-        x=90*4;
-        y=90*6;
+        sectorx=90*4;
+        sectory=90*6;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 7:
-        x=90*7;
-        y=90*2;
+        sectorx=90*7;
+        sectory=90*2;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     case 8:
-        x=90*10;
-        y=90*2;
+        sectorx=90*10;
+        sectory=90*2;
+        iniciox=sectorx;
+        inicioy=sectory;
         break;
     default:
         break;
     }
-    porcion_de_textura_cinematica=IntRect(x,y,tam_porcionx,tam_porciony);
+    porcion_de_textura_cinematica=IntRect(sectorx,sectory,tam_porcionx,tam_porciony);
 }
 
 void Animacion::cambiar_tira (int estado)
@@ -657,27 +673,27 @@ void Animacion::cambiar_tira (int estado)
     {
     case 4:
         ///ANIMACION ARRIBA
-        y=0;
+        sectory=inicioy-90*2;
         break;
     case 3:
     case 5:
     case 6:
         ///ANIMACION DERECHA
-        y=90;
+        sectory=inicioy-90;
         break;
     case 0:
     case 2:
         ///ANIMACION ABAJO
-        y=90*2;
+        sectory=inicioy;
         break;
     case 1:
         /// ANIMACION IZQUIERDA
-        y=90*3;
+        sectory=inicioy+90;
         break;
     default:
         break;
     }
-    porcion_de_textura_cinematica.top=y;
+    porcion_de_textura_cinematica.top=sectory;
     sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
 }
 
@@ -690,7 +706,7 @@ private:
     float velocidad;
     int estado,intervalo_danio[3],danio_torre[3];
 public:
-    Zombie (Texture &textura_zombies,int tipo,float ve=0.5,float posx=295,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (Texture &textura_zombies,int tipo=1,float ve=0.5,float posx=295,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
 
         animacion_propiedad.crear_Animacion_zombie(textura_zombies,tipo,posx,posy,escalax,escalay);
@@ -702,6 +718,9 @@ public:
         inicializar_matriz_encolado(encolado);
     }
     Zombie () {}
+    void cambiar_zombie(int tipo) {
+    animacion_propiedad.cambiar_tipo(tipo);
+    }
     Sprite getZombie()
     {
         return animacion_propiedad.getAnimacion();

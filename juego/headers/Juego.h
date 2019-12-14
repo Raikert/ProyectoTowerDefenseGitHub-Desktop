@@ -38,7 +38,9 @@ int juego()
 
     Textura textura_zombies ("img/Zombies.png");
 
-    Zombie aldeano(textura_zombies.getTextura(),6,velocidad_bichos);
+    Zombie aldeano(textura_zombies.getTextura());
+
+    cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
 
     ///------------------------------------------------------
 
@@ -53,8 +55,6 @@ int juego()
     {
         vidas_texto[i]=vidas_texto_variable;
     }
-    cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-
 
     //Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
 
@@ -1389,7 +1389,7 @@ int juego()
                         oleada_texto.setVariable(oleada);
                         objetos=1;
                         tiempo=1;
-                        cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                        cargar_vector_sprites(enemigo,aldeano,cantidad_bichos,oleada);
                     }
 
                     // sonido
