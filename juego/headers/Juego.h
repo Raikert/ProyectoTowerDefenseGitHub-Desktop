@@ -277,577 +277,585 @@ int juego()
     Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
+///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //-----Cantidad de torres-----
+    ///-----Cantidad de posiciones para las torres
+    const int posiciones_torres=9;
+
+    ///-----Cantidad de torres-----
     const int cantidad_torres=3;
 
-    //-----Intervalo de daño de las torres-----
+    ///-----Niveles de las torres-----
+    int torre_nivel[posiciones_torres]= {0};
 
-    int intervalo_danio[cantidad_torres];
-    intervalo_danio[2]=50;
-    intervalo_danio[0]=50;
-    intervalo_danio[1]=50;
+    ///-----Cantidad de niveles de las torres-----
+    const int niveles_torres=3;
 
-    //-----Daño de las torres-----
+    ///-----Cantidad de niveles del menu de torres-----
+    const int niveles_menu=3;
 
-    float danio_torre[cantidad_torres];
-    danio_torre[2]=30; // Primer torre
-    danio_torre[0]=1;  // Segunda torre
-    danio_torre[1]=70; // Tercer torre
+    /// NIVELES DE LOS MENUS
+    int nivel_del_menu[posiciones_torres]= {0};
 
-    //-----Valor de las torres-----
+    /// Estado del menu
 
-    int compra[3];
-    compra[2]=100;
-    compra[0]=150;
-    compra[1]=200;
+    bool menu_abierto[posiciones_torres];
+    ponerEnFalso(menu_abierto, posiciones_torres);
 
-    //-----Dinero de juego-----
+    ///-----Dinero de juego-----
 
     int dinero;
     dinero=1000;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
-    //-----Vida de juego-----
+    ///-----Vida de juego-----
 
     int vida_juego;
     vida_juego=const_vida_juego;
     Texto vida_juego_texto(font_texto2.getFont(),vida_juego,25,874,110,Color(241,65,91,255),true);
 
-    // Estados
-
-    bool menu_abierto=false;
-    bool mouse_afuera=false;
-
-    // Variables para la verificacion de clicks y demas
+    /// Variables para la verificacion de clicks y demas
 
     int posicion_clickeada;
     int contador_de_clicks=0;
     int contador_de_clicks_fuera=0;
 
-    // Definicion de los espacios para las torres ----------------------------------------------------------------------------
+    /// Definicion de los espacios para las torres ----------------------------------------------------------------------------
 
-    const int tam_torres = 9;
-    int coordenadas_X_Y_torres[2]; // X=0 Y=1
-    int coordenadas_X_Y_torres_tipo[cantidad_torres][2];
-    /*
-    int coordenadas_X_Y_torres_t1[2]; /// X=0 Y=1
-    int coordenadas_X_Y_torres_t2[2]; /// X=0 Y=1
-    int coordenadas_X_Y_torres_t3[2]; /// X=0 Y=1
-    */
-    int coordenadas_X_Y_equis[2]; // X=0 Y=1
-    int coordenadas_X_Y_vender[2]; // X=0 Y=1
-    int coordenadas_X_Y_subirlvl[2]; // X=0 Y=1
-    int coordenadas_X_Y_mejorar[2]; // X=0 Y=1
-    Boton torres[tam_torres];
-    Boton torres_tipo[cantidad_torres][tam_torres];
-    /*
-    Boton torres_t1[tam_torres];
-    Boton torres_t2[tam_torres];
-    Boton torres_t3[tam_torres];
-    */
-    Boton torres_equis[tam_torres];
-    Boton torres_vender[tam_torres];
-    Boton torres_subirlvl[tam_torres];
-    Boton torres_mejorar[tam_torres];
+    /// Posiciones para las torres
+    int coordenadas_X_Y_torres[2]; /// X=0 Y=1
+    /// Posicion del menu completo
+    int coordenadas_X_Y_menu[2];
+    /// Posiciones para seleccionar torres
+    int coordenadas_X_Y_torres_lvl_1[cantidad_torres][2];
+    /// Posicion del boton para cerrar el menu
+    int coordenadas_X_Y_equis[2]; /// X=0 Y=1
+    /// Posicion del boton para vender
+    int coordenadas_X_Y_vender[2]; /// X=0 Y=1
+    /// Posicion del boton para cambiar el menu por el menu+1
+    int coordenadas_X_Y_subirlvl[2]; /// X=0 Y=1
+    /// Posicion del boton para mejorar la torre
+    int coordenadas_X_Y_mejorar[2]; /// X=0 Y=1
 
-    // Posiciones de cada boton----------------------------------
+    Boton torres_menu_area[posiciones_torres];
 
-    for (i=0; i<tam_torres; i++)
+    Boton torres[posiciones_torres];
+
+    Boton torres_tipo[cantidad_torres][posiciones_torres];
+
+    Boton torres_equis[posiciones_torres];
+
+    Boton torres_vender[posiciones_torres];
+
+    Boton torres_subirlvl[posiciones_torres];
+
+    Boton torres_mejorar[posiciones_torres];
+
+    /// Posiciones de cada boton----------------------------------
+
+    for (i=0; i<posiciones_torres; i++)
     {
         switch (i)
         {
         case 0:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=236;
             coordenadas_X_Y_torres[1]=114;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 1:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=98;
             coordenadas_X_Y_torres[1]=245;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 2:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=98;
             coordenadas_X_Y_torres[1]=420;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 3:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=194;
             coordenadas_X_Y_torres[1]=331;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 4:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=242;
             coordenadas_X_Y_torres[1]=419;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 5:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=339;
             coordenadas_X_Y_torres[1]=419;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 6:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=434;
             coordenadas_X_Y_torres[1]=419;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 7:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=482;
             coordenadas_X_Y_torres[1]=90;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
         case 8:
 
-            // Espacio para la torre
+            /// Espacio para la torre
 
             coordenadas_X_Y_torres[0]=535;
             coordenadas_X_Y_torres[1]=224;
 
-            // Torre 1 del menu
+            /// Espacio para el menu
 
-            coordenadas_X_Y_torres_tipo[0][0]=coordenadas_X_Y_torres[0]-74;
-            coordenadas_X_Y_torres_tipo[0][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 2 del menu
+            /// Torre 1 del menu
 
-            coordenadas_X_Y_torres_tipo[1][0]=coordenadas_X_Y_torres[0]-15;
-            coordenadas_X_Y_torres_tipo[1][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
 
-            // Torre 3 del menu
+            /// Torre 2 del menu
 
-            coordenadas_X_Y_torres_tipo[2][0]=coordenadas_X_Y_torres[0]+44;
-            coordenadas_X_Y_torres_tipo[2][1]=coordenadas_X_Y_torres[1]-72;
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Cruz para cerrar el menu
+            /// Torre 3 del menu
 
-            coordenadas_X_Y_equis[0]=339;
-            coordenadas_X_Y_equis[1]=74;
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
 
-            // Boton para vender del menu
+            /// Cruz para cerrar el menu
 
-            coordenadas_X_Y_vender[0]=339;
-            coordenadas_X_Y_vender[1]=92;
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
 
-            // Boton para cambiar el menu por el menu de nivel+1
+            /// Boton para vender del menu
 
-            coordenadas_X_Y_subirlvl[0]=339;
-            coordenadas_X_Y_subirlvl[1]=110;
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
 
-            // Boton para mejorar la torre
+            /// Boton para cambiar el menu por el menu de nivel+1
 
-            coordenadas_X_Y_mejorar[0]=339;
-            coordenadas_X_Y_mejorar[1]=129;
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
+
         }
 
         torres[i]=Boton(49,90,coordenadas_X_Y_torres[0],coordenadas_X_Y_torres[1]);
-        torres_tipo[0][i]=Boton(58,71,coordenadas_X_Y_torres_tipo[1][0],coordenadas_X_Y_torres_tipo[1][1]);
-        torres_tipo[1][i]=Boton(58,71,coordenadas_X_Y_torres_tipo[2][0],coordenadas_X_Y_torres_tipo[2][1]);
-        torres_tipo[2][i]=Boton(58,71,coordenadas_X_Y_torres_tipo[0][0],coordenadas_X_Y_torres_tipo[0][1]);
-        /*
-        torres_t3[i]=Boton(59,71,coordenadas_X_Y_torres_t1[0],coordenadas_X_Y_torres_t1[1]);
-        torres_t1[i]=Boton(57,71,coordenadas_X_Y_torres_t2[0],coordenadas_X_Y_torres_t2[1]);
-        torres_t2[i]=Boton(59,71,coordenadas_X_Y_torres_t3[0],coordenadas_X_Y_torres_t3[1]);
-        */
+        torres_tipo[0][i]=Boton(58,71,coordenadas_X_Y_torres_lvl_1[1][0],coordenadas_X_Y_torres_lvl_1[1][1]);
+        torres_tipo[1][i]=Boton(58,71,coordenadas_X_Y_torres_lvl_1[2][0],coordenadas_X_Y_torres_lvl_1[2][1]);
+        torres_tipo[2][i]=Boton(58,71,coordenadas_X_Y_torres_lvl_1[0][0],coordenadas_X_Y_torres_lvl_1[0][1]);
         torres_equis[i]=Boton(19,18,coordenadas_X_Y_equis[0],coordenadas_X_Y_equis[1]);
+        torres_mejorar[i]=Boton(19,16,coordenadas_X_Y_mejorar[0],coordenadas_X_Y_mejorar[1]);
+        torres_vender[i]=Boton(19,16,coordenadas_X_Y_vender[0],coordenadas_X_Y_vender[1]);
+        torres_menu_area[i]=Boton(196,72,coordenadas_X_Y_menu[0],coordenadas_X_Y_menu[1]);
+        torres_subirlvl[i]=Boton(19,17,coordenadas_X_Y_subirlvl[0],coordenadas_X_Y_subirlvl[1]);
     }
 
-    // Declaracion del vector de menues de torres------------------------------
+    /// Declaracion del vector de menues de torres------------------------------
+    bool Ocupado[posiciones_torres];
 
-    bool menu_torre[tam_torres], spawn_torre[tam_torres][3], spawnear[tam_torres], Ocupado[tam_torres];
-    for (i=0; i<tam_torres; i++)
+    /// Vector de niveles de los menues
+    int nivel_de_torre[posiciones_torres]= {0};
+
+    ponerEnFalso(Ocupado, posiciones_torres);
+
+    /// Texturas----------------------------------
+
+    /// CANTIDAD DE MENUES
+    const int menus=3;
+
+    Texture textura_menu_torre[menus];
+
+    /// MENU DE TORRES 1
+
+    if (!textura_menu_torre[0].loadFromFile("img/Menu_Torres_1.png"))
+        return -101;
+    textura_menu_torre[0].setSmooth(true);
+
+    /// MENU DE TORRES 2
+
+    if (!textura_menu_torre[1].loadFromFile("img/Menu_Torres_2.png"))
+        return -101;
+    textura_menu_torre[1].setSmooth(true);
+
+    /// MENU DE TORRES 3
+
+    if (!textura_menu_torre[2].loadFromFile("img/Menu_Torres_3.png"))
+        return -101;
+    textura_menu_torre[2].setSmooth(true);
+
+    /// MATRIZ DE CLASE TORRE NIVEL X TIPO
+    Torre vec_torres[posiciones_torres];
+    Torre aux_torre;
+
+    for(x=0; x<posiciones_torres; x++)
     {
-        for (te=0; te<3; te++)
-        {
-            spawn_torre[i][te]=false;
-        }
+        vec_torres[x]=Torre(0,0);
     }
-    ponerEnFalso(menu_torre, tam_torres);
-    ponerEnFalso(spawnear, tam_torres);
-    ponerEnFalso(Ocupado, tam_torres);
 
-    // Texturas----------------------------------
+    /// Sprites-------------
 
-    Textura textura_menu_torre("img/Menu_Torres.png",0),textura_torre_tipo[cantidad_torres],rango_torre("img/rango.png") /*textura_torre_1, textura_torre_2, textura_torre_3,*/;
-
-    // MENU DE TORRES
-
-    textura_menu_torre.setSuavizado(true);
-    // TORRE 1
-
-    textura_torre_tipo[0].cargar("img/T1-1.png",0);
-
-    textura_torre_tipo[0].setSuavizado(true);
-    // TORRE 2
-
-    textura_torre_tipo[1].cargar("img/T2-1.png",0);
-
-    textura_torre_tipo[1].setSuavizado(true);
-
-    // TORRE 3
-
-    textura_torre_tipo[2].cargar("img/T3-1.png",0);
-
-    textura_torre_tipo[2].setSuavizado(true);
-
-    // RANGO TORRE
-
-    rango_torre.setSuavizado(true);
-
-    // Sprites-------------
-
-    Sprite Sprite_menu_torre[tam_torres], Sprite_torre_tipo[cantidad_torres][tam_torres] /*Sprite_torre_1[tam_torres], Sprite_torre_2[tam_torres], Sprite_torre_3[tam_torres]*/;
-    Sprite Sprite_rango_torre_tipo[cantidad_torres][tam_torres];
-    /*Sprite_rango_torre_t1[tam_torres], Sprite_rango_torre_t2[tam_torres], Sprite_rango_torre_t3[tam_torres]*/;
-    for (x=0; x<tam_torres; x++)
+    Sprite Sprite_menu_torre[menus][posiciones_torres];
+    for (x=0; x<posiciones_torres; x++)
     {
-        //menu------------
+        ///menues------------
 
-        Sprite_menu_torre[x].setTexture(textura_menu_torre.getTextura());
-        Sprite_menu_torre[x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
-
-        for(int f=0; f<cantidad_torres; f++)
+        for(int t=0; t<3; t++)
         {
-            Sprite_torre_tipo[f][x].setTexture(textura_torre_tipo[f].getTextura());
-            Sprite_torre_tipo[f][x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
-
-
-            Sprite_rango_torre_tipo[f][x].setTexture(rango_torre.getTextura());
-            Sprite_rango_torre_tipo[f][x].scale(1,1.22);
-            Sprite_rango_torre_tipo[f][x].setPosition(1000,600);
-            Sprite_rango_torre_tipo[f][x].setColor(Color(255,255,255,100));
+            Sprite_menu_torre[t][x].setTexture(textura_menu_torre[t]);
+            Sprite_menu_torre[t][x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
         }
-        /*
-        ///torre 1
-        Sprite_torre_tipo[0][x].setTexture(textura_torre_tipo[0]);
-        Sprite_torre_tipo[0][x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
-        ///torre 2
-        Sprite_torre_tipo[1][x].setTexture(textura_torre_tipo[1]);
-        Sprite_torre_tipo[1][x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
-        ///torre 3
-        Sprite_torre_tipo[2][x].setTexture(textura_torre_tipo[2]);
-        Sprite_torre_tipo[2][x].setPosition(torres[x].getEsix(),torres[x].getEsiy());
-        ///rango de daño T1
-        Sprite_rango_torre_t1[x].setTexture(rango_torre);
-        Sprite_rango_torre_t1[x].scale(1,1.22);
-        Sprite_rango_torre_t1[x].setPosition(1000,600);
-        Sprite_rango_torre_t1[x].setColor(Color(255,255,255,100));
-        ///rango de daño T2
-        Sprite_rango_torre_t2[x].setTexture(rango_torre);
-        Sprite_rango_torre_t2[x].scale(1,1.22);
-        Sprite_rango_torre_t2[x].setPosition(1000,600);
-        Sprite_rango_torre_t2[x].setColor(Color(1,1,255,50));
-        ///rango de daño T3
-        Sprite_rango_torre_t3[x].setTexture(rango_torre);
-        Sprite_rango_torre_t3[x].scale(1,1.22);
-        Sprite_rango_torre_t3[x].setPosition(1000,600);
-        Sprite_rango_torre_t3[x].setColor(Color(100,100,100,100));
-        */
     }
     int a = 0;
 
@@ -926,7 +934,7 @@ int juego()
 
     ///y si gente, es un new de una tridimensional, sorprendidos no?
 
-    int (*colas_torres_3d) [cantidad_torres][cantidad_bichos+1] = new int[tam_torres][cantidad_torres][cantidad_bichos+1];
+    int (*colas_torres_3d) [cantidad_torres][cantidad_bichos+1] = new int[posiciones_torres][cantidad_torres][cantidad_bichos+1];
 
     ///para entender esto, o al menos saber con se declaran, porque ni yo entendi un cuerno, les dejo el link donde lo
     ///explican con el titulo §5  Asignar el valor devuelto, con la linea : int (* mptr3)[10][2] = new int[3][10][2];
@@ -934,7 +942,7 @@ int juego()
 
     ///Inicializador dinamico de la cola-----------------
     int valor=-10000;
-    for (f=0; f<tam_torres; f++)
+    for (f=0; f<posiciones_torres; f++)
     {
         for (c=0; c<cantidad_torres; c++)
         {
@@ -1042,20 +1050,15 @@ int juego()
                     primer_carga=false;
                     opacidad_menu=0;
                     boolmusicajuego=false;
-                    for(int l=0; l<tam_torres; l++)
+                    for(int l=0; l<posiciones_torres; l++)
                     {
-                        // TORRES -------------------------------------
-
-                        spawn_torre[l][0]=false;
-                        spawn_torre[l][1]=false;
-                        spawn_torre[l][2]=false;
+                        /// TORRES -------------------------------------
                         Ocupado[l]=false;
-
-                        // RANGOS -------------------------------------
-
-                        for(int f=0; f<cantidad_torres; f++)
+                        /// RANGOS -------------------------------------
+                        for(int f=0; f<posiciones_torres; f++)
                         {
-                            Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
+                            vec_torres[x].setPosicionTorre(10000,0);
+                            vec_torres[x].setPosicionRango(10000,0);
                         }
                     }
                 }
@@ -1166,33 +1169,12 @@ int juego()
 
             // TORRES Y SUS AREAS
 
-            for (x=0; x<tam_torres; x++)
+            for (x=0; x<posiciones_torres; x++)
             {
-                for(int y=0; y<3; y++)
+                if(vec_torres[x].getTipo()!=0)
                 {
-                    if (spawn_torre[x][y]==true)
-                    {
-                        window.draw(Sprite_rango_torre_tipo[y][x]);
-                        window.draw(Sprite_torre_tipo[y][x]);
-
-                        /*
-                        switch (y)
-                        {
-                        case 0:
-                            window.draw(Sprite_rango_torre_t1[x]);
-                            window.draw(Sprite_torre_1[x]);
-                            break;
-                        case 1:
-                            window.draw(Sprite_rango_torre_t2[x]);
-                            window.draw(Sprite_torre_2[x]);
-                            break;
-                        case 2:
-                            window.draw(Sprite_rango_torre_t3[x]);
-                            window.draw(Sprite_torre_3[x]);
-                            break;
-                        }
-                        */
-                    }
+                    window.draw(vec_torres[x].getSpriteCuerpo());
+                    window.draw(vec_torres[x].getSpriteRango());
                 }
             }
 
@@ -1209,11 +1191,24 @@ int juego()
 
             // MENU DE LAS TORRES
 
-            for (x=0; x<tam_torres; x++)
+            /// MENU DE LAS TORRES
+
+            for (x=0; x<posiciones_torres; x++)
             {
-                if (menu_torre[x]==true)
+                if (menu_abierto[x]==true)
                 {
-                    window.draw(Sprite_menu_torre[x]);
+                    switch(nivel_del_menu[x]+1)
+                    {
+                    case 1:
+                        window.draw(Sprite_menu_torre[0][x]);
+                        break;
+                    case 2:
+                        window.draw(Sprite_menu_torre[1][x]);
+                        break;
+                    case 3:
+                        window.draw(Sprite_menu_torre[2][x]);
+                        break;
+                    }
                 }
             }
 
@@ -1252,19 +1247,11 @@ int juego()
                     primer_carga=false;
                     opacidad_menu=0;
                     boolmusicaderrota=false;
-                    for(int l=0; l<tam_torres; l++)
+                    for(int l=0; l<posiciones_torres; l++)
                     {
                         // TORRES -------------------------------------
-                        spawn_torre[l][0]=false;
-                        spawn_torre[l][1]=false;
-                        spawn_torre[l][2]=false;
+                        vec_torres[x].setTipoNivel(0,0);
                         Ocupado[l]=false;
-
-                        // RANGOS -------------------------------------
-                        for(int f=0; f<cantidad_torres; f++)
-                        {
-                            Sprite_rango_torre_tipo[f][l].setPosition(10000,0);
-                        }
                     }
                 }
             }
@@ -1360,13 +1347,13 @@ int juego()
             }
             // ------------------------------------------------
 
-            //  COMIENZA EL JUEGO
+            ///  COMIENZA EL JUEGO
 
             if (Mouse::isButtonPressed(Mouse::Left))
             {
                 if (habilitacionmouse)
                 {
-                    // PAUSA DEL JUEGO
+                    /// PAUSA DEL JUEGO
 
                     if (pausa.click(mousexy))
                     {
@@ -1408,61 +1395,86 @@ int juego()
                         }
                     }
 
-                    // Torres
+                    /// Torres
 
-                    for (i=0; i<tam_torres; i++)
+                    for(x=0; x<posiciones_torres; x++)
                     {
-                        if (torres[i].click(mousexy))
+                        if(habilitacionmouse==true && menu_abierto[x]==true)
                         {
-                            //SE ABRE EL MENU DE TORRES
 
-                            menu_torre[i]=true;
-                            spawnear[i]=true;
-                            habilitacionmouse=false;
-                            posicion_clickeada=i;
-                            contador_de_clicks++;
+                            /// CIERRE DEL MENU
+                            if(torres_equis[x].click(mousexy))
+                            {
+                                menu_abierto[x]=false;
+                            }
+
+                            /// SUBIR NIVEL TORRE POR MITAD DE PRECIO
+                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && dinero>=vec_torres[x].getPrecio()*0.5)
+                            {
+                                if(vec_torres[x].getNivel()<3)
+                                {
+                                    vec_torres[x].subirNivel();
+                                }
+                            }
+
+                            /// VENDER TORRE Y TE DEVUELVE 70% DEL PRECIO (pero en int)
+                            if(Ocupado[x]==true && torres_vender[x].click(mousexy))
+                            {
+                                Ocupado[x]=false;
+                                dinero+=vec_torres[x].getPrecio()*0.7;
+                                dinero_texto.setVariable(dinero);
+                                vec_torres[x].setTipoNivel(0,0);
+                            }
+
+                            /// SPAWNEO DE TORRES
+                            for(int y=0; y<3; y++)
+                            {
+                                if(Ocupado[x]==false && torres_tipo[y][x].click(mousexy))
+                                {
+
+                                    vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1);
+                                    vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy());
+                                    vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52);
+                                    vec_torres[x].setEscalaRango(1,1.22);
+                                    Ocupado[x]=true;
+                                    dinero-=vec_torres[x].getPrecio();
+                                    dinero_texto.setVariable(dinero);
+                                    if(dinero>=vec_torres[x].getPrecio())
+                                    {
+                                        dinero-=vec_torres[x].getPrecio();
+                                        dinero_texto.setVariable(dinero);
+                                    }
+                                    else
+                                    {
+                                        vec_torres[x].setTipoNivel(0,0);
+                                    }
+                                }
+                            }
+                        }
+
+                        /// HABILITACION DEL MENU
+                        if(torres[x].click(mousexy))
+                        {
+                            menu_abierto[x]=true;
                         }
                         else
                         {
-                            //SE CIERRA EL MENU DE TORRES
-
-                            menu_torre[i]=false;
-                            if (contador_de_clicks>1)
+                            if(torres_menu_area[x].click(mousexy))
                             {
-                                //spawnear[i]=false;
-                            }
-                            contador_de_clicks++;
-
-                            // Este for se encarga de cerrar la posibilidad de spawneo a los otros lugares que
-                            // no sea el que se clickeo anteriormente
-
-                            for(int k=0; k<tam_torres; k++)
-                            {
-                                if (k != posicion_clickeada)
+                                /// NIVEL DEL MENU
+                                if(torres_subirlvl[x].click(mousexy))
                                 {
-                                    spawnear[k]=false;
-                                }
-                            }
-                        }
-                        if (habilitacionmouse)
-                        {
-                            for(x=0; x<tam_torres; x++)
-                            {
-                                if (Ocupado[i]==false&&spawnear[i]==true)
-                                {
-                                    for(int u=0; u<cantidad_torres; u++)
+                                    nivel_del_menu[x]++;
+                                    if(nivel_del_menu[x]>2)
                                     {
-                                        if(dinero>=compra[u]&&torres_tipo[u][i].click(mousexy))
-                                        {
-                                            ///Se spawnea la torre U
-                                            spawn_torre[i][u]=true;
-                                            /// El espacio de la torre 1 esta siendo ocupado por la torre 1
-                                            Ocupado[i]=true;
-                                            dinero-=compra[u];
-                                            dinero_texto.setVariable(dinero);
-                                        }
+                                        nivel_del_menu[x]=0;
                                     }
                                 }
+                            }
+                            else
+                            {
+                                menu_abierto[x]=false;
+                                nivel_del_menu[x]=0;
                             }
                         }
                     }
@@ -1500,38 +1512,17 @@ int juego()
 
 ///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
 
-            for (x=0; x<tam_torres; x++)
-            {
-                for(int y=0; y<3; y++)
+            for (x=0; x<posiciones_torres; x++)
                 {
-                    if (spawn_torre[x][y]==true)
+                    if(vec_torres[x].getTipo()!=0)
                     {
-                        Sprite_rango_torre_tipo[y][x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                        window.draw(Sprite_rango_torre_tipo[y][x]);
-                        window.draw(Sprite_torre_tipo[y][x]);
-                        /*
-                        switch (y)
+                        window.draw(vec_torres[x].getSpriteCuerpo());
+                        if(menu_abierto[x]==true)
                         {
-                        case 0:
-                            Sprite_rango_torre_t1[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                            window.draw(Sprite_rango_torre_t1[x]);
-                            window.draw(Sprite_torre_1[x]);
-                            break;
-                        case 1:
-                            Sprite_rango_torre_t2[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                            window.draw(Sprite_rango_torre_t2[x]);
-                            window.draw(Sprite_torre_2[x]);
-                            break;
-                        case 2:
-                            Sprite_rango_torre_t3[x].setPosition(torres[x].getEsix()-92,torres[x].getEsiy()-50);
-                            window.draw(Sprite_rango_torre_t3[x]);
-                            window.draw(Sprite_torre_3[x]);
-                            break;
+                            window.draw(vec_torres[x].getSpriteRango());
                         }
-                        */
                     }
                 }
-            }
 ///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
 
             for (d=1; d<=objetos; d++)
@@ -1562,11 +1553,11 @@ int juego()
                     */
                 }
 
-                for (x=0; x<tam_torres; x++)
+                for (x=0; x<posiciones_torres; x++)
                 {
-                    if (menu_torre[x]==true)
+                    if (menu_abierto[x]==true)
                     {
-                        window.draw(Sprite_menu_torre[x]);
+                        window.draw(Sprite_menu_torre[nivel_del_menu[x]][x]);
                     }
                 }
 
@@ -1586,14 +1577,14 @@ int juego()
 
                 // COLAS DE LAS TORRES-----matriz tridimensional---------
 
-                for (x=0; x<tam_torres; x++)
+                for (x=0; x<posiciones_torres; x++)
                 {
                     for(f=0; f<cantidad_torres; f++)
                     {
                         //// Si el enemigo colisiona con el rango de una torre, este le hace daño segun sus caracteristicas,
                         ////si se muere, su posicion se mueve a (0,0), para que su sprite no estorbe en la caja de colisiones.
 
-                        if (PixelPerfectTest(enemigo[i-1].getZombie(),Sprite_rango_torre_tipo[f][x]))
+                        if (PixelPerfectTest(enemigo[i-1].getZombie(),vec_torres[x].getSpriteRango()))
                         {
                             ////el enemigo es encolado, si solo si, nunca fue encolado en la cola de una torre, por su tipo,
                             ////si esa cola no esta llena y por ultimo si este no esta muerto.
@@ -1603,8 +1594,8 @@ int juego()
                                 colas_torres_3d[x][f][colas_torres_3d[x][f][cantidad_bichos]]=i-1;
                                 colas_torres_3d[x][f][cantidad_bichos]++;
                                 enemigo[i-1].setEncolado(x,f,true);
-                                enemigo[i-1].setIntervalo_danio(intervalo_danio[f],f);
-                                enemigo[i-1].setDanio_torre(danio_torre[f],f);
+                                enemigo[i-1].setIntervalo_danio(vec_torres[x].getIntervalo(),f);
+                                enemigo[i-1].setDanio_torre(vec_torres[x].getDanio(),f);
                             }
                         }
                         else
@@ -1678,7 +1669,7 @@ int juego()
 
                                         ///------------------------------------------------------
 
-                                        dinero+=100;
+                                        dinero+=20;
                                         dinero_texto.setVariable(dinero);
                                     }
                                 }

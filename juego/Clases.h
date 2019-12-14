@@ -8,6 +8,10 @@ using namespace Collision;
 setlocale(LC_ALL,"spanish");
 */
 
+/// CLASE TORRE
+
+
+
 /*
 /// CLASE COLA --------------------------------------------------------------
 
@@ -1176,6 +1180,271 @@ public:
     }
     bool leerendisco (int);
     void grabarendiso ();
+
+};
+
+
+/// CLASE TORRE
+
+class Torre
+{
+private:
+    int tipo;
+    int nivel;
+    int precio;
+    int danio;
+    int intervalo;
+    Texture cuerpoT;
+    Texture rangoT;
+    Sprite cuerpoS;
+    Sprite rangoS;
+public:
+    Torre(int tip=0, int niv=0)
+    {
+        tipo=tip;
+        nivel=niv;
+    }
+
+    void setTipoNivel(int t, int n)
+    {
+        tipo=t;
+        nivel=n;
+        switch(tipo)
+        {
+        case 1:
+            switch(nivel)
+            {
+            case 1:
+                precio=100;
+                danio=10;
+                intervalo=10;
+
+                if(!cuerpoT.loadFromFile("img/T1-1.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                rangoT.setSmooth(true);
+                break;
+            case 2:
+                precio=200;
+                danio=15;
+                intervalo=7;
+
+                if(!cuerpoT.loadFromFile("img/T1-2.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            case 3:
+                precio=400;
+                danio=25;
+                intervalo=5;
+
+                if(!cuerpoT.loadFromFile("img/T1-3.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            }
+            rangoS.setColor(Color(255,0,0,100));
+            break;
+        case 2:
+            switch(nivel)
+            {
+            case 1:
+                precio=150;
+                danio=15;
+                intervalo=20;
+
+                if(!cuerpoT.loadFromFile("img/T2-1.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            case 2:
+                precio=300;
+                danio=20;
+                intervalo=16;
+
+                if(!cuerpoT.loadFromFile("img/T2-2.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            case 3:
+                precio=500;
+                danio=25;
+                intervalo=12;
+
+                if(!cuerpoT.loadFromFile("img/T2-3.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            }
+            rangoS.setColor(Color(0,255,200,100));
+            break;
+        case 3:
+            switch(nivel)
+            {
+            case 1:
+                precio=200;
+                danio=30;
+                intervalo=40;
+
+                if(!cuerpoT.loadFromFile("img/T3-1.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            case 2:
+                precio=400;
+                danio=60;
+                intervalo=25;
+
+                if(!cuerpoT.loadFromFile("img/T3-2.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+            case 3:
+                precio=800;
+                danio=90;
+                intervalo=15;
+
+                if(!cuerpoT.loadFromFile("img/T3-3.png"))
+                    exit(100);
+                cuerpoT.setSmooth(true);
+                cuerpoS.setTexture(cuerpoT);
+
+                if(!rangoT.loadFromFile("img/rango.png"))
+                    exit(100);
+                rangoT.setSmooth(true);
+                rangoS.setTexture(rangoT);
+                break;
+
+            }
+            rangoS.setColor(Color(0,255,0,100));
+            break;
+        default:
+            precio=0;
+            danio=0;
+            intervalo=0;
+
+            if(!cuerpoT.loadFromFile("img/Default.png"))
+                exit(100);
+            cuerpoT.setSmooth(true);
+            cuerpoS.setTexture(cuerpoT);
+
+            if(!rangoT.loadFromFile("img/rango.png"))
+                exit(100);
+            rangoT.setSmooth(true);
+            rangoS.setTexture(rangoT);
+
+            cuerpoS.setPosition(10000,0);
+            rangoS.setPosition(10000,0);
+            break;
+        }
+    }
+
+    void setPosicionTorre(float x, float y)
+    {
+        cuerpoS.setPosition(x,y);
+    }
+
+    void setEscalaTorre(float fx, float fy)
+    {
+        cuerpoS.setScale(fx,fy);
+    }
+
+    void setPosicionRango(float x, float y)
+    {
+        rangoS.setPosition(x,y);
+    }
+
+    void setEscalaRango(float fx, float fy)
+    {
+        rangoS.setScale(fx,fy);
+    }
+
+    Sprite getSpriteCuerpo()
+    {
+        return cuerpoS;
+    }
+    Sprite getSpriteRango()
+    {
+        return rangoS;
+    }
+
+    int getTipo()
+    {
+        return tipo;
+    }
+
+    int getDanio()
+    {
+        return danio/3;
+    }
+
+    int getIntervalo()
+    {
+        return intervalo;
+    }
+
+    int getPrecio()
+    {
+        return precio/2;
+    }
+
+    void subirNivel()
+    {
+        setTipoNivel(tipo,nivel+1);
+    }
+
+    int getNivel()
+    {
+        return nivel;
+    }
 
 };
 
