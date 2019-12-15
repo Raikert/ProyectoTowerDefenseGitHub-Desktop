@@ -47,13 +47,14 @@ int juego()
     Letra font_texto1("tipos_de_texto/letra_pintura.ttf");
 
     Texto vidas_texto[cantidad_bichos];
-    Texto vidas_texto_variable(font_texto1.getFont(),aldeano.getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
+    Texto vidas_texto_variable(font_texto1.getFont(),enemigo[0].getVida(),17,aldeano.getX()+13,aldeano.getY()+48,Color::Transparent,true);
 
     vidas_texto_variable.setBorde_Color(Color(255,0,255,0));
     vidas_texto_variable.setBorde_tamanio(0.5);
     for (i=0; i<cantidad_bichos; i++)
     {
         vidas_texto[i]=vidas_texto_variable;
+        vidas_texto[i].setVariable(enemigo[i].getVida());
     }
 
     //Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
@@ -286,7 +287,9 @@ int juego()
     const int cantidad_torres=3;
 
     ///-----Niveles de las torres-----
-    int torre_nivel[posiciones_torres]= {0};
+    int torre_nivel[posiciones_torres];
+    inicializar_vector_entero(torre_nivel,posiciones_torres,0);
+
 
     ///-----Cantidad de niveles de las torres-----
     const int niveles_torres=3;
@@ -295,7 +298,8 @@ int juego()
     const int niveles_menu=3;
 
     /// NIVELES DE LOS MENUS
-    int nivel_del_menu[posiciones_torres]= {0};
+    int nivel_del_menu[posiciones_torres];
+    inicializar_vector_entero(nivel_del_menu,posiciones_torres,0);
 
     /// Estado del menu
 
@@ -806,7 +810,8 @@ int juego()
     bool Ocupado[posiciones_torres];
 
     /// Vector de niveles de los menues
-    int nivel_de_torre[posiciones_torres]= {0};
+    int nivel_de_torre[posiciones_torres];
+    inicializar_vector_entero(nivel_de_torre,posiciones_torres,0);
 
     ponerEnFalso(Ocupado, posiciones_torres);
 
@@ -815,27 +820,41 @@ int juego()
     /// CANTIDAD DE MENUES
     const int menus=3;
 
-    Texture textura_menu_torre[menus];
-
+    Textura textura_menu_torre[menus];
     /// MENU DE TORRES 1
-
-    if (!textura_menu_torre[0].loadFromFile("img/Menu_Torres_1.png"))
-        return -101;
-    textura_menu_torre[0].setSmooth(true);
-
+    textura_menu_torre[0].cargar("img/Menu_Torres_1.png",0,true);
     /// MENU DE TORRES 2
-
-    if (!textura_menu_torre[1].loadFromFile("img/Menu_Torres_2.png"))
-        return -101;
-    textura_menu_torre[1].setSmooth(true);
-
+    textura_menu_torre[1].cargar("img/Menu_Torres_2.png",0,true);
     /// MENU DE TORRES 3
-
-    if (!textura_menu_torre[2].loadFromFile("img/Menu_Torres_3.png"))
-        return -101;
-    textura_menu_torre[2].setSmooth(true);
+    textura_menu_torre[2].cargar("img/Menu_Torres_3.png",0,true);
 
     /// MATRIZ DE CLASE TORRE NIVEL X TIPO
+    Textura rango_torres_textura("img/rango.png");
+    Textura texturas_torres[3][3];
+    for (i=0; i<3; i++)
+    {
+        switch (i)
+        {
+        case 0:
+            texturas_torres[i][0].cargar("img/T1-1.png",0,true);
+            texturas_torres[i][1].cargar("img/T1-2.png",0,true);
+            texturas_torres[i][2].cargar("img/T1-3.png",0,true);
+            break;
+        case 1:
+            texturas_torres[i][0].cargar("img/T2-1.png",0,true);
+            texturas_torres[i][1].cargar("img/T2-2.png",0,true);
+            texturas_torres[i][2].cargar("img/T2-3.png",0,true);
+            break;
+        case 2:
+            texturas_torres[i][0].cargar("img/T3-1.png",0,true);
+            texturas_torres[i][1].cargar("img/T3-2.png",0,true);
+            texturas_torres[i][2].cargar("img/T3-3.png",0,true);
+            break;
+        default:
+            break;
+        }
+    }
+
     Torre vec_torres[posiciones_torres];
     Torre aux_torre;
 
@@ -853,7 +872,7 @@ int juego()
 
         for(int t=0; t<3; t++)
         {
-            Sprite_menu_torre[t][x].setTexture(textura_menu_torre[t]);
+            Sprite_menu_torre[t][x].setTexture(textura_menu_torre[t].getTextura());
             Sprite_menu_torre[t][x].setPosition(torres[x].getEsix()-75,torres[x].getEsiy()-72);
         }
     }
@@ -865,7 +884,7 @@ int juego()
     // VARIABLES PARA LA SIGUIENTE OLEADA
 
     int bichos_muertos=0;
-    int vida_aumentada=100;
+    int vida_aumentada=0;
     int oleada=1;
     Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Yellow,true);
 
@@ -1033,15 +1052,15 @@ int juego()
                     estado_juego=2;
                     vida_juego=const_vida_juego;
                     vida_juego_texto.setVariable(vida_juego);
-                    aldeano.setVida(100);
-                    vida_aumentada=100;
+                    aldeano.setVida(0);
+                    vida_aumentada=0;
                     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                     for(int o=0; o<cantidad_bichos; o++)
                     {
                         vidas_texto[o].setVariable(enemigo[o].getVida());
                     }
                     dinero=1000;
-                    dinero_texto.setVariable((dinero));
+                    dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=1;
                     oleada=1;
@@ -1054,11 +1073,25 @@ int juego()
                     {
                         /// TORRES -------------------------------------
                         Ocupado[l]=false;
+                        vec_torres[l].setTipoNivel();
                         /// RANGOS -------------------------------------
+                        /*
                         for(int f=0; f<posiciones_torres; f++)
                         {
-                            vec_torres[x].setPosicionTorre(10000,0);
-                            vec_torres[x].setPosicionRango(10000,0);
+                            vec_torres[f].setPosicionTorre(10000,0);
+                            vec_torres[f].setPosicionRango(10000,0);
+                        }
+                        */
+                    }
+                    for (f=0; f<posiciones_torres; f++)
+                    {
+                        for (c=0; c<cantidad_torres; c++)
+                        {
+                            colas_torres_3d[f][c][cantidad_bichos]=0;
+                            for (x=0; x<cantidad_bichos; x++)
+                            {
+                                colas_torres_3d[f][c][x]=valor;
+                            }
                         }
                     }
                 }
@@ -1230,8 +1263,8 @@ int juego()
                     estado_juego=2;
                     vida_juego=const_vida_juego;
                     vida_juego_texto.setVariable(vida_juego);
-                    aldeano.setVida(100);
-                    vida_aumentada=100;
+                    aldeano.setVida(0);
+                    vida_aumentada=0;
                     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                     for(int o=0; o<cantidad_bichos; o++)
                     {
@@ -1250,8 +1283,19 @@ int juego()
                     for(int l=0; l<posiciones_torres; l++)
                     {
                         // TORRES -------------------------------------
-                        vec_torres[x].setTipoNivel(0,0);
+                        vec_torres[l].setTipoNivel();
                         Ocupado[l]=false;
+                    }
+                    for (f=0; f<posiciones_torres; f++)
+                    {
+                        for (c=0; c<cantidad_torres; c++)
+                        {
+                            colas_torres_3d[f][c][cantidad_bichos]=0;
+                            for (x=0; x<cantidad_bichos; x++)
+                            {
+                                colas_torres_3d[f][c][x]=valor;
+                            }
+                        }
                     }
                 }
             }
@@ -1367,16 +1411,16 @@ int juego()
                     {
                         vida_aumentada+=100;
                         aldeano.setVida(vida_aumentada);
+                        cargar_vector_sprites(enemigo,aldeano,cantidad_bichos,oleada);
                         for(int p=0; p<cantidad_bichos; p++)
                         {
-                            vidas_texto[p].setVariable(vida_aumentada);
+                            vidas_texto[p].setVariable(enemigo[p].getVida());
                         }
                         bichos_muertos=0;
                         oleada++;
                         oleada_texto.setVariable(oleada);
                         objetos=1;
                         tiempo=1;
-                        cargar_vector_sprites(enemigo,aldeano,cantidad_bichos,oleada);
                     }
 
                     // sonido
@@ -1413,7 +1457,7 @@ int juego()
                             {
                                 if(vec_torres[x].getNivel()<3)
                                 {
-                                    vec_torres[x].subirNivel();
+                                    vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
                                 }
                             }
 
@@ -1423,7 +1467,7 @@ int juego()
                                 Ocupado[x]=false;
                                 dinero+=vec_torres[x].getPrecio()*0.7;
                                 dinero_texto.setVariable(dinero);
-                                vec_torres[x].setTipoNivel(0,0);
+                                vec_torres[x].setTipoNivel();
                             }
 
                             /// SPAWNEO DE TORRES
@@ -1432,7 +1476,7 @@ int juego()
                                 if(Ocupado[x]==false && torres_tipo[y][x].click(mousexy))
                                 {
 
-                                    vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1);
+                                    vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][0].getTextura(),rango_torres_textura.getTextura());
                                     vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy());
                                     vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52);
                                     vec_torres[x].setEscalaRango(1,1.22);
@@ -1446,7 +1490,7 @@ int juego()
                                     }
                                     else
                                     {
-                                        vec_torres[x].setTipoNivel(0,0);
+                                        vec_torres[x].setTipoNivel();
                                     }
                                 }
                             }
@@ -1513,53 +1557,53 @@ int juego()
 ///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
 
             for (x=0; x<posiciones_torres; x++)
+            {
+                if(vec_torres[x].getTipo()!=0)
                 {
-                    if(vec_torres[x].getTipo()!=0)
+                    window.draw(vec_torres[x].getSpriteCuerpo());
+                    if(menu_abierto[x]==true)
                     {
-                        window.draw(vec_torres[x].getSpriteCuerpo());
-                        if(menu_abierto[x]==true)
-                        {
-                            window.draw(vec_torres[x].getSpriteRango());
-                        }
+                        window.draw(vec_torres[x].getSpriteRango());
                     }
                 }
+            }
 ///*///////////////////////////////////////////////////////////------------------///////////////////////////////////////////////////////////////////////////
 
             for (d=1; d<=objetos; d++)
+            {
+                if (enemigo[d-1].getVida()>0)
                 {
-                    if (enemigo[d-1].getVida()>0)
-                    {
-                        window.draw(enemigo[d-1].getZombie());
-                        window.draw(vidas_texto[d-1].getTexto());
-                    }
-                    else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
-                    {
-                        enemigo[d-1].setMuerto();
-                        enemigo[d-1].setPosicion(0,0);
-                        vidas_texto[d-1].setPosicion(0,0);
-                    }
-
-                    // esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
-
-                    /*
-                    switch(mini_estados) {
-                    case 1:
-                    break;
-                    case 2:---------
-                    break;
-                    case 3:
-                    break;
-                    }
-                    */
+                    window.draw(enemigo[d-1].getZombie());
+                    window.draw(vidas_texto[d-1].getTexto());
+                }
+                else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
+                {
+                    enemigo[d-1].setMuerto();
+                    enemigo[d-1].setPosicion(0,0);
+                    vidas_texto[d-1].setPosicion(0,0);
                 }
 
-                for (x=0; x<posiciones_torres; x++)
-                {
-                    if (menu_abierto[x]==true)
-                    {
-                        window.draw(Sprite_menu_torre[nivel_del_menu[x]][x]);
-                    }
+                // esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
+
+                /*
+                switch(mini_estados) {
+                case 1:
+                break;
+                case 2:---------
+                break;
+                case 3:
+                break;
                 }
+                */
+            }
+
+            for (x=0; x<posiciones_torres; x++)
+            {
+                if (menu_abierto[x]==true)
+                {
+                    window.draw(Sprite_menu_torre[nivel_del_menu[x]][x]);
+                }
+            }
 
 ///----------------------Fin Sector Dibujado-------------------------------------------------
 

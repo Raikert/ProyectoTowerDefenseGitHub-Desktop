@@ -71,7 +71,11 @@ class Textura
 private:
     Texture textura;
 public:
-    Textura(const string& ruta, int con_colision=1)
+    void setSuavizado(bool eleccion)
+    {
+        textura.setSmooth(eleccion);
+    }
+    Textura(const string& ruta, int con_colision=1,bool suavizado=false)
     {
         if (con_colision==1)
         {
@@ -83,9 +87,11 @@ public:
             if (!textura.loadFromFile(ruta))
                 exit(-11111);
         }
+        if (suavizado)
+            setSuavizado(true);
     }
     Textura () {}
-    void cargar(const string& ruta, int tipo_carga=1)
+    void cargar(const string& ruta, int tipo_carga=1,bool suavizado=false)
     {
         if (tipo_carga==1)
         {
@@ -97,14 +103,12 @@ public:
             if (!textura.loadFromFile(ruta))
                 exit(-11111);
         }
+        if (suavizado)
+            setSuavizado(true);
     }
     Texture &getTextura()
     {
         return textura;
-    }
-    void setSuavizado(bool eleccion)
-    {
-        textura.setSmooth(eleccion);
     }
 };
 
@@ -135,23 +139,29 @@ public:
         if (!musica.openFromFile(ruta))
             exit(689);
     }
-    Music & getMusica() {
-    return musica;
+    Music & getMusica()
+    {
+        return musica;
     }
-    void volumen (float v) {
-    musica.setVolume(v);
+    void volumen (float v)
+    {
+        musica.setVolume(v);
     }
-    void repeticion(bool eleccion) {
-    musica.setLoop(eleccion);
+    void repeticion(bool eleccion)
+    {
+        musica.setLoop(eleccion);
     }
-    void reproducir () {
-    musica.play();
+    void reproducir ()
+    {
+        musica.play();
     }
-    void pausar () {
-    musica.pause();
+    void pausar ()
+    {
+        musica.pause();
     }
-    void parar() {
-    musica.stop();
+    void parar()
+    {
+        musica.stop();
     }
 };
 
@@ -714,7 +724,7 @@ public:
     {
 
         animacion_propiedad.crear_Animacion_zombie(textura_zombies,tipo,posx,posy,escalax,escalay);
-        vida=100;
+        vida=0;
         velocidad=ve;
         estado=0;
         muerto=false;
@@ -722,8 +732,9 @@ public:
         inicializar_matriz_encolado(encolado);
     }
     Zombie () {}
-    void cambiar_zombie(int tipo) {
-    animacion_propiedad.cambiar_tipo(tipo);
+    void cambiar_zombie(int tipo)
+    {
+        animacion_propiedad.cambiar_tipo(tipo);
     }
     Sprite getZombie()
     {
@@ -1194,8 +1205,6 @@ private:
     int precio;
     int danio;
     int intervalo;
-    Texture cuerpoT;
-    Texture rangoT;
     Sprite cuerpoS;
     Sprite rangoS;
 public:
@@ -1205,7 +1214,14 @@ public:
         nivel=niv;
     }
 
-    void setTipoNivel(int t, int n)
+    void setTipoNivel()
+    {
+    tipo=0;
+    nivel=0;
+    rangoS.setPosition(1000,600);
+    }
+
+    void setTipoNivel(int t, int n,Texture &cuerpoT,Texture &rangoT)
     {
         tipo=t;
         nivel=n;
@@ -1218,46 +1234,21 @@ public:
                 precio=100;
                 danio=10;
                 intervalo=10;
-
-                if(!cuerpoT.loadFromFile("img/T1-1.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
-                rangoT.setSmooth(true);
                 break;
             case 2:
                 precio=200;
                 danio=15;
                 intervalo=7;
-
-                if(!cuerpoT.loadFromFile("img/T1-2.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             case 3:
                 precio=400;
                 danio=25;
                 intervalo=5;
-
-                if(!cuerpoT.loadFromFile("img/T1-3.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             }
@@ -1270,45 +1261,21 @@ public:
                 precio=150;
                 danio=15;
                 intervalo=20;
-
-                if(!cuerpoT.loadFromFile("img/T2-1.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             case 2:
                 precio=300;
                 danio=20;
                 intervalo=16;
-
-                if(!cuerpoT.loadFromFile("img/T2-2.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             case 3:
                 precio=500;
                 danio=25;
                 intervalo=12;
-
-                if(!cuerpoT.loadFromFile("img/T2-3.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             }
@@ -1321,45 +1288,21 @@ public:
                 precio=200;
                 danio=30;
                 intervalo=40;
-
-                if(!cuerpoT.loadFromFile("img/T3-1.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             case 2:
                 precio=400;
                 danio=60;
                 intervalo=25;
-
-                if(!cuerpoT.loadFromFile("img/T3-2.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
             case 3:
                 precio=800;
                 danio=90;
                 intervalo=15;
-
-                if(!cuerpoT.loadFromFile("img/T3-3.png"))
-                    exit(100);
-                cuerpoT.setSmooth(true);
                 cuerpoS.setTexture(cuerpoT);
-
-                if(!rangoT.loadFromFile("img/rango.png"))
-                    exit(100);
-                rangoT.setSmooth(true);
                 rangoS.setTexture(rangoT);
                 break;
 
@@ -1370,19 +1313,100 @@ public:
             precio=0;
             danio=0;
             intervalo=0;
-
-            if(!cuerpoT.loadFromFile("img/Default.png"))
-                exit(100);
-            cuerpoT.setSmooth(true);
             cuerpoS.setTexture(cuerpoT);
-
-            if(!rangoT.loadFromFile("img/rango.png"))
-                exit(100);
-            rangoT.setSmooth(true);
             rangoS.setTexture(rangoT);
 
             cuerpoS.setPosition(10000,0);
             rangoS.setPosition(10000,0);
+            break;
+        }
+    }
+
+    void setTipoNivel(int n,Texture &cuerpoT)
+    {
+        nivel=n;
+        switch(tipo)
+        {
+        case 1:
+            switch(nivel)
+            {
+            case 1:
+                precio=100;
+                danio=10;
+                intervalo=10;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+
+            case 2:
+                precio=200;
+                danio=15;
+                intervalo=7;
+                cuerpoS.setTexture(cuerpoT);
+
+                break;
+
+            case 3:
+                precio=400;
+                danio=25;
+                intervalo=5;
+                cuerpoS.setTexture(cuerpoT);
+
+                break;
+            }
+            break;
+        case 2:
+            switch(nivel)
+            {
+            case 1:
+                precio=150;
+                danio=15;
+                intervalo=20;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            case 2:
+                precio=300;
+                danio=20;
+                intervalo=16;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            case 3:
+                precio=500;
+                danio=25;
+                intervalo=12;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            }
+            break;
+        case 3:
+            switch(nivel)
+            {
+            case 1:
+                precio=200;
+                danio=30;
+                intervalo=40;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            case 2:
+                precio=400;
+                danio=60;
+                intervalo=25;
+                cuerpoS.setTexture(cuerpoT);
+
+                break;
+            case 3:
+                precio=800;
+                danio=90;
+                intervalo=15;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+
+            }
+            break;
+        default:
+            precio=0;
+            danio=0;
+            intervalo=0;
+            cuerpoS.setTexture(cuerpoT);
             break;
         }
     }
@@ -1436,9 +1460,9 @@ public:
         return precio/2;
     }
 
-    void subirNivel()
+    void subirNivel(Texture &cuerpoT)
     {
-        setTipoNivel(tipo,nivel+1);
+        setTipoNivel(nivel+1,cuerpoT);
     }
 
     int getNivel()

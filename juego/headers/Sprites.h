@@ -1,7 +1,7 @@
 #ifndef SPRITES_H_INCLUDED
 #define SPRITES_H_INCLUDED
 
-void cargar_vector_sprites (Zombie *v,Zombie &tipo,int cantidad_bichos,int oleada=1,int nivel=1)
+void cargar_vector_sprites (Zombie *v,Zombie &tipo,int cantidad_bichos,int oleada=1,int nivel=1,int vida_aumentada=0)
 {
     int r;
     for (int i=0; i<cantidad_bichos; i++)
@@ -27,44 +27,44 @@ void cargar_vector_sprites (Zombie *v,Zombie &tipo,int cantidad_bichos,int olead
             break;
         }
         tipo.cambiar_zombie(r);
+        v[i]=tipo;
         switch (r)
         {
         case 1:
-            tipo.setVida(100);
-            tipo.setVelocidad(0.8);
+            v[i].setVida(tipo.getVida()+100);
+            v[i].setVelocidad(0.8);
             break;
         case 2:
-            tipo.setVida(150);
-            tipo.setVelocidad(1.5);
+            v[i].setVida(tipo.getVida()+150);
+            v[i].setVelocidad(1.5);
             break;
         case 3:
-            tipo.setVida(100);
-            tipo.setVelocidad(1);
+            v[i].setVida(tipo.getVida()+100);
+            v[i].setVelocidad(1);
             break;
         case 4:
-            tipo.setVida(100);
-            tipo.setVelocidad(1.3);
+            v[i].setVida(tipo.getVida()+100);
+            v[i].setVelocidad(1.3);
             break;
         case 5:
-            tipo.setVida(200);
-            tipo.setVelocidad(0.8);
+            v[i].setVida(tipo.getVida()+200);
+            v[i].setVelocidad(0.8);
             break;
         case 6:
-            tipo.setVida(300);
-            tipo.setVelocidad(0.7);
+            v[i].setVida(tipo.getVida()+300);
+            v[i].setVelocidad(0.7);
             break;
         case 7:
-            tipo.setVida(400);
-            tipo.setVelocidad(0.6);
+            v[i].setVida(tipo.getVida()+400);
+            v[i].setVelocidad(0.6);
             break;
         case 8:
-            tipo.setVida(500);
-            tipo.setVelocidad(0.5);
+            v[i].setVida(tipo.getVida()+500);
+            v[i].setVelocidad(0.5);
             break;
         default:
             break;
         }
-        v[i]=tipo;
     }
 }
 
