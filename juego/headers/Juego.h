@@ -1028,7 +1028,7 @@ int juego()
                 mousey.setVariable(mousexy[1]);
                 //fin resoluciones---------------------------------------------------------------------------------------
 
-                if (Mouse::isButtonPressed(Mouse::Left))
+                if (Mouse::isButtonPressed(Mouse::Left)&&estado_juego==2)
                 {
                     //Pantalla Completa
 
