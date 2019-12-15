@@ -14,10 +14,6 @@ int juego()
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
     Vector2f pixeles_convertidos;
     View vista_del_juego(FloatRect(0.f,0.f,1000.f,600.f));
-    ///por lo raro que paresca, la siguiente linea logra que se pueda ver en fullscreen, si se lo comenta
-    ///se ve una franja negra en el lado izquierdo, pero no entiendo xq.
-    Vector2f caca=vista_del_juego.getCenter();
-
     //Constantes practicas
     const int const_vida_juego=1000;
     int tiempo_spawn=100;
@@ -279,7 +275,7 @@ int juego()
 
     Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(55,50,872,487);
     Boton nueva_oleada(49,45,823,433,255), derrota_boton(1000,600,0,0), guardar_partida(152,44,824,545,255), pausa(49,45,875,433);
-    Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362),pantalla_completa(64,52,24,433);
+    Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362);
 
     ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
 ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
@@ -983,7 +979,8 @@ int juego()
     //-------------------------------------------
 
     //definicion de la ventana del juego---------------------
-    RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
+    RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando",Style::Fullscreen);
+    window.setView(vista_del_juego);
     //Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     //bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
@@ -1012,7 +1009,7 @@ int juego()
             {
                 tamx=window.getSize().x;
                 tamy=window.getSize().y;
-                if (tamx!=1000||tamy!=600)
+                if (tamx!=tamx_actual||tamy!=tamy_actual)
                 {
                     pixeles_convertidos=window.mapPixelToCoords(Vector2i(Mouse::getPosition(window).x,Mouse::getPosition(window).y));
                     mousexy[0]=pixeles_convertidos.x;
@@ -1380,29 +1377,6 @@ int juego()
                             }
 
                         }
-
-                        //Pantalla Completa
-
-                        if (pantalla_completa.click(mousexy))
-                        {
-                            if (!pantalla_completa.getEncendido())
-                            {
-                                window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando",Style::Fullscreen);
-                                pantalla_completa.setEncendido(true);
-                                window.setView(vista_del_juego);
-                                window.setFramerateLimit(60);
-                                window.setKeyRepeatEnabled(false);
-                            }
-                            else
-                            {
-                                window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando");
-                                pantalla_completa.setEncendido(false);
-                                window.setView(vista_del_juego);
-                                window.setFramerateLimit(60);
-                                window.setKeyRepeatEnabled(false);
-                            }
-                        }
-
                         habilitacionmouse=false;
                     }
 

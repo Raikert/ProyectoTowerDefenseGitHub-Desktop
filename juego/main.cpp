@@ -4,11 +4,11 @@
 #include <iostream>
 #include <cstdlib>
 #include "Collision.hpp"
-#include "funciones.h"
-#include "Clases.h"
 using namespace sf; //para no poner sf::
 using namespace std;
 using namespace Collision; //para no poner Collision::
+#include "funciones.h"
+#include "Clases.h"
 #include "headers/Movimientos.h"
 #include "headers/Colision_Danio.h"
 #include "headers/Sprites.h"

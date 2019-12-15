@@ -1050,6 +1050,7 @@ private:
     float esi[2],esd[2],eii[2],eid[2];
     RectangleShape boton;
     int tamaniox,tamanioy,transparencia;
+    bool encendido;
 public:
     Boton(float x,float y,float posx,float posy,int Transparencia=0)
     {
@@ -1067,6 +1068,7 @@ public:
         boton.setFillColor(Color(255,255,255,transparencia));
         tamaniox=x;
         tamanioy=y;
+        encendido=false;
     }
     Boton () {}
     bool click(int *v)
@@ -1078,6 +1080,9 @@ public:
     int getTransparencia ()
     {
         return transparencia;
+    }
+    bool getEncendido() {
+    return encendido;
     }
     int getEsix()
     {
@@ -1119,6 +1124,9 @@ public:
     {
         transparencia=t;
         boton.setFillColor(Color(255,255,255,transparencia));
+    }
+    void setEncendido(bool e) {
+    encendido=e;
     }
 };
 
