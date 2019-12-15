@@ -1058,6 +1058,8 @@ int juego()
                     for(int o=0; o<cantidad_bichos; o++)
                     {
                         vidas_texto[o].setVariable(enemigo[o].getVida());
+                        vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                        vidas_texto[o].setTransparencia(0);
                     }
                     dinero=1000;
                     dinero_texto.setVariable(dinero);
@@ -1269,6 +1271,8 @@ int juego()
                     for(int o=0; o<cantidad_bichos; o++)
                     {
                         vidas_texto[o].setVariable(enemigo[o].getVida());
+                        vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                        vidas_texto[o].setTransparencia(0);
                     }
                     dinero=1000;
                     dinero_texto.setVariable((dinero));
@@ -1497,7 +1501,7 @@ int juego()
                         }
 
                         /// HABILITACION DEL MENU
-                        if(torres[x].click(mousexy))
+                        if(torres[x].click(mousexy)&&detectar_otro_menu_abierto(menu_abierto,posiciones_torres))
                         {
                             menu_abierto[x]=true;
                         }
@@ -1579,8 +1583,6 @@ int juego()
                 else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
                 {
                     enemigo[d-1].setMuerto();
-                    enemigo[d-1].setPosicion(0,0);
-                    vidas_texto[d-1].setPosicion(0,0);
                 }
 
                 // esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
@@ -1653,6 +1655,7 @@ int juego()
                             if (colas_torres_3d[x][f][cantidad_bichos]>0&&detector)
                             {
                                 enemigo[i-1].setEncolado(x,f,false);
+                                enemigo[i-1].setColor(255,255,255);
                                 colas_torres_3d[x][f][cantidad_bichos]--;
 
                                 ///Ordenador de la cola de manera dinamica---------------
@@ -1681,6 +1684,9 @@ int juego()
 
                         if (prioridad==i-1&&prioridad!=-10000)
                         {
+                            enemigo[i-1].setIntervalo_danio(vec_torres[x].getIntervalo(),f);
+                            enemigo[i-1].setDanio_torre(vec_torres[x].getDanio(),f);
+
                             if (enemigo[prioridad].getIntervalo_danio(f)!=10000)
                             {
                                 if (tiempo%enemigo[prioridad].getIntervalo_danio(f)==0)

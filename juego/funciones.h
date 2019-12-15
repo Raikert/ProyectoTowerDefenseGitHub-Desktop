@@ -65,6 +65,17 @@ bool detectar_enemigo_cola3d (int m[9][3][11],int torre,int tipo,int enemigo_det
 }
 */
 
+bool detectar_otro_menu_abierto (bool *v,int posiciones_torres)
+{
+    bool detector=true;
+    for (int i=0; i<posiciones_torres; i++)
+    {
+        if (v[i]==true)
+            detector=false;
+    }
+    return detector;
+}
+
 void inicializar_vector_entero (int *v,int tamanio,int valor)
 {
     for (int i=0; i<tamanio; i++)
