@@ -1027,6 +1027,32 @@ int juego()
                 mousex.setVariable(mousexy[0]);
                 mousey.setVariable(mousexy[1]);
                 //fin resoluciones---------------------------------------------------------------------------------------
+
+                if (Mouse::isButtonPressed(Mouse::Left))
+                {
+                    //Pantalla Completa
+
+                    if (pantalla_completa.click(mousexy))
+                    {
+                        if (!pantalla_completa.getEncendido())
+                        {
+                            window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando",Style::Fullscreen);
+                            pantalla_completa.setEncendido(true);
+                            window.setView(vista_del_juego);
+                            window.setFramerateLimit(60);
+                            window.setKeyRepeatEnabled(false);
+                        }
+                        else
+                        {
+                            window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando");
+                            pantalla_completa.setEncendido(false);
+                            window.setView(vista_del_juego);
+                            window.setFramerateLimit(60);
+                            window.setKeyRepeatEnabled(false);
+                        }
+                    }
+
+                }
             }
             //-------------------------------------------
 
@@ -1379,28 +1405,6 @@ int juego()
                                 musica_menu.volumen(30);
                             }
 
-                        }
-
-                        //Pantalla Completa
-
-                        if (pantalla_completa.click(mousexy))
-                        {
-                            if (!pantalla_completa.getEncendido())
-                            {
-                                window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando",Style::Fullscreen);
-                                pantalla_completa.setEncendido(true);
-                                window.setView(vista_del_juego);
-                                window.setFramerateLimit(60);
-                                window.setKeyRepeatEnabled(false);
-                            }
-                            else
-                            {
-                                window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando");
-                                pantalla_completa.setEncendido(false);
-                                window.setView(vista_del_juego);
-                                window.setFramerateLimit(60);
-                                window.setKeyRepeatEnabled(false);
-                            }
                         }
 
                         habilitacionmouse=false;
