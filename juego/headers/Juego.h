@@ -990,8 +990,15 @@ int juego()
     //metodo para que no se tome en cuenta las repeticiones al presionar una tecla, similar a la booleana habilitacion_mouse
     window.setKeyRepeatEnabled(false);
     Event event;
+    window.setMouseCursorVisible(false);
+    Texture puntero;
+    puntero.loadFromFile("img/puntero.png");
+    Sprite puntero1(puntero);
+    puntero1.scale(0.5,0.5);
     while (window.isOpen())
     {
+
+
         //Zona de estados del juego-------------------------------------------
         while (window.pollEvent(event))
         {
@@ -1208,6 +1215,7 @@ int juego()
             // MAPA DEL JUEGO
 
             window.draw(mapa);
+
 
             // DEBUG
 
@@ -2228,7 +2236,8 @@ int juego()
         ///--------------------------------
         */
         ///-----------------------------------------------
-
+        puntero1.setPosition(mousexy[0],mousexy[1]);
+            window.draw(puntero1);
         window.display();
 
     }   // fin del while(window.IsOpen())

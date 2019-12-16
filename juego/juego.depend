@@ -1046,13 +1046,14 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1573482207 source:c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
+1576526679 source:c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	"windows.h"
 	<iostream>
 	<cstdlib>
 	"Collision.hpp"
+	"funciones.h"
 	"Clases.h"
 	"headers/Movimientos.h"
 	"headers/Colision_Danio.h"
@@ -3235,15 +3236,15 @@
 
 1572363606 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\collision.hpp
 
-1574279634 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
+1576526679 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
 
 1572886336 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\headers\movimientos.h
 
 1572886336 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\headers\colision_danio.h
 
-1574257252 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
+1576526679 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
 
-1574278984 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
+1576535870 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
 
 1511216292 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\collision.cpp
 	<SFML/Graphics.hpp>
@@ -3801,6 +3802,11 @@
 	<clocale>
 
 1576346521 c:\users\canoxor\documents\utn\github - desktop\proyectotowerdefense-githubdesktop\juego\funciones.h
+	<iostream>
+	<cstdlib>
+	<clocale>
+
+1576526679 c:\users\federico\documents\github\proyectotowerdefense-githubdesktop\juego\funciones.h
 	<iostream>
 	<cstdlib>
 	<clocale>
