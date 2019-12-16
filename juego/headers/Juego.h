@@ -1048,6 +1048,7 @@ int juego()
                             window.setView(vista_del_juego);
                             window.setFramerateLimit(60);
                             window.setKeyRepeatEnabled(false);
+                            window.setMouseCursorVisible(false);
                         }
                         else
                         {
@@ -1056,6 +1057,7 @@ int juego()
                             window.setView(vista_del_juego);
                             window.setFramerateLimit(60);
                             window.setKeyRepeatEnabled(false);
+                            window.setMouseCursorVisible(false);
                         }
                     }
 
