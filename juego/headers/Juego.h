@@ -993,7 +993,7 @@ int juego()
     window.setMouseCursorVisible(false);
     Textura puntero("img/puntero.png",0,true);
     Sprite puntero1(puntero.getTextura());
-    puntero1.scale(0.5,0.5);
+    puntero1.scale(0.4,0.4);
     while (window.isOpen())
     {
 
