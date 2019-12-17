@@ -994,7 +994,7 @@ int juego()
     Texture puntero;
     puntero.loadFromFile("img/puntero.png");
     Sprite puntero1(puntero);
-    puntero1.scale(0.5,0.5);
+    puntero1.scale(0.4,0.4);
     while (window.isOpen())
     {
 
