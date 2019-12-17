@@ -1696,6 +1696,7 @@ int juego()
                                 enemigo[i-1].setEncolado(x,f,false);
                                 enemigo[i-1].setColor(255,255,255);
                                 colas_torres_3d[x][f][cantidad_bichos]--;
+                                vec_torres[x].resetear_tiro();
 
                                 ///Ordenador de la cola de manera dinamica---------------
 
@@ -1725,6 +1726,8 @@ int juego()
                         {
                             enemigo[i-1].setIntervalo_danio(vec_torres[x].getIntervalo(),f);
                             enemigo[i-1].setDanio_torre(vec_torres[x].getDanio(),f);
+                            window.draw(vec_torres[x].get_Tiro());
+                            vec_torres[x].cambiar_traza(enemigo[prioridad].getX(),enemigo[prioridad].getY(),enemigo[prioridad].getVelocidad());
 
                             if (enemigo[prioridad].getIntervalo_danio(f)!=10000)
                             {
@@ -1738,6 +1741,7 @@ int juego()
                                     {
                                         enemigo[i-1].setEncolado(x,f,false);
                                         colas_torres_3d[x][f][cantidad_bichos]--;
+                                        vec_torres[x].resetear_tiro();
 
                                         ///Ordenador de la cola de manera dinamica---------------
 

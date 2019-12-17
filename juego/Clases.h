@@ -66,6 +66,67 @@ bool Cola::sacar(int &x)
 /// ------------------------------------------------------------------------------------
 */
 
+class Tiro
+{
+private:
+    RectangleShape tiro;
+    float tamx,tamy,x,y,x_inicial,y_inicial;
+public:
+    void cargar (float posx,float posy,float tam_x=1,float tam_y=1)
+    {
+        tamx=tam_x;
+        tamy=tam_y;
+        x=posx;
+        y=posy;
+        x_inicial=x;
+        y_inicial=y;
+        tiro.setSize(Vector2f(tamx,tamy));
+        tiro.setFillColor(Color::Black);
+        tiro.setPosition(x,y);
+    }
+    RectangleShape getTiro()
+    {
+        return tiro;
+    }
+    void reset ()
+    {
+        x=x_inicial;
+        y=y_inicial;
+        tiro.setPosition(x,y);
+    }
+    void traza(float posx_zombie,float posy_zombie,float velocidad_zombie)
+    {
+        if (x!=posx_zombie)
+        {
+            if (x<posx_zombie)
+            {
+                x+=velocidad_zombie;
+                tiro.setPosition(x,y);
+            }
+            else
+            {
+                x-=velocidad_zombie;
+                tiro.setPosition(x,y);
+            }
+        }
+
+        if (y!=posy_zombie)
+        {
+            if (y<posy_zombie)
+            {
+                y+=velocidad_zombie;
+                tiro.setPosition(x,y);
+            }
+            else
+            {
+                y-=velocidad_zombie;
+                tiro.setPosition(x,y);
+            }
+        }
+        if (x==posx_zombie&&y==posy_zombie) reset();
+    }
+};
+
 class Textura
 {
 private:
@@ -1215,6 +1276,7 @@ private:
     int intervalo;
     Sprite cuerpoS;
     Sprite rangoS;
+    Tiro tiro_torre;
 public:
     Torre(int tip=0, int niv=0)
     {
@@ -1228,7 +1290,18 @@ public:
     nivel=0;
     rangoS.setPosition(1000,600);
     }
-
+    void cambiar_traza (float x_zombie,float y_zombie,float velocidad)
+    {
+        tiro_torre.traza(x_zombie,y_zombie,velocidad);
+    }
+    void resetear_tiro ()
+    {
+        tiro_torre.reset();
+    }
+    RectangleShape get_Tiro ()
+    {
+        return tiro_torre.getTiro();
+    }
     void setTipoNivel(int t, int n,Texture &cuerpoT,Texture &rangoT)
     {
         tipo=t;
@@ -1422,6 +1495,7 @@ public:
     void setPosicionTorre(float x, float y)
     {
         cuerpoS.setPosition(x,y);
+        tiro_torre.cargar(x+24,y+19,10,10);
     }
 
     void setEscalaTorre(float fx, float fy)
