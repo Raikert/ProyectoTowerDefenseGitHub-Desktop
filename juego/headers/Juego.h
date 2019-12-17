@@ -991,9 +991,8 @@ int juego()
     window.setKeyRepeatEnabled(false);
     Event event;
     window.setMouseCursorVisible(false);
-    Texture puntero;
-    puntero.loadFromFile("img/puntero.png");
-    Sprite puntero1(puntero);
+    Textura puntero("img/puntero.png",0,true);
+    Sprite puntero1(puntero.getTextura());
     puntero1.scale(0.5,0.5);
     while (window.isOpen())
     {
