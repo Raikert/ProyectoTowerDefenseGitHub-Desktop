@@ -7,6 +7,7 @@ using namespace Collision;
 
 int juego()
 {
+    bool tiempo_inicial=true;
     //variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
     int i,x,te,d,o,l,f,c,debug,z;
 
@@ -20,7 +21,8 @@ int juego()
 
     //Constantes practicas
     const int const_vida_juego=1000;
-    int tiempo_spawn=100;
+    bool primer_enemigo=false;
+    int tiempo_spawn=500;
     const int cantidad_bichos=10;
     const float velocidad_bichos=0.8;
 
@@ -281,7 +283,53 @@ int juego()
     Boton nueva_oleada(49,45,823,433,255), derrota_boton(1000,600,0,0), guardar_partida(152,44,824,545,255), pausa(49,45,875,433);
     Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362),pantalla_completa(64,52,24,433);
 
-    ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ---------------------------------- MENSAJES --------------------------------------------
+
+    /// MENSAJE POST OLEADA
+    /*
+    Font MensajePostOleadaF;
+    if (!MensajePostOleadaF.loadFromFile("tipos_de_texto/OpenSans-Bold.ttf"))
+        return -1;
+    Text MensajePostOleadaT;
+    MensajePostOleadaT.setFont(MensajePostOleadaF);
+    MensajePostOleadaT.setString("¡Una horda de zombies se aproxima, defiende el castillo!");
+    MensajePostOleadaT.setCharacterSize(28);
+    MensajePostOleadaT.setColor(Color(0,200,0,255));
+    MensajePostOleadaT.setPosition(15,250);
+    */
+
+    /// MENSAJE POST PARTIDA
+
+    int Opacidad_Mensaje_Partida=255;
+
+    Texture mensaje_post_partida_T;
+    mensaje_post_partida_T.loadFromFile("img/Mensaje_Partida.png");
+    mensaje_post_partida_T.setSmooth(true);
+
+    Sprite mensaje_post_partida_S;
+    mensaje_post_partida_S.setTexture(mensaje_post_partida_T);
+    mensaje_post_partida_S.setPosition(110,160);
+    mensaje_post_partida_S.setScale(0.7,0.7);
+
+    /// MENSAJE DE DINERO INSUFICIENTE
+
+    bool dinero_insuficiente[9]={false};
+    int Opacidad_Mensaje_Dinero[9]={255};
+
+    Texture mensaje_dinero_t;
+    mensaje_dinero_t.loadFromFile("img/Mensaje_Dinero.png");
+    mensaje_dinero_t.setSmooth(true);
+
+    Sprite mensaje_dinero_s[9];
+    for(x=0; x<9; x++)
+    {
+        mensaje_dinero_s[x].setTexture(mensaje_dinero_t);
+        mensaje_dinero_s[x].setScale(0.7,0.7);
+    }
+
+
+    /// ----------------------------------------------------------------------------------------
+
 ///*/////////////////////////////////////////////-------------ZONA DE TORRES -------------////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///-----Cantidad de posiciones para las torres
@@ -313,7 +361,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=1000;
+    dinero=300;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -808,6 +856,9 @@ int juego()
         torres_vender[i]=Boton(19,16,coordenadas_X_Y_vender[0],coordenadas_X_Y_vender[1]);
         torres_menu_area[i]=Boton(196,72,coordenadas_X_Y_menu[0],coordenadas_X_Y_menu[1]);
         torres_subirlvl[i]=Boton(19,17,coordenadas_X_Y_subirlvl[0],coordenadas_X_Y_subirlvl[1]);
+
+        mensaje_dinero_s[i].setPosition(coordenadas_X_Y_torres[0]-85,coordenadas_X_Y_torres[1]);
+        mensaje_dinero_s[i].setScale(0.5,0.5);
     }
 
     /// Declaracion del vector de menues de torres------------------------------
@@ -833,8 +884,10 @@ int juego()
     textura_menu_torre[2].cargar("img/Menu_Torres_3.png",0,true);
 
     /// MATRIZ DE CLASE TORRE NIVEL X TIPO
+
     Textura rango_torres_textura("img/rango.png");
     Textura texturas_torres[3][3];
+
     for (i=0; i<3; i++)
     {
         switch (i)
@@ -860,11 +913,12 @@ int juego()
     }
 
     Torre vec_torres[posiciones_torres];
-    Torre aux_torre;
+    Torre aux_torre[posiciones_torres];
 
     for(x=0; x<posiciones_torres; x++)
     {
         vec_torres[x]=Torre(0,0);
+        aux_torre[x]=Torre(0,0);
     }
 
     /// Sprites-------------
@@ -924,7 +978,7 @@ int juego()
         }*/
     }
 
-    int objetos=1;
+    int objetos=0;
     int tiempo=1;
     int estado_juego=2;
 
@@ -1098,10 +1152,10 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=1000;
+                    dinero=300;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
-                    objetos=1;
+                    objetos=0;
                     oleada=1;
                     oleada_texto.setVariable(oleada);
                     musica_juego.parar();
@@ -1262,8 +1316,6 @@ int juego()
                 }
             }
 
-            // MENU DE LAS TORRES
-
             /// MENU DE LAS TORRES
 
             for (x=0; x<posiciones_torres; x++)
@@ -1312,10 +1364,10 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=1000;
+                    dinero=300;
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
-                    objetos=1;
+                    objetos=0;
                     oleada=1;
                     oleada_texto.setVariable(oleada);
                     musica_derrota.parar();
@@ -1462,8 +1514,10 @@ int juego()
                         bichos_muertos=0;
                         oleada++;
                         oleada_texto.setVariable(oleada);
-                        objetos=1;
+                        objetos=0;
                         tiempo=1;
+
+                        /// INFORMAR SOBRE UNA NUEVA OLEADA
                     }
 
                     // sonido
@@ -1495,11 +1549,16 @@ int juego()
                                 menu_abierto[x]=false;
                             }
 
-                            /// SUBIR NIVEL TORRE POR MITAD DE PRECIO
-                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && dinero>=vec_torres[x].getPrecio()*0.5)
+                            /// SUBIR NIVEL TORRE POR MENOS DE PRECIO
+
+                            // aux_torre[x]=Torre(vec_torres[x].getTipo()-1,vec_torres[x].getNivel()+1);
+
+                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && dinero>=(vec_torres[x].getPrecio()*4))
                             {
                                 if(vec_torres[x].getNivel()<3)
                                 {
+                                    dinero-=(vec_torres[x].getPrecio()*4);
+                                    dinero_texto.setVariable(dinero);
                                     vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
                                 }
                             }
@@ -1518,14 +1577,14 @@ int juego()
                             {
                                 if(Ocupado[x]==false && torres_tipo[y][x].click(mousexy))
                                 {
-
-                                    vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][0].getTextura(),rango_torres_textura.getTextura());
+                                    vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
                                     vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy());
                                     vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52);
                                     vec_torres[x].setEscalaRango(1,1.22);
                                     Ocupado[x]=true;
                                     dinero-=vec_torres[x].getPrecio();
                                     dinero_texto.setVariable(dinero);
+
                                     if(dinero>=vec_torres[x].getPrecio())
                                     {
                                         dinero-=vec_torres[x].getPrecio();
@@ -1533,6 +1592,11 @@ int juego()
                                     }
                                     else
                                     {
+                                        dinero+=vec_torres[x].getPrecio();
+                                        dinero_texto.setVariable(dinero);
+                                        Ocupado[x]=false;
+                                        dinero_insuficiente[x]=true;
+                                        Opacidad_Mensaje_Dinero[x]=255;
                                         vec_torres[x].setTipoNivel();
                                     }
                                 }
@@ -1581,6 +1645,21 @@ int juego()
 
             window.draw(mapa);
 
+            if(tiempo>=200 && Opacidad_Mensaje_Partida>0)
+            {
+                tiempo_inicial=false;
+                Opacidad_Mensaje_Partida-=2;
+                mensaje_post_partida_S.setColor(Color(255,255,255,Opacidad_Mensaje_Partida));
+                window.draw(mensaje_post_partida_S);
+            }
+            else
+            {
+                if (tiempo_inicial==true)
+                {
+                   window.draw(mensaje_post_partida_S);
+                }
+            }
+
             // VIDA DEL JUEGO
             window.draw(vida_juego_texto.getTexto());
             // DINERO DEL JUEGO
@@ -1596,6 +1675,27 @@ int juego()
                 // VARIABLE TIEMPO
                 window.draw(tiempo_texto.getTexto());
             }
+
+            for(x=0; x<posiciones_torres; x++)
+            {
+                if(dinero_insuficiente[x]==true)
+                {
+                    Opacidad_Mensaje_Dinero[x]--;
+                    mensaje_dinero_s[x].setColor(Color(255,255,255,Opacidad_Mensaje_Dinero[x]));
+                    window.draw(mensaje_dinero_s[x]);
+
+                    if(Opacidad_Mensaje_Dinero[x]<=0)
+                    {
+                        dinero_insuficiente[x]=false;
+                        Opacidad_Mensaje_Dinero[x]=255;
+                    }
+                }
+            }
+
+
+
+
+
 
 ///*///////////////////////////////////////////////////////////- Spawnear torres -///////////////////////////////////////////////////////////////////////////
 
@@ -2161,6 +2261,41 @@ int juego()
                     objetos++;
                 }
             }
+
+            /// INTERVALO DE SPAWNEO DE LOS ENEMIGOS
+            switch(objetos)
+            {
+            case 0:
+                if(oleada==1)
+                {
+                    tiempo_spawn=500;
+                }
+                else
+                {
+                    tiempo_spawn=200;
+                }
+                break;
+            case 1:
+                tiempo_spawn=250;
+                break;
+            case 2:
+                tiempo_spawn=200;
+                break;
+            case 3:
+                tiempo_spawn=150;
+                break;
+            case 4:
+                tiempo_spawn=100;
+                break;
+            case 6:
+                tiempo_spawn=50;
+                break;
+            }
+
+            /// MENSAJE POST OLEADA
+
+
+
             tiempo++;
 
             //Metodo de clase Texto, para modificar el string porque la variable cambio de valor.

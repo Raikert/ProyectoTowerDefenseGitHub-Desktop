@@ -1275,6 +1275,7 @@ private:
     int danio;
     int intervalo;
     Sprite cuerpoS;
+    Texture rangoT;
     Sprite rangoS;
     Tiro tiro_torre;
 public:
@@ -1308,26 +1309,26 @@ public:
         nivel=n;
         switch(tipo)
         {
-        case 1:
+        case 1: /// ROJO
             switch(nivel)
             {
             case 1:
-                precio=100;
-                danio=10;
-                intervalo=10;
+                precio=300;
+                danio=6;
+                intervalo=5;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             case 2:
-                precio=200;
-                danio=15;
-                intervalo=7;
+                precio=900;
+                danio=10;
+                intervalo=5;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             case 3:
-                precio=400;
-                danio=25;
+                precio=2100;
+                danio=14;
                 intervalo=5;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
@@ -1335,54 +1336,54 @@ public:
             }
             rangoS.setColor(Color(255,0,0,100));
             break;
-        case 2:
+        case 2: /// GRIS
             switch(nivel)
             {
             case 1:
-                precio=150;
-                danio=15;
-                intervalo=20;
+                precio=400;
+                danio=25;
+                intervalo=15;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             case 2:
-                precio=300;
-                danio=20;
-                intervalo=16;
+                precio=1200;
+                danio=60;
+                intervalo=15;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             case 3:
-                precio=500;
-                danio=25;
-                intervalo=12;
+                precio=3600;
+                danio=85;
+                intervalo=15;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             }
             rangoS.setColor(Color(0,255,200,100));
             break;
-        case 3:
+        case 3: /// VERDE
             switch(nivel)
             {
             case 1:
-                precio=200;
-                danio=30;
-                intervalo=40;
+                precio=500;
+                danio=80;
+                intervalo=50;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             case 2:
-                precio=400;
-                danio=60;
-                intervalo=25;
+                precio=1500;
+                danio=140;
+                intervalo=50;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
             case 3:
-                precio=800;
-                danio=90;
-                intervalo=15;
+                precio=4500;
+                danio=230;
+                intervalo=50;
                 cuerpoS.setTexture(cuerpoT);
                 rangoS.setTexture(rangoT);
                 break;
