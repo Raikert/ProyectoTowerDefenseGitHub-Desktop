@@ -1243,6 +1243,12 @@ private:
     int oleada;
 
 public:
+    Partida(){
+    vidas=1002;
+    dinero=2001;
+    oleada=1;
+
+    }
     int getvidas()
     {
         return vidas;
@@ -1267,10 +1273,40 @@ public:
     {
         oleada=x;
     }
-    bool leerendisco (int);
-    void grabarendiso ();
+    bool leerendisco ();
+    bool grabarendiso ();
+
+
 
 };
+
+bool Partida::leerendisco(){
+FILE *p;
+p=fopen("partida.dat","rb");
+if(p==NULL)return false;
+if(fread(this,sizeof *this,1,p)==1){
+    fclose(p);
+    return true;
+    }
+    fclose(p);
+    return false;
+
+
+
+}
+
+bool Partida::grabarendiso(){
+    FILE *p;
+    p=fopen("partida.dat","wb");
+    if(p==NULL)return false;
+    if(fwrite(this,sizeof *this,1,p)==1){
+        fclose(p);
+        return true;
+    }
+    fclose(p);
+    return false;
+
+}
 
 
 /// CLASE TORRE

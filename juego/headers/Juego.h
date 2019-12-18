@@ -167,6 +167,10 @@ int juego()
     textura_mapa.setSuavizado(true);
     textura_derrota.setSuavizado(true);
 
+
+    ///clase partida
+    Partida game;
+
     //Zona de texto---------------------------
     /*
     Font tipo_de_texto;
@@ -361,7 +365,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=10000;
+    dinero=1000;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -944,7 +948,7 @@ int juego()
     int bichos_muertos=0;
     int vida_aumentada=0;
     int oleada=1;
-    Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Yellow,true);
+    Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Black,true);
 
 
 
@@ -1152,7 +1156,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=10000;
+                    dinero=5000;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=0;
@@ -1436,8 +1440,56 @@ int juego()
 
                         if (cargar_partida_boton.click(mousexy))
                         {
-                            musica_menu.parar();
-                            musica_juego.reproducir();
+                            game.leerendisco();
+
+                            vida_juego=game.getvidas();
+                            vida_juego_texto.setVariable(vida_juego);
+                            aldeano.setVida(0);
+                            vida_aumentada=0;
+                            cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                            for(int o=0; o<cantidad_bichos; o++)
+                            {
+                                vidas_texto[o].setVariable(enemigo[o].getVida());
+                                vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                                vidas_texto[o].setTransparencia(0);
+                            }
+                            dinero=game.getdinero();
+                            dinero_texto.setVariable(dinero);
+                            tiempo=1;
+                            objetos=0;
+                            oleada=1;
+                            oleada_texto.setVariable(oleada);
+                            musica_juego.parar();
+                            primer_carga=false;
+                            opacidad_menu=0;
+                            boolmusicajuego=false;
+                            for(int l=0; l<posiciones_torres; l++)
+                            {
+                                /// TORRES -------------------------------------
+                                Ocupado[l]=false;
+                                vec_torres[l].setTipoNivel();
+                                /// RANGOS -------------------------------------
+                                /*
+                                for(int f=0; f<posiciones_torres; f++)
+                                {
+                                    vec_torres[f].setPosicionTorre(10000,0);
+                                    vec_torres[f].setPosicionRango(10000,0);
+                                }
+                                */
+                            }
+                            for (f=0; f<posiciones_torres; f++)
+                            {
+                                for (c=0; c<cantidad_torres; c++)
+                                {
+                                    colas_torres_3d[f][c][cantidad_bichos]=0;
+                                    for (x=0; x<cantidad_bichos; x++)
+                                    {
+                                        colas_torres_3d[f][c][x]=valor;
+                                    }
+                                }
+                            }
+
+                            estado_juego=3;
 
                         }
 
@@ -1499,6 +1551,16 @@ int juego()
                         musica_juego.pausar();
                         estado_juego=0;
                     }
+
+
+                    if(guardar_partida.click(mousexy))
+                        {
+                            game.setdinero(dinero);
+                            game.setvidas(vida_juego);
+                            game.grabarendiso();
+
+
+                        }
 
                     // nueva oleada
 
