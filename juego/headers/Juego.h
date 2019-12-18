@@ -361,7 +361,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=300;
+    dinero=10000;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -1152,7 +1152,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=300;
+                    dinero=10000;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=0;
@@ -1364,7 +1364,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=300;
+                    dinero=10000;
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
                     objetos=0;
@@ -1551,15 +1551,23 @@ int juego()
 
                             /// SUBIR NIVEL TORRE POR MENOS DE PRECIO
 
-                            // aux_torre[x]=Torre(vec_torres[x].getTipo()-1,vec_torres[x].getNivel()+1);
-
-                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && dinero>=(vec_torres[x].getPrecio()*4))
+                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && dinero>=(2*vec_torres[x].getPrecio()))
                             {
                                 if(vec_torres[x].getNivel()<3)
                                 {
-                                    dinero-=(vec_torres[x].getPrecio()*4);
-                                    dinero_texto.setVariable(dinero);
-                                    vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                    if(vec_torres[x].getNivel()==1)
+                                    {
+                                        dinero-=(6*vec_torres[x].getPrecio());
+                                        dinero_texto.setVariable(dinero);
+                                        vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                    }
+                                    else if(vec_torres[x].getNivel()==2)
+                                    {
+                                        dinero-=(22.5*vec_torres[x].getPrecio());
+                                        dinero_texto.setVariable(dinero);
+                                        vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                    }
+
                                 }
                             }
 
