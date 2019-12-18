@@ -70,7 +70,7 @@ class Tiro
 {
 private:
     RectangleShape tiro;
-    float tamx,tamy,x,y,x_inicial,y_inicial;
+    float tamx,tamy,x,y,x_inicial,y_inicial,diferenciax,diferenciay;
 public:
     void cargar (float posx,float posy,float tam_x=1,float tam_y=1)
     {
@@ -81,7 +81,7 @@ public:
         x_inicial=x;
         y_inicial=y;
         tiro.setSize(Vector2f(tamx,tamy));
-        tiro.setFillColor(Color::Black);
+        tiro.setFillColor(Color::Red);
         tiro.setPosition(x,y);
     }
     RectangleShape getTiro()
@@ -123,7 +123,14 @@ public:
                 tiro.setPosition(x,y);
             }
         }
-        if (x==posx_zombie&&y==posy_zombie) reset();
+        diferenciax=x-posx_zombie;
+        diferenciay=y-posy_zombie;
+        if (x<posx_zombie)
+            diferenciax=-(diferenciax);
+        if (y<posy_zombie)
+            diferenciay=-(diferenciay);
+        if (diferenciax<2&&diferenciay<2)
+            reset();
     }
 };
 
@@ -1142,8 +1149,9 @@ public:
     {
         return transparencia;
     }
-    bool getEncendido() {
-    return encendido;
+    bool getEncendido()
+    {
+        return encendido;
     }
     int getEsix()
     {
@@ -1186,8 +1194,9 @@ public:
         transparencia=t;
         boton.setFillColor(Color(255,255,255,transparencia));
     }
-    void setEncendido(bool e) {
-    encendido=e;
+    void setEncendido(bool e)
+    {
+        encendido=e;
     }
 };
 
@@ -1287,9 +1296,9 @@ public:
 
     void setTipoNivel()
     {
-    tipo=0;
-    nivel=0;
-    rangoS.setPosition(1000,600);
+        tipo=0;
+        nivel=0;
+        rangoS.setPosition(1000,600);
     }
     void cambiar_traza (float x_zombie,float y_zombie,float velocidad)
     {
@@ -1496,7 +1505,7 @@ public:
     void setPosicionTorre(float x, float y)
     {
         cuerpoS.setPosition(x,y);
-        tiro_torre.cargar(x+24,y+19,10,10);
+        tiro_torre.cargar(x+24,y+19,3.75,3.75);
     }
 
     void setEscalaTorre(float fx, float fy)
