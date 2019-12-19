@@ -63,6 +63,10 @@ int juego()
         vidas_texto[i].setVariable(enemigo[i].getVida());
     }
 
+    /// CANTIDAD DE ENEMIGOS MUERTOS
+
+    int enemigos_muertos=0;
+
     //Texto oleada_texto("tipos_de_texto/OpenSans-BoldItalic.ttf",oleada,20,940)
 
     // VARIABLES DE MONSTRUOS
@@ -207,7 +211,6 @@ int juego()
 
     ///Y si, es una sola linea.
 
-    /*
     Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
 
     Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
@@ -222,7 +225,6 @@ int juego()
 
     viejo_test.setEstado(false);
     viejo_test.setFps(10);
-    */
 
 
     ///El draw de esta cinematica esta debajo de todo solo por esta vez, dado que sino los demas
@@ -253,6 +255,8 @@ int juego()
     Texto mousex (font_texto2.getFont(),mousexy[0],18,628,540);
 
     Texto mousey (font_texto2.getFont(),mousexy[1],18,700,540);
+
+    Texto muertos_texto(font_texto2.getFont(),enemigos_muertos,40,940,284,Color::Yellow,true);
 
     //Si gente, le puse MUSICA WEEEEE
 
@@ -335,8 +339,8 @@ int juego()
 
     /// MENSAJE DE DINERO INSUFICIENTE
 
-    bool dinero_insuficiente[9]={false};
-    int Opacidad_Mensaje_Dinero[9]={255};
+    bool dinero_insuficiente[9]= {false};
+    int Opacidad_Mensaje_Dinero[9]= {255};
 
     Texture mensaje_dinero_t;
     mensaje_dinero_t.loadFromFile("img/Mensaje_Dinero.png");
@@ -383,7 +387,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=1000;
+    dinero=300;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -905,7 +909,7 @@ int juego()
     /// MENU DE TORRES 3
     textura_menu_torre[2].cargar("img/Menu_Torres_3.png",0,true);
 
-    /// MATRIZ DE CLASE TORRE NIVEL X TIPO
+    /// MATRIZ DE CLASE TORRE TIPO X NIVEL
 
     Textura rango_torres_textura("img/rango.png");
     Textura texturas_torres[3][3];
@@ -1174,7 +1178,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=5000;
+                    dinero=300;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=0;
@@ -1211,7 +1215,6 @@ int juego()
                     }
                 }
 
-                /*
                 ///Primer cinematica del juego - testeos
                 if (Keyboard::isKeyPressed(Keyboard::A))
                 {
@@ -1242,7 +1245,6 @@ int juego()
                     }
                     viejo_test.Reicicio();
                 }
-                */
 
                 //--------------------------------------------------------------
             }
@@ -1386,7 +1388,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=10000;
+                    dinero=300;
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
                     objetos=0;
@@ -1462,8 +1464,8 @@ int juego()
 
                             vida_juego=game.getvidas();
                             vida_juego_texto.setVariable(vida_juego);
-                            aldeano.setVida(0+(100*game.getoleada()));
-                            vida_aumentada=0+(100*game.getoleada());
+                            aldeano.setVida(0+(100*game.getoleada()-100));
+                            vida_aumentada=0+(100*game.getoleada()-100);
                             cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                             for(int o=0; o<cantidad_bichos; o++)
                             {
@@ -1482,20 +1484,13 @@ int juego()
                             primer_carga=false;
                             opacidad_menu=0;
                             boolmusicajuego=false;
-                            for(int l=0; l<posiciones_torres; l++)
+                            /*
+                            for(int x=0; x<posiciones_torres; x++)
                             {
-
-                                Ocupado[l]=false;
-                                vec_torres[l].setTipoNivel();
-
-                                /*
-                                for(int f=0; f<posiciones_torres; f++)
-                                {
-                                    vec_torres[f].setPosicionTorre(10000,0);
-                                    vec_torres[f].setPosicionRango(10000,0);
-                                }
-                                */
+                                Ocupado[x]=game.getpos_torres(x);
+                                vec_torres[x].setTipoNivel(game.gettipo_torres(x),game.getniv_torres(x),texturas_torres[game.gettipo_torres(x)][game.getniv_torres(x)].getTextura() ,rango_torres_textura.getTextura());
                             }
+                            */
                             for (f=0; f<posiciones_torres; f++)
                             {
                                 for (c=0; c<cantidad_torres; c++)
@@ -1574,12 +1569,25 @@ int juego()
 
 
                     if(guardar_partida.click(mousexy)&& bichos_muertos==10)
+                    {
+                        game.setdinero(dinero);
+                        game.setvidas(vida_juego);
+                        game.setoleada(oleada+1);
+
+                        /// ---- GUARDADO DE TORRES ------
+
+                        for(x=0; x<posiciones_torres; x++)
                         {
-                            game.setdinero(dinero);
-                            game.setvidas(vida_juego);
-                            game.setoleada(oleada+1);
-                            game.grabarendiso();
-                            estado_juego=2;
+                            game.setpos_torre(x,Ocupado[x]);
+                            game.settipo_torre(x,vec_torres[x].getTipo());
+                            game.setniv_torres(x,vec_torres[x].getNivel());
+                        }
+
+                        /// ------------------------------
+
+                        game.grabarendiso();
+
+                        estado_juego=2;
                         vida_juego=const_vida_juego;
                         vida_juego_texto.setVariable(vida_juego);
                         aldeano.setVida(0);
@@ -1591,7 +1599,7 @@ int juego()
                             vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                             vidas_texto[o].setTransparencia(0);
                         }
-                        dinero=5000;
+                        dinero=300;
                         dinero_texto.setVariable(dinero);
                         tiempo=1;
                         objetos=0;
@@ -1628,7 +1636,7 @@ int juego()
                         }
 
 
-                        }
+                    }
 
 
                     // nueva oleada
@@ -1682,21 +1690,62 @@ int juego()
 
                             /// SUBIR NIVEL TORRE POR MENOS DE PRECIO
 
-                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && dinero>=(2*vec_torres[x].getPrecio()))
+                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy))
                             {
                                 if(vec_torres[x].getNivel()<3)
                                 {
                                     if(vec_torres[x].getNivel()==1)
                                     {
-                                        dinero-=(6*vec_torres[x].getPrecio());
-                                        dinero_texto.setVariable(dinero);
-                                        vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        /// NIVEL 1
+                                        if(vec_torres[x].getTipo()==1 && dinero>=(6*vec_torres[x].getPrecio()))
+                                        {
+                                            /// TIPO 1
+                                            dinero-=(6*vec_torres[x].getPrecio());
+                                            dinero_texto.setVariable(dinero);
+                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        }
+                                        else if(vec_torres[x].getTipo()==2 && dinero>=(6*vec_torres[x].getPrecio()))
+                                        {
+                                            /// TIPO 2
+                                            dinero-=(6*vec_torres[x].getPrecio());
+                                            dinero_texto.setVariable(dinero);
+                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        }
+                                        else
+                                        {
+                                            /// TIPO 3
+                                            dinero-=(6*vec_torres[x].getPrecio() && dinero>=(6*vec_torres[x].getPrecio()));
+                                            dinero_texto.setVariable(dinero);
+                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        }
+
                                     }
                                     else if(vec_torres[x].getNivel()==2)
                                     {
-                                        dinero-=(22.5*vec_torres[x].getPrecio());
-                                        dinero_texto.setVariable(dinero);
-                                        vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        /// NIVEL 2
+                                        if(vec_torres[x].getTipo()==1 && dinero>=(21*vec_torres[x].getPrecio()))
+                                        {
+                                            /// TIPO 1
+                                            dinero-=(21*vec_torres[x].getPrecio());
+                                            dinero_texto.setVariable(dinero);
+                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        }
+                                        else if(vec_torres[x].getTipo()==2 && dinero>=(24*vec_torres[x].getPrecio()))
+                                        {
+                                            /// TIPO 2
+                                            dinero-=(24*vec_torres[x].getPrecio());
+                                            dinero_texto.setVariable(dinero);
+                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        }
+                                        else if(dinero>=(22.5*vec_torres[x].getPrecio()))
+                                        {
+                                            /// TIPO 3
+                                            dinero-=(22.5*vec_torres[x].getPrecio());
+                                            dinero_texto.setVariable(dinero);
+                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                        }
+
+
                                     }
 
                                 }
@@ -1784,22 +1833,9 @@ int juego()
 
             window.draw(mapa);
 
-            if(tiempo>=200 && Opacidad_Mensaje_Partida>0)
-            {
-                tiempo_inicial=false;
-                Opacidad_Mensaje_Partida-=2;
-                mensaje_post_partida_S.setColor(Color(255,255,255,Opacidad_Mensaje_Partida));
-                window.draw(mensaje_post_partida_S);
-            }
-            else
-            {
-                if (tiempo_inicial==true)
-                {
-                   window.draw(mensaje_post_partida_S);
-                }
-            }
 
-                   if(guardar_f==true && Opacidad_Mensaje_guardar>0)
+
+            if(guardar_f==true && Opacidad_Mensaje_guardar>0)
             {
                 guardar_f=false;
 
@@ -1828,6 +1864,8 @@ int juego()
                 window.draw(tiempo_texto.getTexto());
             }
 
+
+
             for(x=0; x<posiciones_torres; x++)
             {
                 if(dinero_insuficiente[x]==true)
@@ -1844,8 +1882,7 @@ int juego()
                 }
             }
 
-
-
+            window.draw(muertos_texto.getTexto());
 
 
 
@@ -1874,6 +1911,8 @@ int juego()
                 else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
                 {
                     enemigo[d-1].setMuerto();
+                    enemigos_muertos++;
+                    muertos_texto.setVariable(enemigos_muertos);
                 }
 
                 // esto serian los mini-estados de los sprites, 3 cases por ser 3 frames o mini-sprites
@@ -1895,6 +1934,25 @@ int juego()
                 if (menu_abierto[x]==true)
                 {
                     window.draw(Sprite_menu_torre[nivel_del_menu[x]][x]);
+                }
+            }
+
+            if(tiempo>=200 && Opacidad_Mensaje_Partida>0)
+            {
+                tiempo_inicial=false;
+                Opacidad_Mensaje_Partida-=2;
+                if(Opacidad_Mensaje_Partida<0)
+                {
+                    Opacidad_Mensaje_Partida=0;
+                }
+                mensaje_post_partida_S.setColor(Color(255,255,255,Opacidad_Mensaje_Partida));
+                window.draw(mensaje_post_partida_S);
+            }
+            else
+            {
+                if (tiempo_inicial==true)
+                {
+                    window.draw(mensaje_post_partida_S);
                 }
             }
 
@@ -2497,7 +2555,6 @@ int juego()
 
         }   // fin del switch(estado_juego)
 
-        /*
         ///cinematica,draw, test-----------------
         if (test1.getEstado())
         {
@@ -2513,7 +2570,6 @@ int juego()
             viejo_test.Actualizar_frame();
         }
         ///-------------------------------------
-        */
 
         ///Intentando acoplar el mecanismo de cinematica a las animaciones
         ///dada su simplicidad para reproducir frames.----------------------
@@ -2529,7 +2585,7 @@ int juego()
         */
         ///-----------------------------------------------
         puntero1.setPosition(mousexy[0],mousexy[1]);
-            window.draw(puntero1);
+        window.draw(puntero1);
         window.display();
 
     }   // fin del while(window.IsOpen())

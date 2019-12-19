@@ -1247,10 +1247,11 @@ private:
 
 public:
 
-    Partida(){
-    vidas=1000;
-    dinero=5000;
-    oleada=0;
+    Partida()
+    {
+        vidas=1000;
+        dinero=5000;
+        oleada=0;
 
     }
 
@@ -1266,17 +1267,17 @@ public:
     {
         return oleada;
     }
-    int *getniv_torres()
+    int getniv_torres(int pos)
     {
-    return niv_torres;
+        return niv_torres[pos];
     }
-        int *gettipo_torres()
+    int gettipo_torres(int pos)
     {
-    return tipo_torres;
+        return tipo_torres[pos];
     }
-        bool *getpos_torres()
+    bool getpos_torres(int pos)
     {
-    return pos_torres;
+        return pos_torres[pos];
     }
     void setvidas(int x)
     {
@@ -1292,31 +1293,37 @@ public:
     }
     bool leerendisco ();
     bool grabarendiso ();
-    void setpos_torre(int pos,bool ocu){
+    void setpos_torre(int pos,bool ocu)
+    {
 
-    pos_torres[pos]=ocu;
+        pos_torres[pos]=ocu;
 
     }
-    void settipo_torre(int pos,int tipo){
+    void settipo_torre(int pos,int tipo)
+    {
 
-    tipo_torres[pos]=tipo;
+        tipo_torres[pos]=tipo;
     }
-    void setniv_torres(int pos, int niv){
+    void setniv_torres(int pos, int niv)
+    {
 
-    niv_torres[pos]=niv;
+        niv_torres[pos]=niv;
     }
 
 
 
 };
 
-bool Partida::leerendisco(){
-FILE *p;
-p=fopen("partida.dat","rb");
-if(p==NULL)return false;
-if(fread(this,sizeof *this,1,p)==1){
-    fclose(p);
-    return true;
+bool Partida::leerendisco()
+{
+    FILE *p;
+    p=fopen("partida.dat","rb");
+    if(p==NULL)
+        return false;
+    if(fread(this,sizeof *this,1,p)==1)
+    {
+        fclose(p);
+        return true;
     }
     fclose(p);
     return false;
@@ -1325,11 +1332,14 @@ if(fread(this,sizeof *this,1,p)==1){
 
 }
 
-bool Partida::grabarendiso(){
+bool Partida::grabarendiso()
+{
     FILE *p;
     p=fopen("partida.dat","wb");
-    if(p==NULL)return false;
-    if(fwrite(this,sizeof *this,1,p)==1){
+    if(p==NULL)
+        return false;
+    if(fwrite(this,sizeof *this,1,p)==1)
+    {
         fclose(p);
         return true;
     }
