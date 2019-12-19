@@ -1494,86 +1494,74 @@ public:
         nivel=n;
         switch(tipo)
         {
-        case 1:
+        case 1: /// ROJO
             switch(nivel)
             {
             case 1:
-                precio=100;
-                danio=10;
-                intervalo=10;
-                cuerpoS.setTexture(cuerpoT);
-                break;
-
-            case 2:
-                precio=200;
-                danio=15;
-                intervalo=7;
-                cuerpoS.setTexture(cuerpoT);
-
-                break;
-
-            case 3:
-                precio=400;
-                danio=25;
+                precio=300;
+                danio=6;
                 intervalo=5;
                 cuerpoS.setTexture(cuerpoT);
-
-                break;
-            }
-            break;
-        case 2:
-            switch(nivel)
-            {
-            case 1:
-                precio=150;
-                danio=15;
-                intervalo=20;
-                cuerpoS.setTexture(cuerpoT);
                 break;
             case 2:
-                precio=300;
-                danio=20;
-                intervalo=16;
+                precio=900;
+                danio=10;
+                intervalo=5;
                 cuerpoS.setTexture(cuerpoT);
                 break;
             case 3:
-                precio=500;
-                danio=25;
-                intervalo=12;
+                precio=2100;
+                danio=14;
+                intervalo=5;
                 cuerpoS.setTexture(cuerpoT);
                 break;
             }
             break;
-        case 3:
+        case 2: /// GRIS
             switch(nivel)
             {
             case 1:
-                precio=200;
-                danio=30;
-                intervalo=40;
-                cuerpoS.setTexture(cuerpoT);
-                break;
-            case 2:
                 precio=400;
-                danio=60;
-                intervalo=25;
-                cuerpoS.setTexture(cuerpoT);
-
-                break;
-            case 3:
-                precio=800;
-                danio=90;
+                danio=25;
                 intervalo=15;
                 cuerpoS.setTexture(cuerpoT);
                 break;
-
+            case 2:
+                precio=1200;
+                danio=60;
+                intervalo=15;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            case 3:
+                precio=3600;
+                danio=85;
+                intervalo=15;
+                cuerpoS.setTexture(cuerpoT);
+                break;
             }
             break;
-        default:
-            precio=0;
-            danio=0;
-            intervalo=0;
-            cuerpoS.setTexture(cuerpoT);
+        case 3: /// VERDE
+            switch(nivel)
+            {
+            case 1:
+                precio=500;
+                danio=80;
+                intervalo=50;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            case 2:
+                precio=1500;
+                danio=140;
+                intervalo=50;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            case 3:
+                precio=4500;
+                danio=230;
+                intervalo=50;
+                cuerpoS.setTexture(cuerpoT);
+                break;
+            }
             break;
         }
     }

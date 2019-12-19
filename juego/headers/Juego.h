@@ -387,7 +387,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=300;
+    dinero=10000;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -939,13 +939,13 @@ int juego()
     }
 
     Torre vec_torres[posiciones_torres];
-    Torre aux_torre[posiciones_torres];
+    Torre aux_torre;
 
     for(x=0; x<posiciones_torres; x++)
     {
         vec_torres[x]=Torre(0,0);
-        aux_torre[x]=Torre(0,0);
     }
+    aux_torre=Torre(0,0);
 
     /// Sprites-------------
 
@@ -1178,7 +1178,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=300;
+                    dinero=10000;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=0;
@@ -1388,7 +1388,7 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
-                    dinero=300;
+                    dinero=10000;
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
                     objetos=0;
@@ -1599,7 +1599,7 @@ int juego()
                             vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                             vidas_texto[o].setTransparencia(0);
                         }
-                        dinero=300;
+                        dinero=10000;
                         dinero_texto.setVariable(dinero);
                         tiempo=1;
                         objetos=0;
@@ -1675,7 +1675,7 @@ int juego()
                         }
                     }
 
-                    /// Torres
+                    /// ---------------------------- TORRES ---------------------------- ///
 
                     for(x=0; x<posiciones_torres; x++)
                     {
@@ -1689,73 +1689,23 @@ int juego()
                             }
 
                             /// SUBIR NIVEL TORRE POR MENOS DE PRECIO
-
-                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy))
+                            if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && vec_torres[x].getNivel()<3)
                             {
-                                if(vec_torres[x].getNivel()<3)
+                                aux_torre=vec_torres[x];
+                                aux_torre.subirNivel(texturas_torres[aux_torre.getTipo()-1][aux_torre.getNivel()].getTextura());
+                                if(dinero>=(aux_torre.getPrecio()*2))
                                 {
-                                    if(vec_torres[x].getNivel()==1)
-                                    {
-                                        /// NIVEL 1
-                                        if(vec_torres[x].getTipo()==1 && dinero>=(6*vec_torres[x].getPrecio()))
-                                        {
-                                            /// TIPO 1
-                                            dinero-=(6*vec_torres[x].getPrecio());
-                                            dinero_texto.setVariable(dinero);
-                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
-                                        }
-                                        else if(vec_torres[x].getTipo()==2 && dinero>=(6*vec_torres[x].getPrecio()))
-                                        {
-                                            /// TIPO 2
-                                            dinero-=(6*vec_torres[x].getPrecio());
-                                            dinero_texto.setVariable(dinero);
-                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
-                                        }
-                                        else
-                                        {
-                                            /// TIPO 3
-                                            dinero-=(6*vec_torres[x].getPrecio() && dinero>=(6*vec_torres[x].getPrecio()));
-                                            dinero_texto.setVariable(dinero);
-                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
-                                        }
-
-                                    }
-                                    else if(vec_torres[x].getNivel()==2)
-                                    {
-                                        /// NIVEL 2
-                                        if(vec_torres[x].getTipo()==1 && dinero>=(21*vec_torres[x].getPrecio()))
-                                        {
-                                            /// TIPO 1
-                                            dinero-=(21*vec_torres[x].getPrecio());
-                                            dinero_texto.setVariable(dinero);
-                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
-                                        }
-                                        else if(vec_torres[x].getTipo()==2 && dinero>=(24*vec_torres[x].getPrecio()))
-                                        {
-                                            /// TIPO 2
-                                            dinero-=(24*vec_torres[x].getPrecio());
-                                            dinero_texto.setVariable(dinero);
-                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
-                                        }
-                                        else if(dinero>=(22.5*vec_torres[x].getPrecio()))
-                                        {
-                                            /// TIPO 3
-                                            dinero-=(22.5*vec_torres[x].getPrecio());
-                                            dinero_texto.setVariable(dinero);
-                                            vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
-                                        }
-
-
-                                    }
-
+                                    dinero-=(aux_torre.getPrecio()*2);
+                                    dinero_texto.setVariable(dinero);
+                                    vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
                                 }
                             }
 
-                            /// VENDER TORRE Y TE DEVUELVE 70% DEL PRECIO (pero en int)
+                            /// VENDE LA TORRE Y TE DEVUELVE EL PRECIO DEL NIVEL ACTUAL (pero en int)
                             if(Ocupado[x]==true && torres_vender[x].click(mousexy))
                             {
                                 Ocupado[x]=false;
-                                dinero+=vec_torres[x].getPrecio()*0.7;
+                                dinero+=(vec_torres[x].getPrecio()*2);
                                 dinero_texto.setVariable(dinero);
                                 vec_torres[x].setTipoNivel();
                             }
