@@ -1241,14 +1241,19 @@ private:
     int vidas;
     int dinero;
     int oleada;
+    bool pos_torres[9];
+    int niv_torres[9];
+    int tipo_torres[9];
 
 public:
+
     Partida(){
-    vidas=1002;
-    dinero=2001;
-    oleada=1;
+    vidas=1000;
+    dinero=5000;
+    oleada=0;
 
     }
+
     int getvidas()
     {
         return vidas;
@@ -1260,6 +1265,18 @@ public:
     int getoleada()
     {
         return oleada;
+    }
+    int *getniv_torres()
+    {
+    return niv_torres;
+    }
+        int *gettipo_torres()
+    {
+    return tipo_torres;
+    }
+        bool *getpos_torres()
+    {
+    return pos_torres;
     }
     void setvidas(int x)
     {
@@ -1275,6 +1292,19 @@ public:
     }
     bool leerendisco ();
     bool grabarendiso ();
+    void setpos_torre(int pos,bool ocu){
+
+    pos_torres[pos]=ocu;
+
+    }
+    void settipo_torre(int pos,int tipo){
+
+    tipo_torres[pos]=tipo;
+    }
+    void setniv_torres(int pos, int niv){
+
+    niv_torres[pos]=niv;
+    }
 
 
 

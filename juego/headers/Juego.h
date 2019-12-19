@@ -302,6 +302,24 @@ int juego()
     MensajePostOleadaT.setPosition(15,250);
     */
 
+
+
+    /// MENSAJE TERMINA LA OLEADA PARA GUARDAR
+    int Opacidad_Mensaje_guardar=255;
+    bool guardar_f=false;
+
+    Texture mensaje_guardar;
+    mensaje_guardar.loadFromFile("img/Mensaje_Guardar.png");
+    mensaje_guardar.setSmooth(true);
+
+    Sprite mensajee_guardar;
+    mensajee_guardar.setTexture(mensaje_guardar);
+    mensajee_guardar.setPosition(110,160);
+    mensajee_guardar.setScale(0.7,0.7);
+
+
+
+
     /// MENSAJE POST PARTIDA
 
     int Opacidad_Mensaje_Partida=255;
@@ -948,7 +966,7 @@ int juego()
     int bichos_muertos=0;
     int vida_aumentada=0;
     int oleada=1;
-    Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Black,true);
+    Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Yellow,true);
 
 
 
@@ -1444,8 +1462,8 @@ int juego()
 
                             vida_juego=game.getvidas();
                             vida_juego_texto.setVariable(vida_juego);
-                            aldeano.setVida(0);
-                            vida_aumentada=0;
+                            aldeano.setVida(0+(100*game.getoleada()));
+                            vida_aumentada=0+(100*game.getoleada());
                             cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                             for(int o=0; o<cantidad_bichos; o++)
                             {
@@ -1457,18 +1475,19 @@ int juego()
                             dinero_texto.setVariable(dinero);
                             tiempo=1;
                             objetos=0;
-                            oleada=1;
+                            oleada=game.getoleada();
                             oleada_texto.setVariable(oleada);
-                            musica_juego.parar();
+                            musica_menu.parar();
+
                             primer_carga=false;
                             opacidad_menu=0;
                             boolmusicajuego=false;
                             for(int l=0; l<posiciones_torres; l++)
                             {
-                                /// TORRES -------------------------------------
+
                                 Ocupado[l]=false;
                                 vec_torres[l].setTipoNivel();
-                                /// RANGOS -------------------------------------
+
                                 /*
                                 for(int f=0; f<posiciones_torres; f++)
                                 {
@@ -1490,6 +1509,7 @@ int juego()
                             }
 
                             estado_juego=3;
+                            estado_juego=0;
 
                         }
 
@@ -1553,14 +1573,63 @@ int juego()
                     }
 
 
-                    if(guardar_partida.click(mousexy))
+                    if(guardar_partida.click(mousexy)&& bichos_muertos==10)
                         {
                             game.setdinero(dinero);
                             game.setvidas(vida_juego);
+                            game.setoleada(oleada+1);
                             game.grabarendiso();
+                            estado_juego=2;
+                        vida_juego=const_vida_juego;
+                        vida_juego_texto.setVariable(vida_juego);
+                        aldeano.setVida(0);
+                        vida_aumentada=0;
+                        cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                        for(int o=0; o<cantidad_bichos; o++)
+                        {
+                            vidas_texto[o].setVariable(enemigo[o].getVida());
+                            vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                            vidas_texto[o].setTransparencia(0);
+                        }
+                        dinero=5000;
+                        dinero_texto.setVariable(dinero);
+                        tiempo=1;
+                        objetos=0;
+                        oleada=1;
+                        oleada_texto.setVariable(oleada);
+                        musica_juego.parar();
+                        primer_carga=false;
+                        opacidad_menu=0;
+                        boolmusicajuego=false;
+                        for(int l=0; l<posiciones_torres; l++)
+                        {
+                            /// TORRES -------------------------------------
+                            Ocupado[l]=false;
+                            vec_torres[l].setTipoNivel();
+                            /// RANGOS -------------------------------------
+                            /*
+                            for(int f=0; f<posiciones_torres; f++)
+                            {
+                                vec_torres[f].setPosicionTorre(10000,0);
+                                vec_torres[f].setPosicionRango(10000,0);
+                            }
+                            */
+                        }
+                        for (f=0; f<posiciones_torres; f++)
+                        {
+                            for (c=0; c<cantidad_torres; c++)
+                            {
+                                colas_torres_3d[f][c][cantidad_bichos]=0;
+                                for (x=0; x<cantidad_bichos; x++)
+                                {
+                                    colas_torres_3d[f][c][x]=valor;
+                                }
+                            }
+                        }
 
 
                         }
+
 
                     // nueva oleada
 
@@ -1729,6 +1798,19 @@ int juego()
                    window.draw(mensaje_post_partida_S);
                 }
             }
+
+                   if(guardar_f==true && Opacidad_Mensaje_guardar>0)
+            {
+                guardar_f=false;
+
+
+                Opacidad_Mensaje_guardar--;
+                mensajee_guardar.setColor(Color(255,255,255,Opacidad_Mensaje_Partida));
+                window.draw(mensajee_guardar);
+
+
+            }
+
 
             // VIDA DEL JUEGO
             window.draw(vida_juego_texto.getTexto());

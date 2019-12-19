@@ -526,12 +526,19 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1571618667 source:c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
+1576739143 source:c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	"windows.h"
 	<iostream>
 	<cstdlib>
+	"Collision.hpp"
+	"funciones.h"
+	"Clases.h"
+	"headers/Movimientos.h"
+	"headers/Colision_Danio.h"
+	"headers/Sprites.h"
+	"headers/Juego.h"
 
 1571618664 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -3809,4 +3816,26 @@
 	<iostream>
 	<cstdlib>
 	<clocale>
+
+1571959093 source:c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\collision.cpp
+	<SFML/Graphics.hpp>
+	<map>
+	"Collision.hpp"
+
+1572314383 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\collision.hpp
+
+1576739142 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\funciones.h
+	<iostream>
+	<cstdlib>
+	<clocale>
+
+1576759595 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
+
+1574657449 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\headers\movimientos.h
+
+1574657449 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\headers\colision_danio.h
+
+1576739142 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
+
+1576759484 c:\users\reaper\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
 
