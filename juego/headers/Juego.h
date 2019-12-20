@@ -382,7 +382,6 @@ int juego()
     ///-------------Tiros---------------------
     Textura tiro_balin("img/tiro.png",0);
     Textura tiro_rayo("img/rayo.png",0);
-    Textura tiro_flecha("img/flecha.png",0);
     Sprite carcasa_escalada;
     carcasa_escalada.scale(0.1875,0.1875);
     bool prioridad_dibujo[posiciones_torres];
