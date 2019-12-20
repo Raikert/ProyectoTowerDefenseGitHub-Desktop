@@ -379,6 +379,14 @@ int juego()
     int nivel_del_menu[posiciones_torres];
     inicializar_vector_entero(nivel_del_menu,posiciones_torres,0);
 
+    ///-------------Tiros---------------------
+    Textura tiro_balin("img/tiro.png",0);
+    Textura tiro_rayo("img/rayo.png",0);
+    Textura tiro_flecha("img/flecha.png",0);
+    Sprite carcasa_escalada;
+    carcasa_escalada.scale(0.1875,0.1875);
+    bool prioridad_dibujo[posiciones_torres];
+    inicializar_vector_bool(prioridad_dibujo,posiciones_torres,false);
     /// Estado del menu
 
     bool menu_abierto[posiciones_torres];
@@ -1178,6 +1186,8 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
+                    enemigos_muertos=0;
+                    muertos_texto.setVariable(enemigos_muertos);
                     dinero=10000;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
@@ -1327,6 +1337,10 @@ int juego()
                     window.draw(vec_torres[x].getSpriteCuerpo());
                     window.draw(vec_torres[x].getSpriteRango());
                 }
+                if (prioridad_dibujo[x])
+                {
+                    window.draw(vec_torres[x].get_Tiro());
+                }
             }
 
             // ZOMBIES Y SUS VIDAS
@@ -1339,6 +1353,12 @@ int juego()
                     window.draw(vidas_texto[d-1].getTexto());
                 }
             }
+
+            //Cantidad de zombies muertos
+
+            window.draw(muertos_texto.getTexto());
+
+            //
 
             /// MENU DE LAS TORRES
 
@@ -1388,6 +1408,8 @@ int juego()
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                         vidas_texto[o].setTransparencia(0);
                     }
+                    enemigos_muertos=0;
+                    muertos_texto.setVariable(enemigos_muertos);
                     dinero=10000;
                     dinero_texto.setVariable((dinero));
                     tiempo=1;
@@ -1716,7 +1738,21 @@ int juego()
                                 if(Ocupado[x]==false && torres_tipo[y][x].click(mousexy))
                                 {
                                     vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
-                                    vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy());
+                                    switch (y)
+                                    {
+                                    case 0:
+                                        carcasa_escalada.setTexture(tiro_balin.getTextura());
+                                        break;
+                                    case 1:
+                                        carcasa_escalada.setTexture(tiro_balin.getTextura());
+                                        break;
+                                    case 2:
+                                        carcasa_escalada.setTexture(tiro_rayo.getTextura());
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                    vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy(),carcasa_escalada);
                                     vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52);
                                     vec_torres[x].setEscalaRango(1,1.22);
                                     Ocupado[x]=true;
@@ -1885,6 +1921,11 @@ int juego()
                 {
                     window.draw(Sprite_menu_torre[nivel_del_menu[x]][x]);
                 }
+                if (prioridad_dibujo[x])
+                {
+                    window.draw(vec_torres[x].get_Tiro());
+                    prioridad_dibujo[x]=false;
+                }
             }
 
             if(tiempo>=200 && Opacidad_Mensaje_Partida>0)
@@ -1986,8 +2027,8 @@ int juego()
                         {
                             enemigo[i-1].setIntervalo_danio(vec_torres[x].getIntervalo(),f);
                             enemigo[i-1].setDanio_torre(vec_torres[x].getDanio(),f);
-                            window.draw(vec_torres[x].get_Tiro());
                             vec_torres[x].cambiar_traza(enemigo[prioridad].getX(),enemigo[prioridad].getY(),enemigo[prioridad].getVelocidad());
+                            prioridad_dibujo[x]=true;
 
                             if (enemigo[prioridad].getIntervalo_danio(f)!=10000)
                             {

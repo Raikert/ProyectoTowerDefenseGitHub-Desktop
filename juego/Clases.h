@@ -69,22 +69,19 @@ bool Cola::sacar(int &x)
 class Tiro
 {
 private:
-    RectangleShape tiro;
-    float tamx,tamy,x,y,x_inicial,y_inicial,diferenciax,diferenciay;
+    Sprite tiro;
+    float x,y,x_inicial,y_inicial,diferenciax,diferenciay;
 public:
-    void cargar (float posx,float posy,float tam_x=1,float tam_y=1)
+    void cargar (float posx,float posy,Sprite &tiro_sprite)
     {
-        tamx=tam_x;
-        tamy=tam_y;
         x=posx;
         y=posy;
         x_inicial=x;
         y_inicial=y;
-        tiro.setSize(Vector2f(tamx,tamy));
-        tiro.setFillColor(Color::Red);
+        tiro=tiro_sprite;
         tiro.setPosition(x,y);
     }
-    RectangleShape getTiro()
+    Sprite getTiro()
     {
         return tiro;
     }
@@ -96,8 +93,6 @@ public:
     }
     void traza(float posx_zombie,float posy_zombie,float velocidad_zombie)
     {
-        if (x!=posx_zombie)
-        {
             if (x<posx_zombie)
             {
                 x+=velocidad_zombie;
@@ -108,10 +103,7 @@ public:
                 x-=velocidad_zombie;
                 tiro.setPosition(x,y);
             }
-        }
 
-        if (y!=posy_zombie)
-        {
             if (y<posy_zombie)
             {
                 y+=velocidad_zombie;
@@ -122,7 +114,7 @@ public:
                 y-=velocidad_zombie;
                 tiro.setPosition(x,y);
             }
-        }
+
         diferenciax=x-posx_zombie;
         diferenciay=y-posy_zombie;
         if (x<posx_zombie)
@@ -1376,7 +1368,7 @@ public:
         nivel=0;
         rangoS.setPosition(1000,600);
     }
-    void cambiar_traza (float x_zombie,float y_zombie,float velocidad)
+    void cambiar_traza (float x_zombie,float y_zombie,float velocidad=1)
     {
         tiro_torre.traza(x_zombie,y_zombie,velocidad);
     }
@@ -1384,7 +1376,7 @@ public:
     {
         tiro_torre.reset();
     }
-    RectangleShape get_Tiro ()
+    Sprite get_Tiro ()
     {
         return tiro_torre.getTiro();
     }
@@ -1566,10 +1558,10 @@ public:
         }
     }
 
-    void setPosicionTorre(float x, float y)
+    void setPosicionTorre(float x, float y,Sprite &tiro_sprite)
     {
         cuerpoS.setPosition(x,y);
-        tiro_torre.cargar(x+24,y+19,3.75,3.75);
+        tiro_torre.cargar(x+24,y+19,tiro_sprite);
     }
 
     void setEscalaTorre(float fx, float fy)
@@ -1586,7 +1578,6 @@ public:
     {
         rangoS.setScale(fx,fy);
     }
-
     Sprite getSpriteCuerpo()
     {
         return cuerpoS;
