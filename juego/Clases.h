@@ -1352,7 +1352,6 @@ private:
     int danio;
     int intervalo;
     Sprite cuerpoS;
-    Texture rangoT;
     Sprite rangoS;
     Tiro tiro_torre;
 public:
