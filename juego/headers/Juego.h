@@ -165,7 +165,7 @@ int juego()
         return -10;
     */
 
-    Textura textura_mapa("img/009.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
+    Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
 
     textura_menu.setSuavizado(true);
     textura_mapa.setSuavizado(true);
@@ -210,28 +210,29 @@ int juego()
     ///ser Programable.
 
     ///Y si, es una sola linea.
+    /*
+        Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
 
-    Textura gif_prueba("img/cinematicas/gif_prueba.jpg",0);
+        Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
 
-    Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
+        Textura pasto_tex("img/cinematicas/pasto_verde_final.png",0,true);
 
-    Textura pasto_tex("img/cinematicas/pasto_verde_final.png",0,true);
+        Cinematica test1(gif_prueba.getTextura(),386,251);  ///tamaño del gif
+        Cinematica viejo_test(viejo.getTextura(),400,226);
+        Cinematica pasto(pasto_tex.getTextura(),337,480,true);
 
-    Cinematica test1(gif_prueba.getTextura(),386,251);  ///tamaño del gif
-    Cinematica viejo_test(viejo.getTextura(),400,226);
-    Cinematica pasto(pasto_tex.getTextura(),337,480,true);
+        pasto.setIgnore(4);
+        pasto.escalar(0.25,0.25);
+        pasto.setColor(Color(Color::Green));
 
-    pasto.setIgnore(4);
-    pasto.escalar(0.25,0.25);
-    pasto.setColor(Color(Color::Green));
-    ///pero no para los metodos, jeje.
+        ///pero no para los metodos, jeje.
 
-    test1.setRepeticion(false);
-    test1.setEstado(false);
+        test1.setRepeticion(false);
+        test1.setEstado(false);
 
-    viejo_test.setEstado(false);
-    viejo_test.setFps(10);
-
+        viejo_test.setEstado(false);
+        viejo_test.setFps(10);
+        */
 
     ///El draw de esta cinematica esta debajo de todo solo por esta vez, dado que sino los demas
     ///draws lo superponen y no se lo puede ver. Para ver esta clase en accion ,con la Tecla A
@@ -1230,6 +1231,7 @@ int juego()
                     }
                 }
 
+                /*
                 ///Primer cinematica del juego - testeos
                 if (Keyboard::isKeyPressed(Keyboard::A))
                 {
@@ -1260,7 +1262,7 @@ int juego()
                     }
                     viejo_test.Reicicio();
                 }
-
+                */
                 //--------------------------------------------------------------
             }
         }
@@ -1821,20 +1823,20 @@ int juego()
 ///--------------------------Sector de Dibujado-------------------------------------------------------------------
 
             // MAPA DEL JUEGO
-
-            for (i=1; i<=8; i++)
-            {
-                for (z=1; z<=10; z++)
-                {
-                    window.draw(pasto.getFrame());
-                    pasto.setX(pasto.getX()+84);
-                }
-                pasto.setX(0);
-                pasto.setY(pasto.getY()+80);
-            }
-            pasto.setPosicion(0,-40);
-            pasto.Actualizar_frame();
-
+            /*
+                        for (i=1; i<=8; i++)
+                        {
+                            for (z=1; z<=10; z++)
+                            {
+                                window.draw(pasto.getFrame());
+                                pasto.setX(pasto.getX()+84);
+                            }
+                            pasto.setX(0);
+                            pasto.setY(pasto.getY()+80);
+                        }
+                        pasto.setPosicion(0,-40);
+                        pasto.Actualizar_frame();
+            */
             window.draw(mapa);
 
             if(guardar_f==true && Opacidad_Mensaje_guardar>0)
@@ -2563,19 +2565,21 @@ int juego()
         }   // fin del switch(estado_juego)
 
         ///cinematica,draw, test-----------------
-        if (test1.getEstado())
-        {
-            window.draw(test1.getFrame());
+        /*
+                if (test1.getEstado())
+                {
+                    window.draw(test1.getFrame());
 
-            test1.Actualizar_frame();
-        }
+                    test1.Actualizar_frame();
+                }
 
-        if (viejo_test.getEstado())
-        {
-            window.draw(viejo_test.getFrame());
+                if (viejo_test.getEstado())
+                {
+                    window.draw(viejo_test.getFrame());
 
-            viejo_test.Actualizar_frame();
-        }
+                    viejo_test.Actualizar_frame();
+                }
+        */
         ///-------------------------------------
 
         ///Intentando acoplar el mecanismo de cinematica a las animaciones
