@@ -93,27 +93,27 @@ public:
     }
     void traza(float posx_zombie,float posy_zombie,float velocidad_zombie)
     {
-            if (x<posx_zombie)
-            {
-                x+=velocidad_zombie;
-                tiro.setPosition(x,y);
-            }
-            else
-            {
-                x-=velocidad_zombie;
-                tiro.setPosition(x,y);
-            }
+        if (x<posx_zombie)
+        {
+            x+=velocidad_zombie;
+            tiro.setPosition(x,y);
+        }
+        else
+        {
+            x-=velocidad_zombie;
+            tiro.setPosition(x,y);
+        }
 
-            if (y<posy_zombie)
-            {
-                y+=velocidad_zombie;
-                tiro.setPosition(x,y);
-            }
-            else
-            {
-                y-=velocidad_zombie;
-                tiro.setPosition(x,y);
-            }
+        if (y<posy_zombie)
+        {
+            y+=velocidad_zombie;
+            tiro.setPosition(x,y);
+        }
+        else
+        {
+            y-=velocidad_zombie;
+            tiro.setPosition(x,y);
+        }
 
         diferenciax=x-posx_zombie;
         diferenciay=y-posy_zombie;
@@ -375,11 +375,11 @@ protected:
     /// ¿Que es una Cinematica? ¿Como hace la clase para calcular todo lo relacionado a ello?
 
     IntRect porcion_de_textura_cinematica;
-    int frame_x,frame_y,limite_frames_x,limite_frames_y,tam_x,tam_y,tam_porcionx,tam_porciony;
+    int frame_x,frame_y,limite_frames_x,limite_frames_y,tam_x,tam_y,tam_porcionx,tam_porciony,ignore;
     Sprite sprite_cinematica;
     Clock tiempo_cinematica;
     float fps,x,y;
-    bool repeticion,estado;
+    bool repeticion,estado,retorno,balanceo;
 
 public:
 
@@ -405,7 +405,7 @@ public:
     ///de desplazamiento que marcan algunos de los condicionales de los if en el metodo de la clase actualizar_frame().
     ///La aceleracion quedara como algo extra que no supone mucha importancia realmente, tampoco somos Youtube viste.
 
-    Cinematica (Texture &textura_cinematica,int tam_porcionx_p,int tam_porciony_p,bool fullscreen=false)
+    Cinematica (Texture &textura_cinematica,int tam_porcionx_p,int tam_porciony_p,bool regresar=false)
     {
         tam_porcionx=tam_porcionx_p;
         tam_porciony=tam_porciony_p;
@@ -415,15 +415,14 @@ public:
         frame_x=frame_y=1;
         sprite_cinematica.setTexture(textura_cinematica);
         sprite_cinematica.setTextureRect(porcion_de_textura_cinematica);
-        if (fullscreen)
-            sprite_cinematica.scale(2.588,2.388);
-
         limite_frames_x=(tam_x/porcion_de_textura_cinematica.width);
         limite_frames_y=(tam_y/porcion_de_textura_cinematica.height);
         float fps_default=24;
         fps=1/fps_default;
-        repeticion=true;
+        repeticion=false;
         estado=true;
+        balanceo=regresar;
+        retorno=false;
     }
     Cinematica ()
     {
@@ -454,7 +453,6 @@ public:
     {
         return sprite_cinematica;
     }
-
     bool getEstado ()
     ///nombre_objeto.getEstado() -------> retorna el estado de reproduccion.
     {
@@ -506,12 +504,20 @@ public:
     {
         fps=1/fps_par;
     }
+
     void setRepeticion(bool rep)
     ///nombre_objeto.setReproduccion(bool rep) -----> se cambia la opcion del video en bucle o no. Pd: viene en bucle por default.
     {
         repeticion=rep;
     }
-
+    void setIgnore(int frames_ignorados)
+    {
+        ignore=frames_ignorados;
+    }
+    void setColor (Color color)
+    {
+        sprite_cinematica.setColor(color);
+    }
     ///Ahora bien, que vendria a ser un Spritesheet?. Un Spritesheet es el lugar a donde se van a alojar todos
     ///los estados o frames que, en este caso la cinematica, va a tener, digo este caso, porque podria ser una
     ///animacion, que es distinto, dado que esta en si es un video, pero es tan corto, que se lo suele llamar
@@ -536,34 +542,80 @@ void Cinematica::Actualizar_frame()
     ///no se preocupen jajjaj, que se me acaba de ocurrir recien.
     if (estado)
     {
-        if (frame_x<limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+        if (!retorno)
         {
-            porcion_de_textura_cinematica.left+=tam_porcionx;
-            frame_x++;
-            tiempo_cinematica.restart();
-        }
-        else
-        {
-            if (frame_x==limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
+            if (frame_x<limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
             {
-                porcion_de_textura_cinematica.left=0;
-                porcion_de_textura_cinematica.top+=tam_porciony;
-                frame_x=1;
-                frame_y++;
+                porcion_de_textura_cinematica.left+=tam_porcionx;
+                frame_x++;
                 tiempo_cinematica.restart();
             }
-            else if (frame_y==limite_frames_y&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+            else
             {
-                if (repeticion)
+                if (frame_x==limite_frames_x&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y<limite_frames_y)
                 {
                     porcion_de_textura_cinematica.left=0;
-                    porcion_de_textura_cinematica.top=0;
+                    porcion_de_textura_cinematica.top+=tam_porciony;
                     frame_x=1;
-                    frame_y=1;
+                    frame_y++;
+                    tiempo_cinematica.restart();
+                    if (frame_y==limite_frames_y&&ignore!=0)
+                        limite_frames_x-=ignore;
+                }
+                else
+                {
+                    if (frame_y==limite_frames_y&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+                    {
+                        if (balanceo)
+                        {
+                            retorno=true;
+                            tiempo_cinematica.restart();
+                        }
+
+                        if (repeticion)
+                        {
+                            porcion_de_textura_cinematica.left=0;
+                            porcion_de_textura_cinematica.top=0;
+                            frame_x=1;
+                            frame_y=1;
+                            tiempo_cinematica.restart();
+                        }
+                        else if (!balanceo)
+                            estado=false;
+                    }
+                }
+            }
+        }
+
+        if (retorno)
+        {
+            if (ignore!=0)
+                limite_frames_x=(tam_x/porcion_de_textura_cinematica.width);
+
+            if (frame_x>1&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+            {
+                porcion_de_textura_cinematica.left-=tam_porcionx;
+                frame_x--;
+                tiempo_cinematica.restart();
+            }
+            else
+            {
+                if (frame_x==1&&tiempo_cinematica.getElapsedTime().asSeconds()>fps&&frame_y>1)
+                {
+                    porcion_de_textura_cinematica.left=tam_x-tam_porcionx;
+                    porcion_de_textura_cinematica.top-=tam_porciony;
+                    frame_x=limite_frames_x;
+                    frame_y--;
                     tiempo_cinematica.restart();
                 }
                 else
-                    estado=false;
+                {
+                    if (frame_y==1&&tiempo_cinematica.getElapsedTime().asSeconds()>fps)
+                    {
+                        retorno=false;
+                        tiempo_cinematica.restart();
+                    }
+                }
             }
         }
         if (estado)

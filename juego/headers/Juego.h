@@ -165,7 +165,7 @@ int juego()
         return -10;
     */
 
-    Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
+    Textura textura_mapa("img/009.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
 
     textura_menu.setSuavizado(true);
     textura_mapa.setSuavizado(true);
@@ -215,9 +215,15 @@ int juego()
 
     Textura viejo ("img/cinematicas/viejo_gif.jpg",0);
 
+    Textura pasto_tex("img/cinematicas/pasto_verde_final.png",0,true);
+
     Cinematica test1(gif_prueba.getTextura(),386,251);  ///tamaño del gif
     Cinematica viejo_test(viejo.getTextura(),400,226);
+    Cinematica pasto(pasto_tex.getTextura(),337,480,true);
 
+    pasto.setIgnore(4);
+    pasto.escalar(0.25,0.25);
+    pasto.setColor(Color(Color::Green));
     ///pero no para los metodos, jeje.
 
     test1.setRepeticion(false);
@@ -1816,9 +1822,20 @@ int juego()
 
             // MAPA DEL JUEGO
 
+            for (i=1; i<=8; i++)
+            {
+                for (z=1; z<=10; z++)
+                {
+                    window.draw(pasto.getFrame());
+                    pasto.setX(pasto.getX()+84);
+                }
+                pasto.setX(0);
+                pasto.setY(pasto.getY()+80);
+            }
+            pasto.setPosicion(0,-40);
+            pasto.Actualizar_frame();
+
             window.draw(mapa);
-
-
 
             if(guardar_f==true && Opacidad_Mensaje_guardar>0)
             {
@@ -2576,6 +2593,7 @@ int juego()
         ///-----------------------------------------------
         puntero1.setPosition(mousexy[0],mousexy[1]);
         window.draw(puntero1);
+
         window.display();
 
     }   // fin del while(window.IsOpen())
