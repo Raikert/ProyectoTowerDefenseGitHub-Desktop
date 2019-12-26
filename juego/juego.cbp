@@ -17,6 +17,7 @@
 				<Linker>
 					<Add library="sfml-graphics-d" />
 					<Add library="sfml-window-d" />
+					<Add library="sfml-network-d" />
 					<Add library="sfml-system-d" />
 					<Add library="sfml-audio-d" />
 				</Linker>
@@ -33,6 +34,7 @@
 					<Add option="-s" />
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
+					<Add library="sfml-network" />
 					<Add library="sfml-system" />
 					<Add library="sfml-audio" />
 				</Linker>
