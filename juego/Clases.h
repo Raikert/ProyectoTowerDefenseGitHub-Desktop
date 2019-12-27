@@ -68,16 +68,16 @@ private:
     TcpSocket socket;
     char msj_recibido[100];
     char msj_anterior[100];
-    char msj[100];
+    char msj[200];
     size_t total_recibido;
     int msg_recibidos,delay;
     IpAddress ip;
     size_t bytes;
-    char video_actual[100];
+    char video_actual[200];
     PROCESS_INFORMATION processInfo_copia;
     bool encendido;
 public:
-    Video (int d) {
+    Video (int d=500) {
     delay=d;
     }
     void encender ()
@@ -106,10 +106,17 @@ public:
             ///montado y contatenacion del comando
             ///open para la carga del video en funcion
             ///de la pantalla del usuario.
-            char cadena[100]="open ";
+            char cadena_ruta[200];
+
+            ///obtener la maldita ruta absoluta
+            GetFullPathNameA(ruta.c_str(),200,cadena_ruta,NULL);
+            DAR_VUELTA_LAS_BARRAS(cadena_ruta);
+            ///---------------------------------
+
+            char cadena[200]="open ";
             char espacio[2]=" ";
             char variable[10];
-            strcat(cadena,ruta.c_str());
+            strcat(cadena,cadena_ruta);
             strcat(cadena,espacio);
             itoa(window.getPosition().x+8, variable, 10);
             strcat(cadena,variable);
@@ -119,17 +126,18 @@ public:
             strcat(cadena,espacio);
             string estatico="1024 608 Video";
             strcat(cadena,estatico.c_str());
+            cout<<cadena;
             ///-------------
             escribir_cadena(msj,cadena);
             bytes=sizeof msj;
             if (socket.send(msj,bytes) != Socket::Done)
                 exit (98765);
-
             /*
             if (strcmp(video_actual,msg.c_str())!= 0)
                 escribir_cadena(video_actual,msg);
             */
             Sleep(delay);
+            enviar("play");
         }
     }
     void enviar(const string &msg)

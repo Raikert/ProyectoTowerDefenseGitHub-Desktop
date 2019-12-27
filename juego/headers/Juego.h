@@ -167,7 +167,7 @@ int juego()
 
     ///Reproductor de Video
 
-    Video reproductor(500);
+    Video reproductor;
 
     Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
 
@@ -1502,8 +1502,7 @@ int juego()
                             {
                                 musica_menu.parar();
                                 reproductor.encender();
-                                reproductor.abrir("C:/Users/Raikert/Desktop/homero.mp4",window);
-                                reproductor.enviar("play");
+                                reproductor.abrir("img/cinematicas/intro.mp4",window);
                             }
                         }
 
