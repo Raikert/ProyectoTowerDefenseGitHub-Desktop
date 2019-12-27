@@ -1,5 +1,12 @@
-Paso 1: Crear una nueva carpeta con el nombre que quieran,
-copiar todos los archivos que se encuentran en la carpeta bin/Debug.
+Paso 1 (IMPORTANTE):
+*Crear una carpeta nueva con el nombre que quieran, sin espacios ni caracteres especiales,
+sino, es posible que las cinematicas no se reproduzcan.
+
+ej : "Invasion_Zombie" X nombre incorrecto.
+
+Correcion : "Invasion" :) u otro nombre que cumpla con esos requisitos.
+
+copiar todos los archivos que se encuentran en la carpeta bin/Debug, en la nueva carpeta que crearon.
 
 Paso 2: Para que el executable no crashee necesita los recursos del juego, imagenes, musica, textos, etc.
 Estos se encuentran en las siguientes carpetas:

@@ -126,7 +126,6 @@ public:
             strcat(cadena,espacio);
             string estatico="1024 608 Video";
             strcat(cadena,estatico.c_str());
-            cout<<cadena;
             ///-------------
             escribir_cadena(msj,cadena);
             bytes=sizeof msj;
