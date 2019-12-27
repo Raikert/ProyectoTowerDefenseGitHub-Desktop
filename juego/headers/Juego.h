@@ -1399,6 +1399,13 @@ int juego()
 
         case 1:  // ESTADO DERROTADO---------------------------
 
+            if (!reproductor.getEncendido())
+            {
+                musica_juego.parar();
+                reproductor.encender();
+                reproductor.abrir("img/cinematicas/derrota.mp4",window);
+            }
+            /*
             window.draw(derrota);
             if (!boolmusicaderrota)
             {
@@ -1410,49 +1417,56 @@ int juego()
             {
                 if (derrota_boton.click(mousexy))
                 {
-                    estado_juego=2;
-                    vida_juego=const_vida_juego;
-                    vida_juego_texto.setVariable(vida_juego);
-                    aldeano.setVida(0);
-                    vida_aumentada=0;
-                    cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                    for(int o=0; o<cantidad_bichos; o++)
+                */
+            if (reproductor.fin_video())
+            {
+                reproductor.apagar();
+                estado_juego=2;
+                vida_juego=const_vida_juego;
+                vida_juego_texto.setVariable(vida_juego);
+                aldeano.setVida(0);
+                vida_aumentada=0;
+                cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
+                for(int o=0; o<cantidad_bichos; o++)
+                {
+                    vidas_texto[o].setVariable(enemigo[o].getVida());
+                    vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
+                    vidas_texto[o].setTransparencia(0);
+                }
+                enemigos_muertos=0;
+                muertos_texto.setVariable(enemigos_muertos);
+                dinero=10000;
+                dinero_texto.setVariable((dinero));
+                tiempo=1;
+                objetos=0;
+                oleada=1;
+                oleada_texto.setVariable(oleada);
+                ///musica_derrota.parar();
+                primer_carga=false;
+                opacidad_menu=0;
+                boolmusicaderrota=false;
+                for(int l=0; l<posiciones_torres; l++)
+                {
+                    // TORRES -------------------------------------
+                    vec_torres[l].setTipoNivel();
+                    Ocupado[l]=false;
+                }
+                for (f=0; f<posiciones_torres; f++)
+                {
+                    for (c=0; c<cantidad_torres; c++)
                     {
-                        vidas_texto[o].setVariable(enemigo[o].getVida());
-                        vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
-                        vidas_texto[o].setTransparencia(0);
-                    }
-                    enemigos_muertos=0;
-                    muertos_texto.setVariable(enemigos_muertos);
-                    dinero=10000;
-                    dinero_texto.setVariable((dinero));
-                    tiempo=1;
-                    objetos=0;
-                    oleada=1;
-                    oleada_texto.setVariable(oleada);
-                    musica_derrota.parar();
-                    primer_carga=false;
-                    opacidad_menu=0;
-                    boolmusicaderrota=false;
-                    for(int l=0; l<posiciones_torres; l++)
-                    {
-                        // TORRES -------------------------------------
-                        vec_torres[l].setTipoNivel();
-                        Ocupado[l]=false;
-                    }
-                    for (f=0; f<posiciones_torres; f++)
-                    {
-                        for (c=0; c<cantidad_torres; c++)
+                        colas_torres_3d[f][c][cantidad_bichos]=0;
+                        for (x=0; x<cantidad_bichos; x++)
                         {
-                            colas_torres_3d[f][c][cantidad_bichos]=0;
-                            for (x=0; x<cantidad_bichos; x++)
-                            {
-                                colas_torres_3d[f][c][x]=valor;
-                            }
+                            colas_torres_3d[f][c][x]=valor;
                         }
                     }
                 }
             }
+            /*
+            }
+            }
+            */
             break; // fin del estado derrotado
 
         case 2:  // ESTADO MENU PRINCIPAL-----------------------------------
@@ -1474,7 +1488,6 @@ int juego()
             {
                 if (reproductor.getEncendido())
                 {
-                    reproductor.recibir("gettime");
                     if (reproductor.fin_video())
                     {
                         estado_juego=3;
@@ -1604,6 +1617,7 @@ int juego()
             if (vida_juego<=0)
             {
                 estado_juego=1;
+
             }
             // ------------------------------------------------
 

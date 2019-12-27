@@ -176,6 +176,7 @@ public:
     }
     bool fin_video ()
     {
+        recibir("gettime");
         if (encendido)
         {
             if (strcmp(msj_recibido,msj_anterior)==0&&msg_recibidos>1)
