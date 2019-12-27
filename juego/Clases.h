@@ -8,10 +8,6 @@ using namespace Collision;
 setlocale(LC_ALL,"spanish");
 */
 
-/// CLASE TORRE
-
-
-
 /*
 /// CLASE COLA --------------------------------------------------------------
 
@@ -65,6 +61,136 @@ bool Cola::sacar(int &x)
 }
 /// ------------------------------------------------------------------------------------
 */
+
+class Video
+{
+private:
+    TcpSocket socket;
+    char msj_recibido[100];
+    char msj_anterior[100];
+    char msj[100];
+    size_t total_recibido;
+    int msg_recibidos,delay;
+    IpAddress ip;
+    size_t bytes;
+    char video_actual[100];
+    PROCESS_INFORMATION processInfo_copia;
+    bool encendido;
+public:
+    Video (int d) {
+    delay=d;
+    }
+    void encender ()
+    {
+        STARTUPINFO startInfo= {0};
+        PROCESS_INFORMATION processInfo = {0};
+        BOOL bScucces = CreateProcess(TEXT("player++/bin/vidserv.exe"),
+                                      NULL,NULL,NULL,FALSE,CREATE_NO_WINDOW,NULL,NULL,&startInfo,&processInfo);
+
+        if (!bScucces)
+            exit (98765);
+        processInfo_copia=processInfo;
+        msg_recibidos=0;
+        encendido=true;
+        socket.connect(ip.getLocalAddress(), 50001);
+    }
+    void apagar ()
+    {
+        TerminateProcess(processInfo_copia.hProcess,0);
+        encendido=false;
+    }
+    void abrir (const string &ruta,RenderWindow &window)
+    {
+        if (encendido)
+        {
+            ///montado y contatenacion del comando
+            ///open para la carga del video en funcion
+            ///de la pantalla del usuario.
+            char cadena[100]="open ";
+            char espacio[2]=" ";
+            char variable[10];
+            strcat(cadena,ruta.c_str());
+            strcat(cadena,espacio);
+            itoa(window.getPosition().x+8, variable, 10);
+            strcat(cadena,variable);
+            strcat(cadena,espacio);
+            itoa(window.getPosition().y+22, variable, 10);
+            strcat(cadena,variable);
+            strcat(cadena,espacio);
+            string estatico="1024 608 Video";
+            strcat(cadena,estatico.c_str());
+            ///-------------
+            escribir_cadena(msj,cadena);
+            bytes=sizeof msj;
+            if (socket.send(msj,bytes) != Socket::Done)
+                exit (98765);
+
+            /*
+            if (strcmp(video_actual,msg.c_str())!= 0)
+                escribir_cadena(video_actual,msg);
+            */
+            Sleep(delay);
+        }
+    }
+    void enviar(const string &msg)
+    {
+        if (encendido)
+        {
+            escribir_cadena(msj,msg);
+            bytes=sizeof msj;
+            if (socket.send(msj,bytes) != Socket::Done)
+                exit (98765);
+
+            /*
+            if (strcmp(video_actual,msg.c_str())!= 0)
+                escribir_cadena(video_actual,msg);
+            */
+            Sleep(delay);
+        }
+    }
+
+    void recibir (const string &comando)
+    {
+        if (encendido)
+        {
+            escribir_cadena(msj,comando);
+            bytes=sizeof msj;
+            if (socket.send(msj,bytes) != Socket::Done)
+                exit (98765);
+
+            Sleep(delay);
+            socket.receive(msj_recibido,100,total_recibido);
+            if (msg_recibidos==0)
+                strcpy(msj_anterior,msj_recibido);
+
+            msg_recibidos++;
+            Sleep(delay);
+        }
+    }
+    bool fin_video ()
+    {
+        if (encendido)
+        {
+            if (strcmp(msj_recibido,msj_anterior)==0&&msg_recibidos>1)
+                return true;
+            else
+            {
+                strcpy(msj_anterior,msj_recibido);
+                return false;
+            }
+        }
+    }
+    void apagar_v ()
+    {
+        if (encendido)
+        {
+            enviar("closewindows");
+        }
+    }
+    bool getEncendido() {
+    return encendido;
+    }
+};
 
 class Tiro
 {

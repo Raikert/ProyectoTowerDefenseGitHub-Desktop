@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1577325961 source:c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
+1577340786 source:c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<SFML/Network.hpp>
 	"windows.h"
 	<iostream>
 	<cstdlib>
+	<cstring>
 	"Collision.hpp"
 	"funciones.h"
 	"Clases.h"
@@ -1588,7 +1589,7 @@
 	<map>
 	"Collision.hpp"
 
-1577034624 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
+1577432420 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
 
 1576633487 source:c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\collision.cpp
 	<SFML/Graphics.hpp>
@@ -2142,7 +2143,7 @@
 
 1576766440 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
 
-1577332664 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
+1577432940 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
 
 1572812904 source:c:\users\canoxor\documents\utn\github - desktop\proyectotowerdefense-githubdesktop\juego\collision.cpp
 	<SFML/Graphics.hpp>
@@ -3798,7 +3799,7 @@
 
 1575082159 c:\users\raikert\desktop\juego - sin solucion\juego\headers\juego.h
 
-1576766440 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\funciones.h
+1577346182 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\funciones.h
 	<iostream>
 	<cstdlib>
 	<clocale>

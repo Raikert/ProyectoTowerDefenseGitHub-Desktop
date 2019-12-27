@@ -165,12 +165,15 @@ int juego()
         return -10;
     */
 
+    ///Reproductor de Video
+
+    Video reproductor(500);
+
     Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
 
     textura_menu.setSuavizado(true);
     textura_mapa.setSuavizado(true);
     textura_derrota.setSuavizado(true);
-
 
     ///clase partida
     Partida game;
@@ -1078,6 +1081,7 @@ int juego()
 
     //definicion de la ventana del juego---------------------
     RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
+
     //Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     //bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
@@ -1102,6 +1106,9 @@ int juego()
                 window.close();
                 delete enemigo;
                 delete colas_torres_3d;
+
+                if (reproductor.getEncendido())
+                    reproductor.apagar();
             }
             //------------------------------------
 
@@ -1465,6 +1472,17 @@ int juego()
             }
             else
             {
+                if (reproductor.getEncendido())
+                {
+                    reproductor.recibir("gettime");
+                    if (reproductor.fin_video())
+                    {
+                        estado_juego=3;
+                        reproductor.apagar();
+                        musica_juego.reproducir();
+                    }
+                }
+
                 //Configuracion de los botones en el menu principal-----------
 
                 if (Mouse::isButtonPressed(Mouse::Left))
@@ -1480,9 +1498,13 @@ int juego()
                             volumen_menu-=0.1;
                             musica_menu.setVolume(volumen_menu);
                                 */
-                            musica_menu.parar();
-                            musica_juego.reproducir();
-                            estado_juego=3;
+                            if (!reproductor.getEncendido())
+                            {
+                                musica_menu.parar();
+                                reproductor.encender();
+                                reproductor.abrir("C:/Users/Raikert/Desktop/homero.mp4",window);
+                                reproductor.enviar("play");
+                            }
                         }
 
                         // Cargar Partida
@@ -1545,6 +1567,9 @@ int juego()
                             window.close();
                             delete enemigo;
                             delete colas_torres_3d;
+
+                            if (reproductor.getEncendido())
+                                reproductor.apagar();
                         }
 
                         //Sonido
@@ -1570,6 +1595,7 @@ int juego()
                 }
                 else
                     habilitacionmouse=true;
+
             }
             break;  // fin estado menu principal
 

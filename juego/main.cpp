@@ -4,6 +4,7 @@
 #include "windows.h"
 #include <iostream>
 #include <cstdlib>
+#include <cstring>
 #include "Collision.hpp"
 using namespace sf; //para no poner sf::
 using namespace std;

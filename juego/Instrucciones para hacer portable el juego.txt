@@ -7,9 +7,10 @@ Estos se encuentran en las siguientes carpetas:
 -img
 -musica
 -tipos_de_texto
+-player++
 
 copiar esas carpetas en la carpeta nueva que crearon en el paso 1 junto con los archivos que copiaron.
 
 Paso 3: Si hicieron todo correctamente, ya deberian poder jugar, que lo disfruten.
 
-Ezequiel Rickert, Integrante Programador del juego (25/12/2019) 
+Ezequiel Rickert, Programador de Invasion Zombie: Epoca medieval (25/12/2019). 

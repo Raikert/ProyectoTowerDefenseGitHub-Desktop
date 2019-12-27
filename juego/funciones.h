@@ -65,6 +65,15 @@ bool detectar_enemigo_cola3d (int m[9][3][11],int torre,int tipo,int enemigo_det
 }
 */
 
+void escribir_cadena(char* cadena, const string & msj) {
+/*
+char cadena2[100];
+strcpy(cadena2,msj.c_str());
+strcpy(cadena,cadena2);
+*/
+strcpy(cadena,msj.c_str());
+}
+
 bool detectar_otro_menu_abierto (bool *v,int posiciones_torres)
 {
     bool detector=true;
