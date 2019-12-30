@@ -9,7 +9,7 @@ int juego()
 {
     bool tiempo_inicial=true;
     //variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d,o,l,f,c,debug,z;
+    int i,x,te,d,o,l,f,c,debug,z,p,y,h;
 
     //variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
@@ -31,8 +31,7 @@ int juego()
     bool primer_carga=false;
 
     //Vector dinamico de zombies--------
-    Zombie *enemigo;
-    enemigo = new Zombie[cantidad_bichos];
+    Zombie *enemigo = new Zombie[cantidad_bichos];
 
     ///Objeto de tipo Zombie, nuevo diseño.-----------
 
@@ -1081,13 +1080,11 @@ int juego()
 
     //definicion de la ventana del juego---------------------
     RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
-
     //Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     //bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
     //metodo para que no se tome en cuenta las repeticiones al presionar una tecla, similar a la booleana habilitacion_mouse
     window.setKeyRepeatEnabled(false);
-    Event event;
     window.setMouseCursorVisible(false);
     Textura puntero("img/puntero.png",0,true);
     Sprite puntero1(puntero.getTextura());
@@ -1095,7 +1092,7 @@ int juego()
     while (window.isOpen())
     {
 
-
+        Event event;
         //Zona de estados del juego-------------------------------------------
         while (window.pollEvent(event))
         {
@@ -1104,11 +1101,6 @@ int juego()
             if (event.type == Event::Closed)
             {
                 window.close();
-                delete enemigo;
-                delete colas_torres_3d;
-
-                if (reproductor.getEncendido())
-                    reproductor.apagar();
             }
             //------------------------------------
 
@@ -1193,7 +1185,7 @@ int juego()
                     aldeano.setVida(0);
                     vida_aumentada=0;
                     cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                    for(int o=0; o<cantidad_bichos; o++)
+                    for(o=0; o<cantidad_bichos; o++)
                     {
                         vidas_texto[o].setVariable(enemigo[o].getVida());
                         vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
@@ -1211,7 +1203,7 @@ int juego()
                     primer_carga=false;
                     opacidad_menu=0;
                     boolmusicajuego=false;
-                    for(int l=0; l<posiciones_torres; l++)
+                    for(l=0; l<posiciones_torres; l++)
                     {
                         /// TORRES -------------------------------------
                         Ocupado[l]=false;
@@ -1427,7 +1419,7 @@ int juego()
                 aldeano.setVida(0);
                 vida_aumentada=0;
                 cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                for(int o=0; o<cantidad_bichos; o++)
+                for(o=0; o<cantidad_bichos; o++)
                 {
                     vidas_texto[o].setVariable(enemigo[o].getVida());
                     vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
@@ -1445,7 +1437,7 @@ int juego()
                 primer_carga=false;
                 opacidad_menu=0;
                 boolmusicaderrota=false;
-                for(int l=0; l<posiciones_torres; l++)
+                for(l=0; l<posiciones_torres; l++)
                 {
                     // TORRES -------------------------------------
                     vec_torres[l].setTipoNivel();
@@ -1530,7 +1522,7 @@ int juego()
                             aldeano.setVida(0+(100*game.getoleada()-100));
                             vida_aumentada=0+(100*game.getoleada()-100);
                             cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                            for(int o=0; o<cantidad_bichos; o++)
+                            for(o=0; o<cantidad_bichos; o++)
                             {
                                 vidas_texto[o].setVariable(enemigo[o].getVida());
                                 vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
@@ -1577,11 +1569,6 @@ int juego()
                         {
                             musica_menu.parar();
                             window.close();
-                            delete enemigo;
-                            delete colas_torres_3d;
-
-                            if (reproductor.getEncendido())
-                                reproductor.apagar();
                         }
 
                         //Sonido
@@ -1661,7 +1648,7 @@ int juego()
                         aldeano.setVida(0);
                         vida_aumentada=0;
                         cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
-                        for(int o=0; o<cantidad_bichos; o++)
+                        for(o=0; o<cantidad_bichos; o++)
                         {
                             vidas_texto[o].setVariable(enemigo[o].getVida());
                             vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
@@ -1677,7 +1664,7 @@ int juego()
                         primer_carga=false;
                         opacidad_menu=0;
                         boolmusicajuego=false;
-                        for(int l=0; l<posiciones_torres; l++)
+                        for(l=0; l<posiciones_torres; l++)
                         {
                             /// TORRES -------------------------------------
                             Ocupado[l]=false;
@@ -1714,7 +1701,7 @@ int juego()
                         vida_aumentada+=100;
                         aldeano.setVida(vida_aumentada);
                         cargar_vector_sprites(enemigo,aldeano,cantidad_bichos,oleada);
-                        for(int p=0; p<cantidad_bichos; p++)
+                        for(p=0; p<cantidad_bichos; p++)
                         {
                             vidas_texto[p].setVariable(enemigo[p].getVida());
                         }
@@ -1779,7 +1766,7 @@ int juego()
                             }
 
                             /// SPAWNEO DE TORRES
-                            for(int y=0; y<3; y++)
+                            for(y=0; y<3; y++)
                             {
                                 if(Ocupado[x]==false && torres_tipo[y][x].click(mousexy))
                                 {
@@ -2058,7 +2045,7 @@ int juego()
 
                                 ///Ordenador de la cola de manera dinamica---------------
 
-                                for (int z=0; z<cantidad_bichos; z++)
+                                for (z=0; z<cantidad_bichos; z++)
                                 {
                                     if (colas_torres_3d[x][f][z]==i-1)
                                         pos_enemigo_sacar=z;
@@ -2066,7 +2053,7 @@ int juego()
 
                                 pos_enemigo_siguiente=pos_enemigo_sacar+1;
 
-                                for (int z=pos_enemigo_sacar ; z<cantidad_bichos; z++)
+                                for (z=pos_enemigo_sacar ; z<cantidad_bichos; z++)
                                 {
                                     colas_torres_3d[x][f][z]=colas_torres_3d[x][f][pos_enemigo_siguiente];
                                     pos_enemigo_siguiente++;
@@ -2103,7 +2090,7 @@ int juego()
 
                                         ///Ordenador de la cola de manera dinamica---------------
 
-                                        for (int z=0; z<cantidad_bichos; z++)
+                                        for (z=0; z<cantidad_bichos; z++)
                                         {
                                             if (colas_torres_3d[x][f][z]==i-1)
                                                 pos_enemigo_sacar=z;
@@ -2111,7 +2098,7 @@ int juego()
 
                                         pos_enemigo_siguiente=pos_enemigo_sacar+1;
 
-                                        for (int z=pos_enemigo_sacar ; z<cantidad_bichos; z++)
+                                        for (z=pos_enemigo_sacar ; z<cantidad_bichos; z++)
                                         {
                                             colas_torres_3d[x][f][z]=colas_torres_3d[x][f][pos_enemigo_siguiente];
                                             pos_enemigo_siguiente++;
@@ -2564,7 +2551,7 @@ int juego()
 
             // SIGUIENTE OLEADA
 
-            for(int h=0; h<cantidad_bichos; h++)
+            for(h=0; h<cantidad_bichos; h++)
             {
                 if(enemigo[h].getVida()<=0&&bichos_muertos<cantidad_bichos)
                 {
@@ -2640,6 +2627,13 @@ int juego()
         window.display();
 
     }   // fin del while(window.IsOpen())
+
+    ///Liberacion de memoria
+    delete enemigo;
+    delete colas_torres_3d;
+
+    if (reproductor.getEncendido())
+        reproductor.apagar();
 
     return 0;
 
