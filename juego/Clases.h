@@ -89,10 +89,12 @@ public:
 
         if (!bScucces)
             exit (98765);
+
         processInfo_copia=processInfo;
         msg_recibidos=0;
         encendido=true;
         socket.connect(ip.getLocalAddress(), 50001);
+
     }
     void apagar ()
     {
@@ -187,6 +189,7 @@ public:
                 return false;
             }
         }
+        return false;
     }
     void apagar_v ()
     {

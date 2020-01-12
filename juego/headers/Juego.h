@@ -164,6 +164,34 @@ int juego()
         return -10;
     */
 
+    ///Efectos de sonido - breve explicacion
+
+    ///Segun Sfml: Sounds (and music) are played in a separate thread.
+    ///This means that you are free to do whatever you want after calling play()
+    ///(except destroying the sound or its data, of course), the sound will continue
+    ///to play until it's finished or explicitly stopped.
+
+    ///Los sonidos, a diferencia de los objetos music, trabajan de la misma forma que los sprites.
+    ///tienen un soundbuffer, que seria lo mismo que una textura, y un sound que seria lo mismo que
+    ///un sprite.
+
+    SoundBuffer select_menu_buffer;
+    select_menu_buffer.loadFromFile("musica/FX/select_menu.wav");
+
+    ///Se carga el buffer, como una textura.
+
+    Sound select_menu_fx;
+    select_menu_fx.setBuffer(select_menu_buffer);
+    select_menu_fx.setVolume(12);
+
+    ///se carga el sound ,  como un sprite.
+
+    ///las mecanicas de los sprites, son iguales para los soundbuffer y los sound, uno puede cargar
+    ///diferentes objetos sound con el mismo soundbuffer.
+
+    bool fx=true;
+    ///-----------------------------------------------------------
+
     ///Reproductor de Video
 
     Video reproductor;
@@ -274,7 +302,7 @@ int juego()
 
     //volumen de la musica del menu
 
-    musica_menu.volumen(30);
+    musica_menu.volumen(3);
     // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.repeticion(true);
     musica_juego.volumen(30);
@@ -1488,6 +1516,20 @@ int juego()
                     }
                 }
 
+                if (nueva_partida.click(mousexy)||cargar_partida_boton.click(mousexy)||salir.click(mousexy)||
+                        sonido_menu.click(mousexy)||pantalla_completa.click(mousexy))
+                {
+                    if (fx)
+                    {
+                        select_menu_fx.play();
+                        fx=false;
+                    }
+                }
+                else
+                {
+                    fx=true;
+                }
+
                 //Configuracion de los botones en el menu principal-----------
 
                 if (Mouse::isButtonPressed(Mouse::Left))
@@ -1583,7 +1625,7 @@ int juego()
                             else
                             {
                                 reg_config.setSonido_menu(true);
-                                musica_menu.volumen(30);
+                                musica_menu.volumen(3);
                             }
 
                         }
