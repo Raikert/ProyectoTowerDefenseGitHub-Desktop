@@ -175,21 +175,24 @@ int juego()
     ///tienen un soundbuffer, que seria lo mismo que una textura, y un sound que seria lo mismo que
     ///un sprite.
 
-    SoundBuffer select_menu_buffer;
-    select_menu_buffer.loadFromFile("musica/FX/select_menu.wav");
+    SoundBuffer buffer,buffer2;
+    buffer.loadFromFile("musica/FX/select_menu.wav");
+    buffer2.loadFromFile("musica/FX/building.ogg");
 
     ///Se carga el buffer, como una textura.
 
-    Sound select_menu_fx;
-    select_menu_fx.setBuffer(select_menu_buffer);
-    select_menu_fx.setVolume(12);
+    Sound fx,fx2;
+    fx.setBuffer(buffer);
+    fx.setVolume(12);
+    fx2.setBuffer(buffer2);
+    fx2.setVolume(12);
 
     ///se carga el sound ,  como un sprite.
 
     ///las mecanicas de los sprites, son iguales para los soundbuffer y los sound, uno puede cargar
     ///diferentes objetos sound con el mismo soundbuffer.
 
-    bool fx=true;
+    bool fx_bool=true;
     ///-----------------------------------------------------------
 
     ///Reproductor de Video
@@ -305,7 +308,7 @@ int juego()
     musica_menu.volumen(3);
     // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.repeticion(true);
-    musica_juego.volumen(30);
+    musica_juego.volumen(3);
     musica_juego.repeticion(true);
     musica_derrota.repeticion(true);
     musica_derrota.volumen(30);
@@ -1511,6 +1514,8 @@ int juego()
                     if (reproductor.fin_video())
                     {
                         estado_juego=3;
+                        buffer.loadFromFile("musica/FX/dead_effect2.ogg");
+                        fx.setBuffer(buffer);
                         reproductor.apagar();
                         musica_juego.reproducir();
                     }
@@ -1519,15 +1524,15 @@ int juego()
                 if (nueva_partida.click(mousexy)||cargar_partida_boton.click(mousexy)||salir.click(mousexy)||
                         sonido_menu.click(mousexy)||pantalla_completa.click(mousexy))
                 {
-                    if (fx)
+                    if (fx_bool)
                     {
-                        select_menu_fx.play();
-                        fx=false;
+                        fx.play();
+                        fx_bool=false;
                     }
                 }
                 else
                 {
-                    fx=true;
+                    fx_bool=true;
                 }
 
                 //Configuracion de los botones en el menu principal-----------
@@ -1767,7 +1772,7 @@ int juego()
                         }
                         else
                         {
-                            musica_juego.volumen(30);
+                            musica_juego.volumen(3);
                             boolmusicajuego=true;
                         }
                     }
@@ -1812,6 +1817,9 @@ int juego()
                             {
                                 if(Ocupado[x]==false && torres_tipo[y][x].click(mousexy))
                                 {
+                                    if (fx2.getPlayingOffset().asMilliseconds()>1000||fx2.getPlayingOffset().asSeconds()==0)
+                                        fx2.play();
+
                                     vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
                                     switch (y)
                                     {
@@ -1982,6 +1990,9 @@ int juego()
                 }
                 else if (!enemigo[d-1].getMuerto()&&enemigo[d-1].getEstado()!=7)
                 {
+                    if (fx.getPlayingOffset().asMilliseconds()>4000||fx.getPlayingOffset().asSeconds()==0)
+                        fx.play();
+
                     enemigo[d-1].setMuerto();
                     enemigos_muertos++;
                     muertos_texto.setVariable(enemigos_muertos);
