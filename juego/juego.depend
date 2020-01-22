@@ -2007,12 +2007,14 @@
 
 1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\collision.hpp
 
-1576633487 source:c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
+1579657201 source:c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
+	<SFML/Network.hpp>
 	"windows.h"
 	<iostream>
 	<cstdlib>
+	<cstring>
 	"Collision.hpp"
 	"funciones.h"
 	"Clases.h"
@@ -2125,7 +2127,7 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1576649577 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
+1579657201 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\clases.h
 
 1572053340 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\colision_danio.h
 
@@ -2135,7 +2137,7 @@
 
 1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\headers\sprites.h
 
-1576651855 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
+1579657201 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\headers\juego.h
 
 1576766440 c:\users\raikert\documents\github\proyectotowerdefense-githubdesktop\juego\headers\movimientos.h
 
@@ -3814,7 +3816,7 @@
 	<cstdlib>
 	<clocale>
 
-1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\funciones.h
+1579657201 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\funciones.h
 	<iostream>
 	<cstdlib>
 	<clocale>
@@ -5167,4 +5169,79 @@
 1576766440 c:\users\raikert\documents\github\proyectotowerdefensegithub-desktop\juego\headers\sprites.h
 
 1578860225 c:\users\raikert\documents\github\proyectotowerdefensegithub-desktop\juego\headers\juego.h
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network.hpp
+	<SFML/System.hpp>
+	<SFML/Network/Ftp.hpp>
+	<SFML/Network/Http.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/Packet.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/Network/SocketSelector.hpp>
+	<SFML/Network/TcpListener.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/Network/UdpSocket.hpp>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\ftp.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\export.hpp
+	<SFML/Config.hpp>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\tcpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/System/Time.hpp>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\socket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<vector>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\sockethandle.hpp
+	<SFML/Config.hpp>
+	<basetsd.h>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\http.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<map>
+	<string>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\ipaddress.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+	<istream>
+	<ostream>
+	<string>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\packet.hpp
+	<SFML/Network/Export.hpp>
+	<string>
+	<vector>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\socketselector.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\tcplistener.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+
+1576633487 c:\users\canoxor\documents\github\proyectotowerdefense-githubdesktop\juego\sfml-2.5.1\include\sfml\network\udpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<vector>
 
