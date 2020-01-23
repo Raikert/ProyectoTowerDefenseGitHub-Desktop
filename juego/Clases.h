@@ -1,5 +1,7 @@
 #ifndef CLASES_H_INCLUDED
 #define CLASES_H_INCLUDED
+#include<stdlib.h>
+#include<time.h>
 
 using namespace std;
 using namespace sf;
@@ -935,21 +937,27 @@ void Animacion::cambiar_tira (int estado)
     switch (estado)
     {
     case 4:
+    case 53:
+    case 55:
         ///ANIMACION ARRIBA
         sectory=inicioy-90*2;
         break;
     case 3:
     case 5:
     case 6:
+    case 32:
+        case 52:
         ///ANIMACION DERECHA
         sectory=inicioy-90;
         break;
     case 0:
     case 2:
+    case 31:
         ///ANIMACION ABAJO
         sectory=inicioy;
         break;
     case 1:
+    case 54:
         /// ANIMACION IZQUIERDA
         sectory=inicioy+90;
         break;
@@ -968,10 +976,10 @@ private:
     int vida;
     float velocidad;
     int estado,intervalo_danio[3],danio_torre[3];
+    int numero_random;
 public:
-    Zombie (Texture &textura_zombies,int tipo=1,float ve=0.5,float posx=295,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
+    Zombie (Texture &textura_zombies,int tipo=1,float ve=0.5,float posx=197,float posy=0,float escalax=0.65,float escalay=0.65)///float ve=0.5,int opacida=0, int dinero=100,int vi=100)
     {
-
         animacion_propiedad.crear_Animacion_zombie(textura_zombies,tipo,posx,posy,escalax,escalay);
         vida=0;
         velocidad=ve;

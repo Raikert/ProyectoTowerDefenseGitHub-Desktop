@@ -1,5 +1,7 @@
 #ifndef JUEGO_H_INCLUDED
 #define JUEGO_H_INCLUDED
+#include<stdlib.h>
+#include<time.h>
 
 using namespace std;
 using namespace sf;
@@ -7,6 +9,9 @@ using namespace Collision;
 
 int juego()
 {
+    /// ZONA RANDOM
+    srand(time(NULL));
+    /// -----------
     bool tiempo_inicial=true;
     //variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
     int i,x,te,d,o,l,f,c,debug,z,p,y,h;
@@ -434,7 +439,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=10000;
+    dinero=300;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -490,8 +495,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=236;
-            coordenadas_X_Y_torres[1]=114;
+            coordenadas_X_Y_torres[0]=121;
+            coordenadas_X_Y_torres[1]=45;
 
             /// Espacio para el menu
 
@@ -538,8 +543,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=98;
-            coordenadas_X_Y_torres[1]=245;
+            coordenadas_X_Y_torres[0]=118;
+            coordenadas_X_Y_torres[1]=200;
 
             /// Espacio para el menu
 
@@ -586,8 +591,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=98;
-            coordenadas_X_Y_torres[1]=420;
+            coordenadas_X_Y_torres[0]=120;
+            coordenadas_X_Y_torres[1]=368;
 
             /// Espacio para el menu
 
@@ -634,8 +639,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=194;
-            coordenadas_X_Y_torres[1]=331;
+            coordenadas_X_Y_torres[0]=267;
+            coordenadas_X_Y_torres[1]=368;
 
             /// Espacio para el menu
 
@@ -682,8 +687,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=242;
-            coordenadas_X_Y_torres[1]=419;
+            coordenadas_X_Y_torres[0]=293;
+            coordenadas_X_Y_torres[1]=200;
 
             /// Espacio para el menu
 
@@ -730,8 +735,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=339;
-            coordenadas_X_Y_torres[1]=419;
+            coordenadas_X_Y_torres[0]=414;
+            coordenadas_X_Y_torres[1]=135;
 
             /// Espacio para el menu
 
@@ -778,8 +783,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=434;
-            coordenadas_X_Y_torres[1]=419;
+            coordenadas_X_Y_torres[0]=414;
+            coordenadas_X_Y_torres[1]=268;
 
             /// Espacio para el menu
 
@@ -826,8 +831,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=482;
-            coordenadas_X_Y_torres[1]=90;
+            coordenadas_X_Y_torres[0]=414;
+            coordenadas_X_Y_torres[1]=402;
 
             /// Espacio para el menu
 
@@ -874,8 +879,56 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=535;
-            coordenadas_X_Y_torres[1]=224;
+            coordenadas_X_Y_torres[0]=562;
+            coordenadas_X_Y_torres[1]=370;
+
+            /// Espacio para el menu
+
+            coordenadas_X_Y_menu[0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_menu[1]=coordenadas_X_Y_torres[1]-73;
+
+            /// Torre 1 del menu
+
+            coordenadas_X_Y_torres_lvl_1[0][0]=coordenadas_X_Y_torres[0]-75;
+            coordenadas_X_Y_torres_lvl_1[0][1]=coordenadas_X_Y_torres[1]-73;
+
+            /// Torre 2 del menu
+
+            coordenadas_X_Y_torres_lvl_1[1][0]=coordenadas_X_Y_torres[0]-15;
+            coordenadas_X_Y_torres_lvl_1[1][1]=coordenadas_X_Y_torres[1]-72;
+
+            /// Torre 3 del menu
+
+            coordenadas_X_Y_torres_lvl_1[2][0]=coordenadas_X_Y_torres[0]+44;
+            coordenadas_X_Y_torres_lvl_1[2][1]=coordenadas_X_Y_torres[1]-72;
+
+            /// Cruz para cerrar el menu
+
+            coordenadas_X_Y_equis[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_equis[1]=coordenadas_X_Y_torres[1]-73;
+
+            /// Boton para vender del menu
+
+            coordenadas_X_Y_vender[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_vender[1]=coordenadas_X_Y_torres[1]-52;
+
+            /// Boton para cambiar el menu por el menu de nivel+1
+
+            coordenadas_X_Y_subirlvl[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_subirlvl[1]=coordenadas_X_Y_torres[1]-19;
+
+            /// Boton para mejorar la torre
+
+            coordenadas_X_Y_mejorar[0]=coordenadas_X_Y_torres[0]+102;
+            coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
+            break;
+
+            case 9:
+
+            /// Espacio para la torre
+
+            coordenadas_X_Y_torres[0]=559;
+            coordenadas_X_Y_torres[1]=236;
 
             /// Espacio para el menu
 
@@ -1224,7 +1277,7 @@ int juego()
                     }
                     enemigos_muertos=0;
                     muertos_texto.setVariable(enemigos_muertos);
-                    dinero=10000;
+                    dinero=300;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=0;
@@ -1458,7 +1511,7 @@ int juego()
                 }
                 enemigos_muertos=0;
                 muertos_texto.setVariable(enemigos_muertos);
-                dinero=10000;
+                dinero=300;
                 dinero_texto.setVariable((dinero));
                 tiempo=1;
                 objetos=0;
@@ -1701,7 +1754,7 @@ int juego()
                             vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                             vidas_texto[o].setTransparencia(0);
                         }
-                        dinero=10000;
+                        dinero=300;
                         dinero_texto.setVariable(dinero);
                         tiempo=1;
                         objetos=0;
@@ -2368,7 +2421,7 @@ int juego()
                         // el pixelperfectTest del mapa colisionable reemplazara a la tecnica del paint y el limite de pixeles
                         // mientras cambio los limites colisionables sobre el mapa del lvl1, seguimos con los pixeles.
 
-                        if (enemigo[i-1].getY()<199/*PixelPerfectTest(enemigo[i-1],camino1.getSprite()) */ )
+                        if (enemigo[i-1].getY()<130/*PixelPerfectTest(enemigo[i-1],camino1.getSprite()) */ )
                         {
                             if(enemigo[i-1].getOpacidad()<255)
                             {
@@ -2382,7 +2435,7 @@ int juego()
                         enemigo[i-1].setTira_mov();
                         break;
                     case 1:
-                        if (enemigo[i-1].getX()>55)
+                        if (enemigo[i-1].getX()>69)
                         {
                             enemigo[i-1].mover_izq();
                         }
@@ -2391,7 +2444,7 @@ int juego()
                         enemigo[i-1].setTira_mov();
                         break;
                     case 2:
-                        if (enemigo[i-1].getY()<500)
+                        if (enemigo[i-1].getY()<340)
                         {
                             enemigo[i-1].mover_abajo();
                         }
@@ -2400,7 +2453,25 @@ int juego()
                         enemigo[i-1].setTira_mov();
                         break;
                     case 3:
-                        if (enemigo[i-1].getX()<495)
+                        if (enemigo[i-1].getX()<199)
+                        {
+                            enemigo[i-1].mover_derecha();
+                        }
+                        else
+                            enemigo[i-1].setEstado(31);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 31:
+                        if (enemigo[i-1].getY()<460)
+                        {
+                            enemigo[i-1].mover_abajo();
+                        }
+                        else
+                            enemigo[i-1].setEstado(32);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 32:
+                        if (enemigo[i-1].getX()<370)
                         {
                             enemigo[i-1].mover_derecha();
                         }
@@ -2409,7 +2480,7 @@ int juego()
                         enemigo[i-1].setTira_mov();
                         break;
                     case 4:
-                        if (enemigo[i-1].getY()>177)
+                        if (enemigo[i-1].getY()>227)
                         {
                             enemigo[i-1].mover_arriba();
                         }
@@ -2418,9 +2489,54 @@ int juego()
                         enemigo[i-1].setTira_mov();
                         break;
                     case 5:
-                        if (enemigo[i-1].getX()<700)
+                        if (enemigo[i-1].getX()<491)
                         {
                             enemigo[i-1].mover_derecha();
+                        }
+                        else
+                            enemigo[i-1].setEstado(51);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 51:
+                        if (enemigo[i-1].getY()<459)
+                        {
+                            enemigo[i-1].mover_abajo();
+                        }
+                        else
+                            enemigo[i-1].setEstado(52);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 52:
+                        if (enemigo[i-1].getX()<670)
+                        {
+                            enemigo[i-1].mover_derecha();
+                        }
+                        else
+                            enemigo[i-1].setEstado(53);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 53:
+                        if (enemigo[i-1].getY()>189)
+                        {
+                            enemigo[i-1].mover_arriba();
+                        }
+                        else
+                            enemigo[i-1].setEstado(54);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 54:
+                        if (enemigo[i-1].getX()>614)
+                        {
+                            enemigo[i-1].mover_izq();
+                        }
+                        else
+                            enemigo[i-1].setEstado(55);
+                        enemigo[i-1].setTira_mov();
+                        break;
+                    case 55:
+                        if (enemigo[i-1].getY()>125)
+                        {
+                            enemigo[i-1].mover_arriba();
                         }
                         else
                             enemigo[i-1].setEstado(6);
@@ -2431,7 +2547,7 @@ int juego()
                         {
                             enemigo[i-1].decrementar_opacidad(5);
                             vidas_texto[i-1].setTransparencia(enemigo[i-1].getOpacidad());
-                            enemigo[i-1].mover_derecha();
+                            enemigo[i-1].mover_arriba();
                         }
                         else
                         {
