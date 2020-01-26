@@ -20,7 +20,7 @@ int juego()
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
     Vector2f pixeles_convertidos;
     View vista_del_juego(FloatRect(0.f,0.f,1000.f,600.f));
-    ///por lo raro que paresca, la siguiente linea logra que se pueda ver en fullscreen, si se lo comenta
+    ///por lo raro que es, la siguiente linea logra que se pueda ver en fullscreen, si se lo comenta
     ///se ve una franja negra en el lado izquierdo, pero no entiendo xq.
     Vector2f caca=vista_del_juego.getCenter();
 

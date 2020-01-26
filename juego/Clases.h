@@ -64,6 +64,25 @@ bool Cola::sacar(int &x)
 /// ------------------------------------------------------------------------------------
 */
 
+///Clase Video - reproductor de videos en c++, hecho de forma hibrida con el proyecto
+///del programador fosterseth de github, todos los creditos a el y a su gran trabajo con SDL
+///y ffmpeg, algo que sin el no seria posible, no pude comunicarme con el para darle las gracias
+///dado que github no posee envio de mensajes privados, pero desde aca y en nombre de todo mi grupo
+///se lo agradesco de todo corazon por hacer esto posible. :)
+
+///Autor :  fosterseth
+
+///gracias a esta clase podemos ver video, y es la base de las comunicaciones por TCP, que me abrieron la mente
+///a pensar cosas mas alla de lo fisico, es decir, que nuestro juego sea multijugador.
+
+///Esta clase abre un programa externo con un CreateProcess() de Windows, se comunica a traves de conexiones TCP
+///con el programa y le envia comandos para reproducir videos del juego. Creanme que ni yo puedo creer el Godzilla que hice.
+
+///Contras: Lamentablemente, el .exe no maneja Fullcreen por lo tanto, elegi la misma resolucion del juego en ventana, sin embargo
+///esto es posible, pero es un Fullscreen en ventana falso, cosa que no queda tan bien, y ademas decidi borrar todo lo que habia
+///codeado por frustracion, cosa que me arrepiento jajajj. Aunque no sabia si realmente funcionaria en otras maquinas por lo que
+///la opcion que quedo es la mas segura para todas las maquinas.
+
 class Video
 {
 private:
