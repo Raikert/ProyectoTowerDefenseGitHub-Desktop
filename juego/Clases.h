@@ -83,6 +83,9 @@ bool Cola::sacar(int &x)
 ///codeado por frustracion, cosa que me arrepiento jajajj. Aunque no sabia si realmente funcionaria en otras maquinas por lo que
 ///la opcion que quedo es la mas segura para todas las maquinas.
 
+///Esta es la primer clase en la que puse gran empeño en lograr algo sumamente dificil, desde el proceso de la idea, la investigacion
+///y la puesta en marcha luego de haber encontrado algo firme sobre donde trabajarlo, me tomo 2/3 meses conseguirlo.
+
 class Video
 {
 private:
