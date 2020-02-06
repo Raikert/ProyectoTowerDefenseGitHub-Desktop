@@ -181,13 +181,11 @@ int juego()
     ///un sprite.
 
     SoundBuffer buffer,buffer2;
-    buffer.loadFromFile("musica/FX/select_menu.wav");
     buffer2.loadFromFile("musica/FX/building.ogg");
 
     ///Se carga el buffer, como una textura.
 
     Sound fx,fx2;
-    fx.setBuffer(buffer);
     fx.setVolume(12);
     fx2.setBuffer(buffer2);
     fx2.setVolume(12);
@@ -197,7 +195,7 @@ int juego()
     ///las mecanicas de los sprites, son iguales para los soundbuffer y los sound, uno puede cargar
     ///diferentes objetos sound con el mismo soundbuffer.
 
-    bool fx_bool=true;
+    bool fx_bool=true,carga_buffer=false;
     ///-----------------------------------------------------------
 
     ///Reproductor de Video
@@ -923,7 +921,7 @@ int juego()
             coordenadas_X_Y_mejorar[1]=coordenadas_X_Y_torres[1]-35;
             break;
 
-            case 9:
+        case 9:
 
             /// Espacio para la torre
 
@@ -1135,9 +1133,9 @@ int juego()
 
     //Sistema de colas para las torres
 
-    ///y si gente, es un new de una tridimensional, sorprendidos no?
-
     int (*colas_torres_3d) [cantidad_torres][cantidad_bichos+1] = new int[posiciones_torres][cantidad_torres][cantidad_bichos+1];
+
+    ///y si gente, es un new de una tridimensional, sorprendidos no?
 
     ///para entender esto, o al menos saber con se declaran, porque ni yo entendi un cuerno, les dejo el link donde lo
     ///explican con el titulo §5  Asignar el valor devuelto, con la linea : int (* mptr3)[10][2] = new int[3][10][2];
@@ -1553,6 +1551,13 @@ int juego()
                 primer_carga=true;
             }
 
+            if (!carga_buffer)
+            {
+                buffer.loadFromFile("musica/FX/select_menu.wav");
+                fx.setBuffer(buffer);
+                carga_buffer=true;
+            }
+
             menu.setColor(Color(255,255,255,opacidad_menu));
             window.draw(menu);
             // window.draw(texto_prueba);
@@ -1569,6 +1574,7 @@ int juego()
                         estado_juego=3;
                         buffer.loadFromFile("musica/FX/dead_effect2.ogg");
                         fx.setBuffer(buffer);
+                        carga_buffer=false;
                         reproductor.apagar();
                         musica_juego.reproducir();
                     }
@@ -1587,6 +1593,7 @@ int juego()
                 {
                     fx_bool=true;
                 }
+
 
                 //Configuracion de los botones en el menu principal-----------
 
@@ -2431,8 +2438,10 @@ int juego()
                             enemigo[i-1].mover_abajo();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(1);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 1:
                         if (enemigo[i-1].getX()>69)
@@ -2440,8 +2449,10 @@ int juego()
                             enemigo[i-1].mover_izq();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(2);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 2:
                         if (enemigo[i-1].getY()<340)
@@ -2449,8 +2460,10 @@ int juego()
                             enemigo[i-1].mover_abajo();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(3);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 3:
                         if (enemigo[i-1].getX()<199)
@@ -2458,8 +2471,10 @@ int juego()
                             enemigo[i-1].mover_derecha();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(31);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 31:
                         if (enemigo[i-1].getY()<460)
@@ -2467,8 +2482,10 @@ int juego()
                             enemigo[i-1].mover_abajo();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(32);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 32:
                         if (enemigo[i-1].getX()<370)
@@ -2476,8 +2493,10 @@ int juego()
                             enemigo[i-1].mover_derecha();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(4);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 4:
                         if (enemigo[i-1].getY()>227)
@@ -2485,8 +2504,10 @@ int juego()
                             enemigo[i-1].mover_arriba();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(5);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 5:
                         if (enemigo[i-1].getX()<491)
@@ -2494,8 +2515,10 @@ int juego()
                             enemigo[i-1].mover_derecha();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(51);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 51:
                         if (enemigo[i-1].getY()<459)
@@ -2503,8 +2526,10 @@ int juego()
                             enemigo[i-1].mover_abajo();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(52);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 52:
                         if (enemigo[i-1].getX()<670)
@@ -2512,8 +2537,10 @@ int juego()
                             enemigo[i-1].mover_derecha();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(53);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 53:
                         if (enemigo[i-1].getY()>189)
@@ -2521,8 +2548,10 @@ int juego()
                             enemigo[i-1].mover_arriba();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(54);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 54:
                         if (enemigo[i-1].getX()>614)
@@ -2530,8 +2559,10 @@ int juego()
                             enemigo[i-1].mover_izq();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(55);
-                        enemigo[i-1].setTira_mov();
+                            enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 55:
                         if (enemigo[i-1].getY()>125)
@@ -2539,8 +2570,9 @@ int juego()
                             enemigo[i-1].mover_arriba();
                         }
                         else
+                        {
                             enemigo[i-1].setEstado(6);
-                        enemigo[i-1].setTira_mov();
+                        }
                         break;
                     case 6:
                         if (enemigo[i-1].getOpacidad()!=0)

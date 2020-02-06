@@ -968,13 +968,14 @@ void Animacion::cambiar_tira (int estado)
     case 5:
     case 6:
     case 32:
-        case 52:
+    case 52:
         ///ANIMACION DERECHA
         sectory=inicioy-90;
         break;
     case 0:
     case 2:
     case 31:
+    case 51:
         ///ANIMACION ABAJO
         sectory=inicioy;
         break;
