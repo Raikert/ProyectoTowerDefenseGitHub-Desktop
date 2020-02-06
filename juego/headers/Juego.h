@@ -183,6 +183,7 @@ int juego()
     FX sonido_seleccion("musica/FX/select_menu.wav");
     FX sonido_construccion("musica/FX/building.ogg",1000);
     FX sonido_muerte_zombie("musica/FX/dead_effect2.ogg",4000);
+    FX sonido_zombie_danio("musica/FX/llegada.ogg");
 
     //SoundBuffer buffer,buffer2;
     //buffer2.loadFromFile("musica/FX/building.ogg");
@@ -2601,6 +2602,7 @@ int juego()
                                 vida_juego_texto.setVariable(vida_juego);
                                 dinero+=50;
                                 dinero_texto.setVariable(dinero);
+                                sonido_zombie_danio.encender();
                             }
                             enemigo[i-1].setVida(0);
                         }
