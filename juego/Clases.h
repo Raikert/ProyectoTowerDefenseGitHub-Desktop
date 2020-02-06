@@ -101,8 +101,9 @@ private:
     PROCESS_INFORMATION processInfo_copia;
     bool encendido;
 public:
-    Video (int d=500) {
-    delay=d;
+    Video (int d=500)
+    {
+        delay=d;
     }
     void encender ()
     {
@@ -222,8 +223,60 @@ public:
             enviar("closewindows");
         }
     }
-    bool getEncendido() {
-    return encendido;
+    bool getEncendido()
+    {
+        return encendido;
+    }
+};
+
+///NUEVA CLASE FX
+
+///Descripcion:
+
+///Esta clase soluciona muchos inconvenientes a la hora de trabajar con sonidos y efectos del juego, tanto manejo de sus declaraciones
+///como el uso y la complejidad con la que se enfrenta uno a la hora de darle ciertos comportamientos, como el uso de delay, reemplazo
+///de sonidos dentro de un buffer y demas.
+
+///Se esta trabajando es un metodo para el cambio de volumen de forma dinamica dentro del juego, en que se dispondra de una barra de mixer
+///sencilla para el manejo del volumen, primero de los sonidos individuales y proximamente para la musica en general,el volumen de las
+///cinematicas quedan excluidas dado que al ser un programa externo y al no poder cambiar su volumen, es incapaz de autoregular su nivel
+///de audio.
+
+class FX
+{
+private:
+    SoundBuffer buffer;
+    Sound sonido;
+    int tiempo_delay,volumen;
+public:
+    FX (const string &ruta_buffer,int tiempo_d=0)
+    {
+        buffer.loadFromFile(ruta_buffer);
+        sonido.setBuffer(buffer);
+        tiempo_delay=tiempo_d;
+        volumen=35;
+        sonido.setVolume(volumen);
+    }
+    void cambiar_buffer(const string &ruta_buffer)
+    {
+        buffer.loadFromFile(ruta_buffer);
+        sonido.setBuffer(buffer);
+    }
+    void cambiar_volumen(int v_volumen)
+    {
+        volumen=v_volumen;
+        sonido.setVolume(volumen);
+    }
+    void cambiar_delay(int tiempo_d)
+    {
+        tiempo_delay=tiempo_d;
+    }
+    void encender()
+    {
+        if (tiempo_delay==0)
+            sonido.play();
+        else if (sonido.getPlayingOffset().asMilliseconds()>tiempo_delay||sonido.getPlayingOffset().asSeconds()==0)
+            sonido.play();
     }
 };
 
