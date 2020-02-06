@@ -493,8 +493,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=121;
-            coordenadas_X_Y_torres[1]=45;
+            coordenadas_X_Y_torres[0]=125;
+            coordenadas_X_Y_torres[1]=76;
 
             /// Espacio para el menu
 
@@ -541,8 +541,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=118;
-            coordenadas_X_Y_torres[1]=200;
+            coordenadas_X_Y_torres[0]=123;
+            coordenadas_X_Y_torres[1]=241;
 
             /// Espacio para el menu
 
@@ -589,8 +589,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=120;
-            coordenadas_X_Y_torres[1]=368;
+            coordenadas_X_Y_torres[0]=121;
+            coordenadas_X_Y_torres[1]=408;
 
             /// Espacio para el menu
 
@@ -637,8 +637,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=267;
-            coordenadas_X_Y_torres[1]=368;
+            coordenadas_X_Y_torres[0]=272;
+            coordenadas_X_Y_torres[1]=409;
 
             /// Espacio para el menu
 
@@ -685,8 +685,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=293;
-            coordenadas_X_Y_torres[1]=200;
+            coordenadas_X_Y_torres[0]=300;
+            coordenadas_X_Y_torres[1]=240;
 
             /// Espacio para el menu
 
@@ -733,8 +733,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=414;
-            coordenadas_X_Y_torres[1]=135;
+            coordenadas_X_Y_torres[0]=419;
+            coordenadas_X_Y_torres[1]=175;
 
             /// Espacio para el menu
 
@@ -781,8 +781,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=414;
-            coordenadas_X_Y_torres[1]=268;
+            coordenadas_X_Y_torres[0]=418;
+            coordenadas_X_Y_torres[1]=308;
 
             /// Espacio para el menu
 
@@ -829,8 +829,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=562;
-            coordenadas_X_Y_torres[1]=237;
+            coordenadas_X_Y_torres[0]=566;
+            coordenadas_X_Y_torres[1]=275;
 
             /// Espacio para el menu
 
@@ -877,8 +877,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=562;
-            coordenadas_X_Y_torres[1]=370;
+            coordenadas_X_Y_torres[0]=565;
+            coordenadas_X_Y_torres[1]=409;
 
             /// Espacio para el menu
 
@@ -925,8 +925,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=559;
-            coordenadas_X_Y_torres[1]=236;
+            coordenadas_X_Y_torres[0]=566;
+            coordenadas_X_Y_torres[1]=276;
 
             /// Espacio para el menu
 
@@ -971,7 +971,7 @@ int juego()
 
         }
 
-        torres[i]=Boton(49,90,coordenadas_X_Y_torres[0],coordenadas_X_Y_torres[1]);
+        torres[i]=Boton(44,53,coordenadas_X_Y_torres[0],coordenadas_X_Y_torres[1]);
         torres_tipo[0][i]=Boton(58,71,coordenadas_X_Y_torres_lvl_1[1][0],coordenadas_X_Y_torres_lvl_1[1][1]);
         torres_tipo[1][i]=Boton(58,71,coordenadas_X_Y_torres_lvl_1[2][0],coordenadas_X_Y_torres_lvl_1[2][1]);
         torres_tipo[2][i]=Boton(58,71,coordenadas_X_Y_torres_lvl_1[0][0],coordenadas_X_Y_torres_lvl_1[0][1]);
