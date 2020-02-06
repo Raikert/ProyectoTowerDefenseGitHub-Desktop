@@ -829,8 +829,8 @@ int juego()
 
             /// Espacio para la torre
 
-            coordenadas_X_Y_torres[0]=414;
-            coordenadas_X_Y_torres[1]=402;
+            coordenadas_X_Y_torres[0]=562;
+            coordenadas_X_Y_torres[1]=237;
 
             /// Espacio para el menu
 
