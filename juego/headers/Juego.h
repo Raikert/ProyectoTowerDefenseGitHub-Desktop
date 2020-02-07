@@ -335,9 +335,9 @@ int juego()
     //el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
     //Util para ver en q posicion de la pantalla se ubica el boton.
 
-    Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(55,50,872,487);
-    Boton nueva_oleada(49,45,823,433,255), derrota_boton(1000,600,0,0), guardar_partida(152,44,824,545,255), pausa(49,45,875,433);
-    Boton reanudar(49,45,927,433), sonido_menu(62,46,32,362),pantalla_completa(64,52,24,433);
+    Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(75,51,901,455);
+    Boton nueva_oleada(75,51,812,455,255), derrota_boton(1000,600,0,0), guardar_partida(161,51,812,523), pausa(75,51,901,388);
+    Boton reanudar(75,51,812,388), sonido_menu(62,46,32,362),pantalla_completa(64,52,24,433);
 
     /// ---------------------------------- MENSAJES --------------------------------------------
 
@@ -442,7 +442,7 @@ int juego()
     ///-----Dinero de juego-----
 
     int dinero;
-    dinero=300;
+    dinero=10000;
     Texto dinero_texto(font_texto2.getFont(),dinero,25,910,199,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
@@ -1280,7 +1280,7 @@ int juego()
                     }
                     enemigos_muertos=0;
                     muertos_texto.setVariable(enemigos_muertos);
-                    dinero=300;
+                    dinero=10000;
                     dinero_texto.setVariable(dinero);
                     tiempo=1;
                     objetos=0;
@@ -1514,7 +1514,7 @@ int juego()
                 }
                 enemigos_muertos=0;
                 muertos_texto.setVariable(enemigos_muertos);
-                dinero=300;
+                dinero=10000;
                 dinero_texto.setVariable((dinero));
                 tiempo=1;
                 objetos=0;
@@ -1655,6 +1655,7 @@ int juego()
                             primer_carga=false;
                             opacidad_menu=0;
                             boolmusicajuego=false;
+
                             /*
                             for(int x=0; x<posiciones_torres; x++)
                             {
@@ -1770,7 +1771,7 @@ int juego()
                             vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                             vidas_texto[o].setTransparencia(0);
                         }
-                        dinero=300;
+                        dinero=10000;
                         dinero_texto.setVariable(dinero);
                         tiempo=1;
                         objetos=0;
