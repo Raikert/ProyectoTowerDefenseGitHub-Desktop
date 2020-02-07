@@ -304,7 +304,7 @@ int juego()
 
     Texto mousey (font_texto2.getFont(),mousexy[1],18,700,540);
 
-    Texto muertos_texto(font_texto2.getFont(),enemigos_muertos,25,910,331,Color::Yellow,true);
+    Texto muertos_texto(font_texto2.getFont(),enemigos_muertos,25,910,333,Color::Yellow,true);
 
     //Si gente, le puse MUSICA WEEEEE
 
