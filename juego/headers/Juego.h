@@ -304,7 +304,7 @@ int juego()
 
     Texto mousey (font_texto2.getFont(),mousexy[1],18,700,540);
 
-    Texto muertos_texto(font_texto2.getFont(),enemigos_muertos,40,940,284,Color::Yellow,true);
+    Texto muertos_texto(font_texto2.getFont(),enemigos_muertos,25,910,331,Color::Yellow,true);
 
     //Si gente, le puse MUSICA WEEEEE
 
@@ -443,13 +443,13 @@ int juego()
 
     int dinero;
     dinero=300;
-    Texto dinero_texto(font_texto2.getFont(),dinero,25,937,147,Color(4,174,21,255),true);
+    Texto dinero_texto(font_texto2.getFont(),dinero,25,910,199,Color(4,174,21,255),true);
 
     ///-----Vida de juego-----
 
     int vida_juego;
     vida_juego=const_vida_juego;
-    Texto vida_juego_texto(font_texto2.getFont(),vida_juego,25,874,110,Color(241,65,91,255),true);
+    Texto vida_juego_texto(font_texto2.getFont(),vida_juego,25,910,133,Color(241,65,91,255),true);
 
     /// Variables para la verificacion de clicks y demas
 
@@ -1073,7 +1073,7 @@ int juego()
     int bichos_muertos=0;
     int vida_aumentada=0;
     int oleada=1;
-    Texto oleada_texto(font_texto2.getFont(),oleada,17,843,202,Color::Yellow,true);
+    Texto oleada_texto(font_texto2.getFont(),oleada,25,910,265,Color::Yellow,true);
 
 
 
