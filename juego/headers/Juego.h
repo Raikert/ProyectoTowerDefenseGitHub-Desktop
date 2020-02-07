@@ -1906,8 +1906,8 @@ int juego()
                                     default:
                                         break;
                                     }
-                                    vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy(),carcasa_escalada);
-                                    vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52);
+                                    vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
+                                    vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40);
                                     vec_torres[x].setEscalaRango(1,1.22);
                                     Ocupado[x]=true;
                                     dinero-=vec_torres[x].getPrecio();
@@ -1990,14 +1990,10 @@ int juego()
             {
                 guardar_f=false;
 
-
                 Opacidad_Mensaje_guardar--;
                 mensajee_guardar.setColor(Color(255,255,255,Opacidad_Mensaje_Partida));
                 window.draw(mensajee_guardar);
-
-
             }
-
 
             // VIDA DEL JUEGO
             window.draw(vida_juego_texto.getTexto());
