@@ -340,7 +340,7 @@ int juego()
     Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(75,51,901,455),
           nueva_oleada(75,51,812,455,255), derrota_boton(1000,600,0,0), guardar_partida(161,51,812,523), pausa(75,51,901,388),
           reanudar(75,51,812,388), sonido_menu(64,33,786,284),pantalla_completa(64,33,786,153),configuracion(54,50,929,431),
-          volver_menu(54,46,930,541);
+          volver_menu(54,46,930,541),sonido_up(82,44,782,209),sonido_down(84,44,875,209);
 
     /// ---------------------------------- MENSAJES --------------------------------------------
 
@@ -2842,12 +2842,27 @@ int juego()
 
                     }
 
+                    //incrementar sonido
+
+                    if (sonido_up.click(mousexy))
+                    {
+                        musica_menu.volumen(musica_menu.getVolumen()+10);
+                    }
+
+                    //decrementar sonido
+
+                    if (sonido_down.click(mousexy))
+                    {
+                        musica_menu.volumen(musica_menu.getVolumen()-10);
+                    }
+
                     habilitacionmouse=false;
                 }
 
             }
             else
                 habilitacionmouse=true;
+
             break;
 
         default:

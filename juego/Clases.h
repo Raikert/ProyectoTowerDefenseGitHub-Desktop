@@ -415,7 +415,7 @@ class Musica
 {
 private:
     Music musica;
-    int v_defecto;
+    int v_defecto,volume;
 public:
     Musica(const string & ruta)
     {
@@ -424,14 +424,22 @@ public:
 
         v_defecto=10;
         musica.setVolume(v_defecto);
+        volume=v_defecto;
     }
     Music & getMusica()
     {
         return musica;
     }
+    int getVolumen()
+    {
+        return volume;
+    }
     void volumen (float v)
     {
+        if (v>=0&&v<=100) {
         musica.setVolume(v);
+        volume=v;
+        }
     }
     void volumen()
     {
