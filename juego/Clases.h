@@ -248,13 +248,14 @@ private:
     SoundBuffer buffer;
     Sound sonido;
     int tiempo_delay,volumen;
+    bool mute;
 public:
     FX (const string &ruta_buffer,int tiempo_d=0)
     {
         buffer.loadFromFile(ruta_buffer);
         sonido.setBuffer(buffer);
         tiempo_delay=tiempo_d;
-        volumen=35;
+        volumen=15;
         sonido.setVolume(volumen);
     }
     void cambiar_buffer(const string &ruta_buffer)
@@ -271,12 +272,19 @@ public:
     {
         tiempo_delay=tiempo_d;
     }
+    void mutear(bool valor)
+    {
+        mute=valor;
+    }
     void encender()
     {
-        if (tiempo_delay==0)
-            sonido.play();
-        else if (sonido.getPlayingOffset().asMilliseconds()>tiempo_delay||sonido.getPlayingOffset().asSeconds()==0)
-            sonido.play();
+        if (!mute)
+        {
+            if (tiempo_delay==0)
+                sonido.play();
+            else if (sonido.getPlayingOffset().asMilliseconds()>tiempo_delay||sonido.getPlayingOffset().asSeconds()==0)
+                sonido.play();
+        }
     }
 };
 
@@ -407,11 +415,15 @@ class Musica
 {
 private:
     Music musica;
+    int v_defecto;
 public:
     Musica(const string & ruta)
     {
         if (!musica.openFromFile(ruta))
             exit(689);
+
+        v_defecto=10;
+        musica.setVolume(v_defecto);
     }
     Music & getMusica()
     {
@@ -420,6 +432,10 @@ public:
     void volumen (float v)
     {
         musica.setVolume(v);
+    }
+    void volumen()
+    {
+        musica.setVolume(v_defecto);
     }
     void repeticion(bool eleccion)
     {

@@ -183,7 +183,7 @@ int juego()
     FX sonido_seleccion("musica/FX/select_menu.wav");
     FX sonido_construccion("musica/FX/building.ogg",1000);
     FX sonido_muerte_zombie("musica/FX/dead_effect2.ogg",4000);
-    FX sonido_zombie_danio("musica/FX/llegada.ogg");
+    FX sonido_zombie_danio("musica/FX/llegada.ogg",1000);
 
     //SoundBuffer buffer,buffer2;
     //buffer2.loadFromFile("musica/FX/building.ogg");
@@ -208,6 +208,7 @@ int juego()
     Video reproductor;
 
     Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
+    Textura textura_configuracion("img/config_fondo.jpg",0,true);
 
     textura_menu.setSuavizado(true);
     textura_mapa.setSuavizado(true);
@@ -288,7 +289,7 @@ int juego()
 
     ///-------------------------------------------------------------------------------------
 
-    Sprite mapa,menu,derrota;
+    Sprite mapa,menu,derrota,configuracion_sprite(textura_configuracion.getTextura());
     mapa.setTexture(textura_mapa.getTextura());
     menu.setTexture(textura_menu.getTextura());
     derrota.setTexture(textura_derrota.getTextura());
@@ -309,18 +310,19 @@ int juego()
     //Si gente, le puse MUSICA WEEEEE
 
 
-    Musica musica_menu("musica/menu_song.ogg"),musica_juego("musica/musica2_juego.ogg"),musica_derrota("musica/derrota.ogg");
+    Musica musica_menu("musica/menu_song2.ogg"),musica_juego("musica/musica2_juego.ogg")/*,musica_derrota("musica/derrota.ogg")*/;
 
     //volumen de la musica del menu
 
-    musica_menu.volumen(3);
+    //musica_menu.volumen(3);
     // musica_menu.setPlayingOffset(seconds(62.5f));
     musica_menu.repeticion(true);
-    musica_juego.volumen(3);
+    //musica_juego.volumen(3);
     musica_juego.repeticion(true);
-    musica_derrota.repeticion(true);
+    /*musica_derrota.repeticion(true);
     musica_derrota.volumen(30);
-    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true,boolmusicaderrota=false;
+    */
+    bool boolmusica=false,boolmusicajuego=true,habilitacionmouse=true/*,boolmusicaderrota=false*/;
 
     //Para un futuro en donde pongamos a los 3 sprites de los 8 tipos de monstruos q consegui-veanlo en la carpeta de img
 
@@ -335,9 +337,10 @@ int juego()
     //el Quinto parametro es transparencia q se pone en 0,osea invisible, por parametro por omision.
     //Util para ver en q posicion de la pantalla se ubica el boton.
 
-    Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(75,51,901,455);
-    Boton nueva_oleada(75,51,812,455,255), derrota_boton(1000,600,0,0), guardar_partida(161,51,812,523), pausa(75,51,901,388);
-    Boton reanudar(75,51,812,388), sonido_menu(62,46,32,362),pantalla_completa(64,52,24,433);
+    Boton nueva_partida(237,38,727,111),cargar_partida_boton(237,38,728,205,255),salir(161,38,742,456),sonido(75,51,901,455),
+          nueva_oleada(75,51,812,455,255), derrota_boton(1000,600,0,0), guardar_partida(161,51,812,523), pausa(75,51,901,388),
+          reanudar(75,51,812,388), sonido_menu(64,33,786,284),pantalla_completa(64,33,786,153),configuracion(54,50,929,431),
+          volver_menu(54,46,930,541);
 
     /// ---------------------------------- MENSAJES --------------------------------------------
 
@@ -1214,7 +1217,7 @@ int juego()
                 mousey.setVariable(mousexy[1]);
                 //fin resoluciones---------------------------------------------------------------------------------------
 
-                if (Mouse::isButtonPressed(Mouse::Left)&&estado_juego==2)
+                if (Mouse::isButtonPressed(Mouse::Left)&&estado_juego==4)
                 {
                     //Pantalla Completa
 
@@ -1523,7 +1526,7 @@ int juego()
                 ///musica_derrota.parar();
                 primer_carga=false;
                 opacidad_menu=0;
-                boolmusicaderrota=false;
+                //boolmusicaderrota=false;
                 for(l=0; l<posiciones_torres; l++)
                 {
                     // TORRES -------------------------------------
@@ -1589,7 +1592,7 @@ int juego()
                 }
 
                 if (nueva_partida.click(mousexy)||cargar_partida_boton.click(mousexy)||salir.click(mousexy)||
-                        sonido_menu.click(mousexy)||pantalla_completa.click(mousexy))
+                        sonido_menu.click(mousexy)||pantalla_completa.click(mousexy)||configuracion.click(mousexy))
                 {
                     if (fx_bool)
                     {
@@ -1688,22 +1691,10 @@ int juego()
                             window.close();
                         }
 
-                        //Sonido
+                        //Configuracion
 
-                        if (sonido_menu.click(mousexy))
-                        {
-                            if (reg_config.getSonido_menu())
-                            {
-                                reg_config.setSonido_menu(false);
-                                musica_menu.volumen(0);
-                            }
-                            else
-                            {
-                                reg_config.setSonido_menu(true);
-                                musica_menu.volumen(3);
-                            }
-
-                        }
+                        if (configuracion.click(mousexy))
+                            estado_juego=4;
 
                         habilitacionmouse=false;
                     }
@@ -1839,11 +1830,17 @@ int juego()
                         {
                             musica_juego.volumen(0);
                             boolmusicajuego=false;
+                            sonido_construccion.mutear(true);
+                            sonido_muerte_zombie.mutear(true);
+                            sonido_zombie_danio.mutear(true);
                         }
                         else
                         {
-                            musica_juego.volumen(3);
+                            musica_juego.volumen();
                             boolmusicajuego=true;
+                            sonido_construccion.mutear(false);
+                            sonido_muerte_zombie.mutear(false);
+                            sonido_zombie_danio.mutear(false);
                         }
                     }
 
@@ -1890,7 +1887,7 @@ int juego()
                                     sonido_construccion.encender();
 
                                     //if (fx2.getPlayingOffset().asMilliseconds()>1000||fx2.getPlayingOffset().asSeconds()==0)
-                                        //fx2.play();
+                                    //fx2.play();
 
                                     vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
                                     switch (y)
@@ -2060,7 +2057,7 @@ int juego()
                 {
                     sonido_muerte_zombie.encender();
                     //if (fx.getPlayingOffset().asMilliseconds()>4000||fx.getPlayingOffset().asSeconds()==0)
-                        //fx.play();
+                    //fx.play();
 
                     enemigo[d-1].setMuerto();
                     enemigos_muertos++;
@@ -2795,6 +2792,63 @@ int juego()
             */
 
             break;  // fin del estado juego
+
+        case 4:
+
+            window.draw(configuracion_sprite);
+
+            if (volver_menu.click(mousexy)||sonido_menu.click(mousexy)||pantalla_completa.click(mousexy))
+            {
+                if (fx_bool)
+                {
+                    sonido_seleccion.encender();
+                    //fx.play();
+                    fx_bool=false;
+                }
+            }
+            else
+            {
+                fx_bool=true;
+            }
+
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                if (habilitacionmouse)
+                {
+
+                    //volver
+
+                    if (volver_menu.click(mousexy))
+                    {
+                        estado_juego=2;
+                    }
+
+                    //Sonido
+
+                    if (sonido_menu.click(mousexy))
+                    {
+                        if (reg_config.getSonido_menu())
+                        {
+                            reg_config.setSonido_menu(false);
+                            musica_menu.volumen(0);
+                            sonido_seleccion.mutear(true);
+                        }
+                        else
+                        {
+                            reg_config.setSonido_menu(true);
+                            musica_menu.volumen();
+                            sonido_seleccion.mutear(false);
+                        }
+
+                    }
+
+                    habilitacionmouse=false;
+                }
+
+            }
+            else
+                habilitacionmouse=true;
+            break;
 
         default:
             break;
