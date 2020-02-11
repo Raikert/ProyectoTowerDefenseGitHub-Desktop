@@ -1536,13 +1536,7 @@ private:
 
 public:
 
-    Partida()
-    {
-        vidas=1000;
-        dinero=5000;
-        oleada=0;
 
-    }
 
     int getvidas()
     {

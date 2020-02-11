@@ -215,7 +215,7 @@ int juego()
     textura_derrota.setSuavizado(true);
 
     ///clase partida
-    Partida game;
+    Partida guardado;
 
     //Zona de texto---------------------------
     /*
@@ -1634,12 +1634,12 @@ int juego()
 
                         if (cargar_partida_boton.click(mousexy))
                         {
-                            game.leerendisco();
+                            guardado.leerendisco();
 
-                            vida_juego=game.getvidas();
+                            vida_juego=guardado.getvidas();
                             vida_juego_texto.setVariable(vida_juego);
-                            aldeano.setVida(0+(100*game.getoleada()-100));
-                            vida_aumentada=0+(100*game.getoleada()-100);
+                            aldeano.setVida(0+(100*guardado.getoleada()-100));
+                            vida_aumentada=0+(100*guardado.getoleada()-100);
                             cargar_vector_sprites(enemigo,aldeano,cantidad_bichos);
                             for(o=0; o<cantidad_bichos; o++)
                             {
@@ -1647,11 +1647,11 @@ int juego()
                                 vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                                 vidas_texto[o].setTransparencia(0);
                             }
-                            dinero=game.getdinero();
+                            dinero=guardado.getdinero();
                             dinero_texto.setVariable(dinero);
                             tiempo=1;
                             objetos=0;
-                            oleada=game.getoleada();
+                            oleada=guardado.getoleada();
                             oleada_texto.setVariable(oleada);
                             musica_menu.parar();
 
@@ -1662,8 +1662,8 @@ int juego()
                             /*
                             for(int x=0; x<posiciones_torres; x++)
                             {
-                                Ocupado[x]=game.getpos_torres(x);
-                                vec_torres[x].setTipoNivel(game.gettipo_torres(x),game.getniv_torres(x),texturas_torres[game.gettipo_torres(x)][game.getniv_torres(x)].getTextura() ,rango_torres_textura.getTextura());
+                                Ocupado[x]=guardado.getpos_torres(x);
+                                vec_torres[x].setTipoNivel(guardado.gettipo_torres(x),guardado.getniv_torres(x),texturas_torres[guardado.gettipo_torres(x)][guardado.getniv_torres(x)].getTextura() ,rango_torres_textura.getTextura());
                             }
                             */
                             for (f=0; f<posiciones_torres; f++)
@@ -1733,22 +1733,24 @@ int juego()
 
                     if(guardar_partida.click(mousexy)&& bichos_muertos==10)
                     {
-                        game.setdinero(dinero);
-                        game.setvidas(vida_juego);
-                        game.setoleada(oleada+1);
+                        guardado.setdinero(dinero);
+                        guardado.setvidas(vida_juego);
+                        guardado.setoleada(oleada+1);
 
                         /// ---- GUARDADO DE TORRES ------
 
                         for(x=0; x<posiciones_torres; x++)
                         {
-                            game.setpos_torre(x,Ocupado[x]);
-                            game.settipo_torre(x,vec_torres[x].getTipo());
-                            game.setniv_torres(x,vec_torres[x].getNivel());
+
+                            guardado.setpos_torre(x,Ocupado[x]);
+                            guardado.settipo_torre(x,vec_torres[x].getTipo());
+                            guardado.setniv_torres(x,vec_torres[x].getNivel());
+
                         }
 
                         /// ------------------------------
 
-                        game.grabarendiso();
+                        guardado.grabarendiso();
 
                         estado_juego=2;
                         vida_juego=const_vida_juego;
@@ -1762,7 +1764,7 @@ int juego()
                             vidas_texto[o].setPosicion(aldeano.getX()+13,aldeano.getY()+48);
                             vidas_texto[o].setTransparencia(0);
                         }
-                        dinero=10000;
+                        dinero=300;
                         dinero_texto.setVariable(dinero);
                         tiempo=1;
                         objetos=0;
@@ -1774,6 +1776,9 @@ int juego()
                         boolmusicajuego=false;
                         for(l=0; l<posiciones_torres; l++)
                         {
+
+
+
                             /// TORRES -------------------------------------
                             Ocupado[l]=false;
                             vec_torres[l].setTipoNivel();
