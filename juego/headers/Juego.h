@@ -1044,7 +1044,7 @@ int juego()
         }
     }
 
-    Torre vec_torres[posiciones_torres];
+    Torre *vec_torres = new Torre[posiciones_torres];
     Torre aux_torre;
 
     for(x=0; x<posiciones_torres; x++)
@@ -1659,13 +1659,38 @@ int juego()
                             opacidad_menu=0;
                             boolmusicajuego=false;
 
-                            /*
+                            delete vec_torres; /// FIJARME MEJOR ESTO ///
+                            vec_torres=new Torre[9];
+                            ponerEnFalso(Ocupado,9);
                             for(int x=0; x<posiciones_torres; x++)
                             {
+                                switch (guardado.gettipo_torres(x)-1)
+                                    {
+                                    case 0:
+                                        carcasa_escalada.setTexture(tiro_balin.getTextura());
+                                        break;
+                                    case 1:
+                                        carcasa_escalada.setTexture(tiro_balin.getTextura());
+                                        break;
+                                    case 2:
+                                        carcasa_escalada.setTexture(tiro_rayo.getTextura());
+                                        break;
+                                    default:
+                                        break;
+                                    }
                                 Ocupado[x]=guardado.getpos_torres(x);
-                                vec_torres[x].setTipoNivel(guardado.gettipo_torres(x),guardado.getniv_torres(x),texturas_torres[guardado.gettipo_torres(x)][guardado.getniv_torres(x)].getTextura() ,rango_torres_textura.getTextura());
+                                vec_torres[x].setTipoNivel(x,guardado.gettipo_torres(x),guardado.getniv_torres(x),guardado.getTextures(x,1),guardado.getTextures(x,2));
+                                vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
+                                vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40);
+                                vec_torres[x].setEscalaRango(1,1.22);
+                                /*
+                                vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
+                                vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
+                                vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40);
+                                vec_torres[x].setEscalaRango(1,1.22);
+                                */
                             }
-                            */
+
                             for (f=0; f<posiciones_torres; f++)
                             {
                                 for (c=0; c<cantidad_torres; c++)
@@ -1741,10 +1766,15 @@ int juego()
 
                         for(x=0; x<posiciones_torres; x++)
                         {
-
+                            guardado.setpos_torre(x,Ocupado[x]);
                             guardado.setpos_torre(x,Ocupado[x]);
                             guardado.settipo_torre(x,vec_torres[x].getTipo());
                             guardado.setniv_torres(x,vec_torres[x].getNivel());
+                            guardado.setPosX(x,vec_torres[x].getPosX(x));
+                            guardado.setPosY(x,vec_torres[x].getPosY(x));
+                            guardado.setTextures(x,1,vec_torres[x].getTexture(x,1));
+                            guardado.setTextures(x,2,vec_torres[x].getTexture(x,2));
+                            //guardado.setcuerpo(x,vec_torres[x].getSpriteCuerpo())
 
                         }
 
@@ -1873,6 +1903,15 @@ int juego()
                                     dinero_texto.setVariable(dinero);
                                     vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
                                 }
+                                switch(vec_torres[x].getNivel())
+                                {
+                                case 2:
+                                    vec_torres[x].setEscalaRango(1,1.22);
+                                    break;
+                                case 3:
+                                    vec_torres[x].setEscalaRango(1,1.22);
+                                    break;
+                                }
                             }
 
                             /// VENDE LA TORRE Y TE DEVUELVE EL PRECIO DEL NIVEL ACTUAL (pero en int)
@@ -1894,7 +1933,6 @@ int juego()
                                     //if (fx2.getPlayingOffset().asMilliseconds()>1000||fx2.getPlayingOffset().asSeconds()==0)
                                     //fx2.play();
 
-                                    vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
                                     switch (y)
                                     {
                                     case 0:
@@ -1909,9 +1947,21 @@ int juego()
                                     default:
                                         break;
                                     }
-                                    vec_torres[x].setPosicionTorre(torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
+                                    vec_torres[x].setTipoNivel(x, y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
+                                    vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
                                     vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40);
-                                    vec_torres[x].setEscalaRango(1,1.22);
+                                    switch(vec_torres[x].getNivel())
+                                    {
+                                    case 1:
+                                        vec_torres[x].setEscalaRango(1,1.22);
+                                        break;
+                                    case 2:
+                                        vec_torres[x].setEscalaRango(1,1.22);
+                                        break;
+                                    case 3:
+                                        vec_torres[x].setEscalaRango(1,1.22);
+                                        break;
+                                    }
                                     Ocupado[x]=true;
                                     dinero-=vec_torres[x].getPrecio();
                                     dinero_texto.setVariable(dinero);

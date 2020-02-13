@@ -1525,7 +1525,6 @@ public:
 
 class Partida
 {
-
 private:
     int vidas;
     int dinero;
@@ -1533,11 +1532,33 @@ private:
     bool pos_torres[9];
     int niv_torres[9];
     int tipo_torres[9];
-
+    int PosX_Torres[9];
+    int PosY_Torres[9];
+    Sprite cuerpo[9];
+    Texture CuerpoT[9], RangoT[9];
 public:
-
-
-
+    Texture &getTextures(int pos, int opcion)
+    {
+        if(opcion == 1)
+        {
+            return CuerpoT[pos];
+        }
+        else
+        {
+            return RangoT[pos];
+        }
+    }
+    void setTextures(int pos, int opcion, Texture &tex)
+    {
+        if(opcion == 1)
+        {
+            CuerpoT[pos]=tex;
+        }
+        else
+        {
+            RangoT[pos]=tex;
+        }
+    }
     int getvidas()
     {
         return vidas;
@@ -1549,6 +1570,36 @@ public:
     int getoleada()
     {
         return oleada;
+    }
+    /// RETORNA LA POSICION EN X DE LA TORRE GUARDADA
+    int getPosX(int pos)
+    {
+        return PosX_Torres[pos];
+    }
+    /// GUARDA LA POSICION EN X DE LA TORRE
+    void setPosX(int pos, int coordenada)
+    {
+        PosX_Torres[pos]=coordenada;
+    }
+    /// RETORNA LA POSICION EN Y DE LA TORRE GUARDADA
+    int getPosY(int pos)
+    {
+        return PosY_Torres[pos];
+    }
+    /// GUARDA LA POSICION EN Y DE LA TORRE
+    void setPosY(int pos, int coordenada)
+    {
+        PosY_Torres[pos]=coordenada;
+    }
+    /// GUARDA EL SPRITE DE LA TORRE
+    void setSprite_Torre(int pos, Sprite &c)
+    {
+        cuerpo[pos]=c;
+    }
+    /// RETORNA EL SPRITE DE LA TORRE
+    Sprite getSprite_Torre(int pos)
+    {
+        return cuerpo[pos];
     }
     int getniv_torres(int pos)
     {
@@ -1642,6 +1693,10 @@ private:
     int precio;
     int danio;
     int intervalo;
+    int x[9]={1000};
+    int y[9]={1000};
+    Texture texturaCuerpo[9];
+    Texture texturaRango[9];
     Sprite cuerpoS;
     Sprite rangoS;
     Tiro tiro_torre;
@@ -1650,6 +1705,18 @@ public:
     {
         tipo=tip;
         nivel=niv;
+    }
+
+    Texture &getTexture(int pos, int opcion)
+    {
+        if(opcion==1)
+        {
+            return texturaCuerpo[pos];
+        }
+        else
+        {
+            return texturaRango[pos];
+        }
     }
 
     void setTipoNivel()
@@ -1848,10 +1915,130 @@ public:
         }
     }
 
-    void setPosicionTorre(float x, float y,Sprite &tiro_sprite)
+    void setTipoNivel(int pos, int t, int n,Texture &cuerpoT,Texture &rangoT)
     {
-        cuerpoS.setPosition(x,y);
-        tiro_torre.cargar(x+24,y+19,tiro_sprite);
+        texturaCuerpo[pos]=cuerpoT;
+        texturaRango[pos]=rangoT;
+        tipo=t;
+        nivel=n;
+        switch(tipo)
+        {
+        case 1: /// ROJO
+            switch(nivel)
+            {
+            case 1:
+                precio=300;
+                danio=6;
+                intervalo=5;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            case 2:
+                precio=900;
+                danio=10;
+                intervalo=5;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            case 3:
+                precio=2100;
+                danio=14;
+                intervalo=5;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            }
+            rangoS.setColor(Color(255,0,0,100));
+            break;
+        case 2: /// GRIS
+            switch(nivel)
+            {
+            case 1:
+                precio=400;
+                danio=25;
+                intervalo=15;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            case 2:
+                precio=1200;
+                danio=60;
+                intervalo=15;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            case 3:
+                precio=3600;
+                danio=85;
+                intervalo=15;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            }
+            rangoS.setColor(Color(0,255,200,100));
+            break;
+        case 3: /// VERDE
+            switch(nivel)
+            {
+            case 1:
+                precio=500;
+                danio=80;
+                intervalo=50;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            case 2:
+                precio=1500;
+                danio=140;
+                intervalo=50;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+            case 3:
+                precio=4500;
+                danio=230;
+                intervalo=50;
+                cuerpoS.setTexture(cuerpoT);
+                rangoS.setTexture(rangoT);
+                break;
+
+            }
+            rangoS.setColor(Color(0,255,0,100));
+            break;
+        default:
+            precio=0;
+            danio=0;
+            intervalo=0;
+            cuerpoS.setTexture(cuerpoT);
+            rangoS.setTexture(rangoT);
+
+            cuerpoS.setPosition(10000,0);
+            rangoS.setPosition(10000,0);
+            break;
+        }
+    }
+
+
+    void setPosicionTorre(int pos, float corX, float corY,Sprite &tiro_sprite)
+    {
+        /// Guarda la posicion de las torres
+        x[pos]=corX;
+        y[pos]=corY;
+        /// Posiciona el cuerpo de la torre
+        cuerpoS.setPosition(corX,corY);
+
+        tiro_torre.cargar(corX+24,corY+19,tiro_sprite);
+    }
+
+    /// Devuelve la posicion en X de la torre
+    int getPosX(int pos)
+    {
+        return x[pos];
+    }
+    /// Devuelve la posicion en Y de la torre
+    int getPosY(int pos)
+    {
+        return y[pos];
     }
 
     void setEscalaTorre(float fx, float fy)
@@ -1861,6 +2048,7 @@ public:
 
     void setPosicionRango(float x, float y)
     {
+        /// Posiciona el rango de la torre
         rangoS.setPosition(x,y);
     }
 
