@@ -1896,12 +1896,12 @@ int juego()
                             if(Ocupado[x]==true && torres_mejorar[x].click(mousexy) && vec_torres[x].getNivel()<3)
                             {
                                 aux_torre=vec_torres[x];
-                                aux_torre.subirNivel(texturas_torres[aux_torre.getTipo()-1][aux_torre.getNivel()].getTextura());
+                                aux_torre.subirNivel(x,texturas_torres[aux_torre.getTipo()-1][aux_torre.getNivel()].getTextura());
                                 if(dinero>=(aux_torre.getPrecio()*2))
                                 {
                                     dinero-=(aux_torre.getPrecio()*2);
                                     dinero_texto.setVariable(dinero);
-                                    vec_torres[x].subirNivel(texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
+                                    vec_torres[x].subirNivel(x,texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
                                 }
                                 switch(vec_torres[x].getNivel())
                                 {

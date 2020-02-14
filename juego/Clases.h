@@ -1838,8 +1838,9 @@ public:
         }
     }
 
-    void setTipoNivel(int n,Texture &cuerpoT)
+    void setTipoNivel(int p,int n,Texture &cuerpoT)
     {
+        texturaCuerpo[p]=cuerpoT;
         nivel=n;
         switch(tipo)
         {
@@ -2085,9 +2086,9 @@ public:
         return precio/2;
     }
 
-    void subirNivel(Texture &cuerpoT)
+    void subirNivel(int pos,Texture &cuerpoT)
     {
-        setTipoNivel(nivel+1,cuerpoT);
+        setTipoNivel(pos,nivel+1,cuerpoT);
     }
 
     int getNivel()
