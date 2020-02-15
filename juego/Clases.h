@@ -99,14 +99,34 @@ private:
     size_t bytes;
     char video_actual[200];
     PROCESS_INFORMATION processInfo_copia;
-    bool encendido;
+    bool encendido,p_completa,p_completa_config;
+    RenderWindow *window;
+    View *vista_del_juego;
 public:
     Video (int d=500)
     {
         delay=d;
     }
+    void setVentana(RenderWindow *ventana)
+    {
+        window=ventana;
+    }
+    void setVista_del_juego(View *point_of_view)
+    {
+        vista_del_juego=point_of_view;
+    }
     void encender ()
     {
+        if (p_completa)
+        {
+            window->create(VideoMode(1000,600),"Tower Defense - La defensa del fuerte Nicomando");
+            window->setView(*vista_del_juego);
+            window->setFramerateLimit(60);
+            window->setKeyRepeatEnabled(false);
+            window->setMouseCursorVisible(false);
+            p_completa=false;
+        }
+
         STARTUPINFO startInfo= {0};
         PROCESS_INFORMATION processInfo = {0};
         BOOL bScucces = CreateProcess(TEXT("player++/bin/vidserv.exe"),
@@ -125,6 +145,16 @@ public:
     {
         TerminateProcess(processInfo_copia.hProcess,0);
         encendido=false;
+
+        if (p_completa_config&&!p_completa)
+        {
+            window->create(VideoMode(1000,600),"Tower Defense - La defensa del fuerte Nicomando",Style::Fullscreen);
+            window->setView(*vista_del_juego);
+            window->setFramerateLimit(60);
+            window->setKeyRepeatEnabled(false);
+            window->setMouseCursorVisible(false);
+            p_completa=true;
+        }
     }
     void abrir (const string &ruta,RenderWindow &window)
     {
@@ -226,6 +256,22 @@ public:
     bool getEncendido()
     {
         return encendido;
+    }
+    bool getP_completa ()
+    {
+        return p_completa;
+    }
+    bool getP_completa_config ()
+    {
+        return p_completa_config;
+    }
+    void setP_completa (bool choice)
+    {
+        p_completa=choice;
+    }
+    void setP_completa_config (bool choice)
+    {
+        p_completa_config=choice;
     }
 };
 
@@ -436,9 +482,10 @@ public:
     }
     void volumen (float v)
     {
-        if (v>=0&&v<=100) {
-        musica.setVolume(v);
-        volume=v;
+        if (v>=0&&v<=100)
+        {
+            musica.setVolume(v);
+            volume=v;
         }
     }
     void volumen()
@@ -1693,8 +1740,8 @@ private:
     int precio;
     int danio;
     int intervalo;
-    int x[9]={1000};
-    int y[9]={1000};
+    int x[9]= {1000};
+    int y[9]= {1000};
     Texture texturaCuerpo[9];
     Texture texturaRango[9];
     Sprite cuerpoS;

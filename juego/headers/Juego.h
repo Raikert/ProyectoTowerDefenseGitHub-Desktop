@@ -206,6 +206,7 @@ int juego()
     ///Reproductor de Video
 
     Video reproductor;
+    reproductor.setVista_del_juego(&vista_del_juego);
 
     Textura textura_mapa("img/008.png",0),textura_menu("img/fondo_menu_nuevo.jpg",0),textura_derrota("img/derrota.jpg",0);
     Textura textura_configuracion("img/config_fondo.jpg",0,true);
@@ -1170,6 +1171,7 @@ int juego()
 
     //definicion de la ventana del juego---------------------
     RenderWindow window(VideoMode(tamx_actual,tamy_actual), "Tower Defense - La defensa del fuerte Nicomando");
+    reproductor.setVentana(&window);
     //Setea el framerate a 60 fps, comentar para mas velocidad,seteado para ver la velocidad real del juego
     //bugeo de los sprites solucionado seteando el Smooth de los Sprites en True.
     window.setFramerateLimit(60);
@@ -1231,8 +1233,10 @@ int juego()
                             window.setFramerateLimit(60);
                             window.setKeyRepeatEnabled(false);
                             window.setMouseCursorVisible(false);
+                            reproductor.setP_completa(true);
+                            reproductor.setP_completa_config(true);
                         }
-                        else
+                        else if(pantalla_completa.getEncendido())
                         {
                             window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando");
                             pantalla_completa.setEncendido(false);
@@ -1240,10 +1244,42 @@ int juego()
                             window.setFramerateLimit(60);
                             window.setKeyRepeatEnabled(false);
                             window.setMouseCursorVisible(false);
+                            reproductor.setP_completa(false);
+                            reproductor.setP_completa_config(false);
                         }
                     }
 
                 }
+
+                /*
+
+                if (reproductor.getEncendido())
+                {
+                    if (reproductor.getP_completa())
+                    {
+                        window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando");
+                        window.setView(vista_del_juego);
+                        window.setFramerateLimit(60);
+                        window.setKeyRepeatEnabled(false);
+                        window.setMouseCursorVisible(false);
+                        reproductor.setP_completa(false);
+                    }
+
+                }
+                else
+                {
+                    if (reproductor.getP_completa_config()&&!reproductor.getP_completa())
+                    {
+                        window.create(VideoMode(tamx_actual,tamy_actual),"Tower Defense - La defensa del fuerte Nicomando",Style::Fullscreen);
+                        window.setView(vista_del_juego);
+                        window.setFramerateLimit(60);
+                        window.setKeyRepeatEnabled(false);
+                        window.setMouseCursorVisible(false);
+                        reproductor.setP_completa(true);
+                    }
+                }
+                */
+
             }
             //-------------------------------------------
 
@@ -1665,19 +1701,19 @@ int juego()
                             for(int x=0; x<posiciones_torres; x++)
                             {
                                 switch (guardado.gettipo_torres(x)-1)
-                                    {
-                                    case 0:
-                                        carcasa_escalada.setTexture(tiro_balin.getTextura());
-                                        break;
-                                    case 1:
-                                        carcasa_escalada.setTexture(tiro_balin.getTextura());
-                                        break;
-                                    case 2:
-                                        carcasa_escalada.setTexture(tiro_rayo.getTextura());
-                                        break;
-                                    default:
-                                        break;
-                                    }
+                                {
+                                case 0:
+                                    carcasa_escalada.setTexture(tiro_balin.getTextura());
+                                    break;
+                                case 1:
+                                    carcasa_escalada.setTexture(tiro_balin.getTextura());
+                                    break;
+                                case 2:
+                                    carcasa_escalada.setTexture(tiro_rayo.getTextura());
+                                    break;
+                                default:
+                                    break;
+                                }
                                 Ocupado[x]=guardado.getpos_torres(x);
                                 vec_torres[x].setTipoNivel(x,guardado.gettipo_torres(x),guardado.getniv_torres(x),guardado.getTextures(x,1),guardado.getTextures(x,2));
                                 vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
@@ -2902,6 +2938,7 @@ int juego()
                     if (sonido_up.click(mousexy))
                     {
                         musica_menu.volumen(musica_menu.getVolumen()+10);
+                        musica_juego.volumen(musica_juego.getVolumen()+10);
                     }
 
                     //decrementar sonido
@@ -2909,6 +2946,7 @@ int juego()
                     if (sonido_down.click(mousexy))
                     {
                         musica_menu.volumen(musica_menu.getVolumen()-10);
+                        musica_juego.volumen(musica_juego.getVolumen()-10);
                     }
 
                     habilitacionmouse=false;
