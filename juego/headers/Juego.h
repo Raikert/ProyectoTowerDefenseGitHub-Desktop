@@ -1654,6 +1654,8 @@ int juego()
 
                         if (nueva_partida.click(mousexy))
                         {
+                            enemigos_muertos=0;
+                            muertos_texto.setVariable(enemigos_muertos);
                             /*
                             volumen_menu-=0.1;
                             musica_menu.setVolume(volumen_menu);
@@ -1685,6 +1687,8 @@ int juego()
                             }
                             dinero=guardado.getdinero();
                             dinero_texto.setVariable(dinero);
+                            enemigos_muertos=guardado.getMuertos();
+                            muertos_texto.setVariable(enemigos_muertos);
                             tiempo=1;
                             objetos=0;
                             oleada=guardado.getoleada();
@@ -1714,11 +1718,17 @@ int juego()
                                 default:
                                     break;
                                 }
+
                                 Ocupado[x]=guardado.getpos_torres(x);
-                                vec_torres[x].setTipoNivel(x,guardado.gettipo_torres(x),guardado.getniv_torres(x),guardado.getTextures(x,1),guardado.getTextures(x,2));
-                                vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
-                                vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40);
-                                vec_torres[x].setEscalaRango(1,1.22);
+
+                                if(Ocupado[x]==true)
+                                {
+                                    vec_torres[x].setTipoNivel(x,guardado.gettipo_torres(x),guardado.getniv_torres(x),guardado.getTextures(x,1),guardado.getTextures(x,2));
+                                    vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
+                                    vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40);
+                                    vec_torres[x].setEscalaRango(1,1.22);
+                                }
+
                                 /*
                                 vec_torres[x].setTipoNivel(y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
                                 vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada);
@@ -1738,7 +1748,6 @@ int juego()
                                     }
                                 }
                             }
-
                             estado_juego=3;
                             estado_juego=0;
 
@@ -1797,6 +1806,7 @@ int juego()
                         guardado.setdinero(dinero);
                         guardado.setvidas(vida_juego);
                         guardado.setoleada(oleada+1);
+                        guardado.setMuertos(enemigos_muertos);
 
                         /// ---- GUARDADO DE TORRES ------
 
@@ -1840,6 +1850,7 @@ int juego()
                         primer_carga=false;
                         opacidad_menu=0;
                         boolmusicajuego=false;
+                        /*
                         for(l=0; l<posiciones_torres; l++)
                         {
 
@@ -1849,14 +1860,15 @@ int juego()
                             Ocupado[l]=false;
                             vec_torres[l].setTipoNivel();
                             /// RANGOS -------------------------------------
-                            /*
+
                             for(int f=0; f<posiciones_torres; f++)
                             {
                                 vec_torres[f].setPosicionTorre(10000,0);
                                 vec_torres[f].setPosicionRango(10000,0);
                             }
-                            */
+
                         }
+                        */
                         for (f=0; f<posiciones_torres; f++)
                         {
                             for (c=0; c<cantidad_torres; c++)

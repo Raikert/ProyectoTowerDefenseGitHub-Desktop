@@ -1573,6 +1573,7 @@ public:
 class Partida
 {
 private:
+    int muertos;
     int vidas;
     int dinero;
     int oleada;
@@ -1584,6 +1585,16 @@ private:
     Sprite cuerpo[9];
     Texture CuerpoT[9], RangoT[9];
 public:
+    void setMuertos(int muer)
+    {
+        muertos=muer;
+    }
+
+    int getMuertos()
+    {
+        return muertos;
+    }
+
     Texture &getTextures(int pos, int opcion)
     {
         if(opcion == 1)
