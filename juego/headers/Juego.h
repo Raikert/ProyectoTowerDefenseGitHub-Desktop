@@ -1737,19 +1737,58 @@ int juego()
                                 {
                                     vec_torres[x].setTipoNivel(x,guardado.gettipo_torres(x),guardado.getniv_torres(x),texturas_torres[guardado.gettipo_torres(x)-1][guardado.getniv_torres(x)-1].getTextura(),rango_torres_textura.getTextura());/// CuerpoTextura , RangoTextura
                                     vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada[guardado.gettipo_torres(x)-1]);
-                                    switch(vec_torres[x].getNivel())
+                                    switch(vec_torres[x].getTipo())
                                     {
                                     case 1:
-                                        vec_torres[x].setEscalaRango(1,1.4);
-                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40-10);
+                                        switch(vec_torres[x].getNivel())
+                                        {
+                                        case 1:
+                                            vec_torres[x].setEscalaRango(0.9,1.3);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93+10,torres[x].getEsiy()-52-40);
+                                            break;
+                                        case 2:
+                                            vec_torres[x].setEscalaRango(1.1,1.5);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-10,torres[x].getEsiy()-52-40-20);
+                                            break;
+                                        case 3:
+                                            vec_torres[x].setEscalaRango(1.2,1.6);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-30);
+                                            break;
+                                        }
                                         break;
                                     case 2:
-                                        vec_torres[x].setEscalaRango(1.2,1.6);
-                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25,torres[x].getEsiy()-52-40-20-10);
+                                        switch(vec_torres[x].getNivel())
+                                        {
+                                        case 1:
+                                            vec_torres[x].setEscalaRango(1,1.4);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40-10);
+                                            break;
+                                        case 2:
+                                            vec_torres[x].setEscalaRango(1.2,1.6);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25,torres[x].getEsiy()-52-40-20-10);
+                                            break;
+                                        case 3:
+                                            vec_torres[x].setEscalaRango(1.4,1.9);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50,torres[x].getEsiy()-52-40-40-20);
+                                            break;
+                                        }
                                         break;
                                     case 3:
-                                        vec_torres[x].setEscalaRango(1.4,1.9);
-                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50,torres[x].getEsiy()-52-40-40-20);
+                                        switch(vec_torres[x].getNivel())
+                                        {
+                                        case 1:
+                                            vec_torres[x].setEscalaRango(1.15,1.6);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-23);
+                                            break;
+                                        case 2:
+                                            vec_torres[x].setEscalaRango(1.3,1.8);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25-10,torres[x].getEsiy()-52-40-20-26);
+                                            break;
+                                        case 3:
+                                            vec_torres[x].setEscalaRango(1.6,2.2);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50-20,torres[x].getEsiy()-52-40-40-30);
+                                            break;
+                                        }
                                         break;
                                     }
                                 }
@@ -1976,7 +2015,27 @@ int juego()
                                     dinero_texto.setVariable(dinero);
                                     vec_torres[x].subirNivel(x,texturas_torres[vec_torres[x].getTipo()-1][vec_torres[x].getNivel()].getTextura());
                                 }
-                                switch(vec_torres[x].getNivel())
+                                switch(vec_torres[x].getTipo())
+                                {
+                                case 1:
+                                    switch(vec_torres[x].getNivel())
+                                    {
+                                    case 1:
+                                        vec_torres[x].setEscalaRango(0.9,1.3);
+                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93+10,torres[x].getEsiy()-52-40);
+                                        break;
+                                    case 2:
+                                        vec_torres[x].setEscalaRango(1.1,1.5);
+                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-10,torres[x].getEsiy()-52-40-20);
+                                        break;
+                                    case 3:
+                                        vec_torres[x].setEscalaRango(1.2,1.6);
+                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-30);
+                                        break;
+                                    }
+                                    break;
+                                case 2:
+                                    switch(vec_torres[x].getNivel())
                                     {
                                     case 1:
                                         vec_torres[x].setEscalaRango(1,1.4);
@@ -1991,6 +2050,25 @@ int juego()
                                         vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50,torres[x].getEsiy()-52-40-40-20);
                                         break;
                                     }
+                                    break;
+                                case 3:
+                                    switch(vec_torres[x].getNivel())
+                                    {
+                                    case 1:
+                                        vec_torres[x].setEscalaRango(1.15,1.6);
+                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-23);
+                                        break;
+                                    case 2:
+                                        vec_torres[x].setEscalaRango(1.3,1.8);
+                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25-10,torres[x].getEsiy()-52-40-20-26);
+                                        break;
+                                    case 3:
+                                        vec_torres[x].setEscalaRango(1.6,2.2);
+                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50-20,torres[x].getEsiy()-52-40-40-30);
+                                        break;
+                                    }
+                                    break;
+                                }
                             }
 
                             /// VENDE LA TORRE Y TE DEVUELVE EL PRECIO DEL NIVEL ACTUAL (pero en int)
@@ -2028,21 +2106,64 @@ int juego()
                                     }
                                     vec_torres[x].setTipoNivel(x, y+1,nivel_del_menu[x]+1,texturas_torres[y][nivel_del_menu[x]].getTextura(),rango_torres_textura.getTextura());
                                     vec_torres[x].setPosicionTorre(x,torres[x].getEsix(),torres[x].getEsiy()-40,carcasa_escalada[vec_torres[x].getTipo()-1]);
-                                    switch(vec_torres[x].getNivel())
+
+                                    switch(vec_torres[x].getTipo())
                                     {
                                     case 1:
-                                        vec_torres[x].setEscalaRango(1,1.4);
-                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40-10);
+                                        switch(vec_torres[x].getNivel())
+                                        {
+                                        case 1:
+                                            vec_torres[x].setEscalaRango(0.9,1.3);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93+10,torres[x].getEsiy()-52-40);
+                                            break;
+                                        case 2:
+                                            vec_torres[x].setEscalaRango(1.1,1.5);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-10,torres[x].getEsiy()-52-40-20);
+                                            break;
+                                        case 3:
+                                            vec_torres[x].setEscalaRango(1.2,1.6);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-30);
+                                            break;
+                                        }
                                         break;
                                     case 2:
-                                        vec_torres[x].setEscalaRango(1.2,1.6);
-                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25,torres[x].getEsiy()-52-40-20-10);
+                                        switch(vec_torres[x].getNivel())
+                                        {
+                                        case 1:
+                                            vec_torres[x].setEscalaRango(1,1.4);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93,torres[x].getEsiy()-52-40-10);
+                                            break;
+                                        case 2:
+                                            vec_torres[x].setEscalaRango(1.2,1.6);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25,torres[x].getEsiy()-52-40-20-10);
+                                            break;
+                                        case 3:
+                                            vec_torres[x].setEscalaRango(1.4,1.9);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50,torres[x].getEsiy()-52-40-40-20);
+                                            break;
+                                        }
                                         break;
                                     case 3:
-                                        vec_torres[x].setEscalaRango(1.4,1.9);
-                                        vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50,torres[x].getEsiy()-52-40-40-20);
+                                        switch(vec_torres[x].getNivel())
+                                        {
+                                        case 1:
+                                            vec_torres[x].setEscalaRango(1.15,1.6);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-23);
+                                            break;
+                                        case 2:
+                                            vec_torres[x].setEscalaRango(1.3,1.8);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-25-10,torres[x].getEsiy()-52-40-20-26);
+                                            break;
+                                        case 3:
+                                            vec_torres[x].setEscalaRango(1.6,2.2);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-50-20,torres[x].getEsiy()-52-40-40-30);
+                                            break;
+                                        }
                                         break;
                                     }
+
+
+
                                     Ocupado[x]=true;
                                     dinero-=vec_torres[x].getPrecio();
                                     dinero_texto.setVariable(dinero);

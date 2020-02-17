@@ -1807,7 +1807,7 @@ public:
         nivel=n;
         switch(tipo)
         {
-        case 1: /// ROJO
+        case 1: /// medio
             switch(nivel)
             {
             case 1:
@@ -1834,7 +1834,7 @@ public:
             }
             rangoS.setColor(Color(255,0,0,100));
             break;
-        case 2: /// GRIS
+        case 2: /// derecha
             switch(nivel)
             {
             case 1:
@@ -1861,7 +1861,7 @@ public:
             }
             rangoS.setColor(Color(0,255,200,100));
             break;
-        case 3: /// VERDE
+        case 3: /// izquierda
             switch(nivel)
             {
             case 1:
