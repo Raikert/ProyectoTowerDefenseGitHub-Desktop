@@ -1743,8 +1743,8 @@ int juego()
                                         switch(vec_torres[x].getNivel())
                                         {
                                         case 1:
-                                            vec_torres[x].setEscalaRango(0.9,1.3);
-                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93+10,torres[x].getEsiy()-52-40);
+                                            vec_torres[x].setEscalaRango(0.95,1.3);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93+5,torres[x].getEsiy()-52-40);
                                             break;
                                         case 2:
                                             vec_torres[x].setEscalaRango(1.1,1.5);
@@ -1778,7 +1778,7 @@ int juego()
                                         {
                                         case 1:
                                             vec_torres[x].setEscalaRango(1.15,1.6);
-                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-40-23);
+                                            vec_torres[x].setPosicionRango(torres[x].getEsix()-93-20,torres[x].getEsiy()-52-80);
                                             break;
                                         case 2:
                                             vec_torres[x].setEscalaRango(1.3,1.8);
