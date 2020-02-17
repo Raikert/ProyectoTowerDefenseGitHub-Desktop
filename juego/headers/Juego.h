@@ -176,9 +176,16 @@ int juego()
     ///(except destroying the sound or its data, of course), the sound will continue
     ///to play until it's finished or explicitly stopped.
 
+    ///In fact, the sf::Sound/sf::SoundBuffer classes work the same way as sf::Sprite/sf::Texture
+    ///from the graphics module. So if you understand how sprites and textures work together, you
+    ///can apply the same concept to sounds and sound buffers.
+
     ///Los sonidos, a diferencia de los objetos music, trabajan de la misma forma que los sprites.
     ///tienen un soundbuffer, que seria lo mismo que una textura, y un sound que seria lo mismo que
-    ///un sprite.
+    ///un sprite. Estos solo deben ser reproducidos y seguiran en modo play hasta que finalicen solos
+    ///o se le de la orden de detenerse, por ultimo al igual que los sprites, si la fuente es destruida,
+    ///es decir, que su informacion se pierde de su soundbuffer que es lugar de memoria en donde se aloja
+    ///su contenido, el sonido queda corrupto al igual que los cuadros blancos de un sprite con un texture corrupto.
 
     FX sonido_seleccion("musica/FX/select_menu.wav");
     FX sonido_construccion("musica/FX/building.ogg",1000);

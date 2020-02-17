@@ -84,7 +84,7 @@ bool Cola::sacar(int &x)
 ///la opcion que quedo es la mas segura para todas las maquinas.
 
 ///Esta es la primer clase en la que puse gran empeño en lograr algo sumamente dificil, desde el proceso de la idea, la investigacion
-///y la puesta en marcha luego de haber encontrado algo firme sobre donde trabajarlo, me tomo 2/3 meses conseguirlo.
+///y la puesta en marcha luego de haber encontrado algo firme sobre donde trabajarlo, me tomo 2 meses conseguirlo.
 
 class Video
 {
@@ -286,7 +286,8 @@ public:
 ///Se esta trabajando es un metodo para el cambio de volumen de forma dinamica dentro del juego, en que se dispondra de una barra de mixer
 ///sencilla para el manejo del volumen, primero de los sonidos individuales y proximamente para la musica en general,el volumen de las
 ///cinematicas quedan excluidas dado que al ser un programa externo y al no poder cambiar su volumen, es incapaz de autoregular su nivel
-///de audio.
+///de audio, para cambiar el volumen de las cinematicas simplemente hay que reducir o aumentar su volumen desde el mixer de aplicaciones
+///de windows tal como cualquier otro programa.
 
 class FX
 {
