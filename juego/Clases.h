@@ -1751,8 +1751,8 @@ private:
     int precio;
     int danio;
     int intervalo;
-    int x[9]= {1000};
-    int y[9]= {1000};
+    int x[9];
+    int y[9];
     Texture texturaCuerpo[9];
     Texture texturaRango[9];
     Sprite cuerpoS;
@@ -1763,6 +1763,11 @@ public:
     {
         tipo=tip;
         nivel=niv;
+        for (int h=0; h<9; h++)
+        {
+            x[h]=1000;
+            y[h]=1000;
+        }
     }
 
     Texture &getTexture(int pos, int opcion)

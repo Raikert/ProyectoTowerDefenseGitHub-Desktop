@@ -14,7 +14,7 @@ int juego()
     /// -----------
     bool tiempo_inicial=true;
     //variables de los for, dados los multiples conflictos por declaraciones seguidas en los ciclos.
-    int i,x,te,d,o,l,f,c,debug,z,p,y,h;
+    int i,x,te,d,o,l,f,c,debug,z,p,y,h;//
 
     //variables de la ventana del juego
     int tamx,tamy,tamx_actual=1000,tamy_actual=600;
@@ -1707,7 +1707,7 @@ int juego()
                             delete vec_torres; /// FIJARME MEJOR ESTO ///
                             vec_torres=new Torre[9];
                             ponerEnFalso(Ocupado,9);
-                            for(int x=0; x<posiciones_torres; x++)
+                            for(x=0; x<posiciones_torres; x++)
                             {
                                 switch (guardado.gettipo_torres(x)-1)
                                 {
