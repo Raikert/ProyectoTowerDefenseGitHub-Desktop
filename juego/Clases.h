@@ -181,7 +181,7 @@ public:
             itoa(window.getPosition().y+22, variable, 10);
             strcat(cadena,variable);
             strcat(cadena,espacio);
-            string estatico="1024 608 Video";
+            string estatico="0 0 Video";
             strcat(cadena,estatico.c_str());
             ///-------------
             escribir_cadena(msj,cadena);

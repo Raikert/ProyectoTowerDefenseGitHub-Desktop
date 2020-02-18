@@ -4,7 +4,7 @@ sino, es posible que las cinematicas no se reproduzcan.
 
 ej : "Invasion_Zombie" X nombre incorrecto.
 
-Correcion : "Invasion" :) u otro nombre que cumpla con esos requisitos.
+Correccion : "Invasion" :) u otro nombre que cumpla con esos requisitos.
 
 copiar todos los archivos que se encuentran en la carpeta bin/Debug, en la nueva carpeta que crearon.
 
