@@ -6,6 +6,40 @@ void cargar_vector_sprites (Zombie *v,Zombie &tipo,int cantidad_bichos,int olead
     int r;
     for (int i=0; i<cantidad_bichos; i++)
     {
+        if (oleada<4)                     //sistema de dificultad por oleadas
+            r=rand()% (2)+1;
+        else
+        {
+            if (oleada<8)
+                r=rand()% (3)+1;
+            else
+            {
+                if (oleada<12)
+                    r=rand()% (4)+1;
+                else
+                {
+                    if (oleada<16)
+                        r=rand()% (5)+1;
+                    else
+                    {
+                        if (oleada<20)
+                            r=rand()% (6)+1;
+                        else
+                        {
+                            if (oleada<24)
+                                r=rand()% (7)+1;
+                            else
+                            {
+                                r=rand()% (8)+1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* ///sistema de dificultad por niveles.
+
         switch(nivel)
         {
         case 1:
@@ -26,6 +60,9 @@ void cargar_vector_sprites (Zombie *v,Zombie &tipo,int cantidad_bichos,int olead
         default:
             break;
         }
+
+        */
+
         tipo.cambiar_zombie(r);
         v[i]=tipo;
         switch (r)
