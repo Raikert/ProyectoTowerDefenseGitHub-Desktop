@@ -2477,7 +2477,7 @@ int juego()
                                 {
                                     enemigo[prioridad].reducir_vida(f);
                                     vidas_texto[prioridad].setVariable(enemigo[prioridad].getVida());
-                                    enemigo[prioridad].setColor(50,50,77);
+                                    enemigo[prioridad].setColor(50,50,77,enemigo[i-1].getOpacidad());
 
                                     if (enemigo[i-1].getVida()<=0)
                                     {
@@ -2510,7 +2510,7 @@ int juego()
                                 }
                                 else
                                 {
-                                    enemigo[prioridad].setColor(255,255,255);
+                                    enemigo[prioridad].setColor(255,255,255,enemigo[i-1].getOpacidad());
                                 }
 
                             }

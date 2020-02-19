@@ -1003,9 +1003,9 @@ public:
     {
         setY(posy);
     }
-    void setColor(int rojo,int verde,int azul)
+    void setColor(int rojo,int verde,int azul,int opacidad)
     {
-        sprite_cinematica.setColor(Color(rojo,verde,azul,255));
+        sprite_cinematica.setColor(Color(rojo,verde,azul,opacidad));
     }
     void setOpacidad (int o)
     {
@@ -1201,9 +1201,9 @@ public:
     {
         danio_torre[pos]=d;
     }
-    void setColor (int rojo,int verde,int azul)
+    void setColor (int rojo,int verde,int azul,int opacidad=255)
     {
-        animacion_propiedad.setColor(rojo,verde,azul);
+        animacion_propiedad.setColor(rojo,verde,azul,opacidad);
     }
     void setX (float posx)
     {
