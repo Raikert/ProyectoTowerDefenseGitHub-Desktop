@@ -15,11 +15,22 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="sfml-graphics-d" />
-					<Add library="sfml-window-d" />
-					<Add library="sfml-network-d" />
-					<Add library="sfml-system-d" />
-					<Add library="sfml-audio-d" />
+					<Add library="sfml-audio-s-d" />
+					<Add library="openal32" />
+					<Add library="flac" />
+					<Add library="vorbisenc" />
+					<Add library="vorbisfile" />
+					<Add library="vorbis" />
+					<Add library="ogg" />
+					<Add library="sfml-graphics-s-d" />
+					<Add library="sfml-window-s-d" />
+					<Add library="sfml-system-s-d" />
+					<Add library="opengl32" />
+					<Add library="winmm" />
+					<Add library="gdi32" />
+					<Add library="freetype" />
+					<Add library="sfml-network-s-d" />
+					<Add library="ws2_32" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -32,11 +43,22 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="sfml-graphics" />
-					<Add library="sfml-window" />
-					<Add library="sfml-network" />
-					<Add library="sfml-system" />
-					<Add library="sfml-audio" />
+					<Add library="sfml-audio-s" />
+					<Add library="openal32" />
+					<Add library="flac" />
+					<Add library="vorbisenc" />
+					<Add library="vorbisfile" />
+					<Add library="vorbis" />
+					<Add library="ogg" />
+					<Add library="sfml-graphics-s" />
+					<Add library="sfml-window-s" />
+					<Add library="sfml-system-s" />
+					<Add library="opengl32" />
+					<Add library="winmm" />
+					<Add library="gdi32" />
+					<Add library="freetype" />
+					<Add library="sfml-network-s" />
+					<Add library="ws2_32" />
 				</Linker>
 			</Target>
 		</Build>
